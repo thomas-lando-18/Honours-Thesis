@@ -1,0 +1,121 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage[margin = 2.54cm]{geometry}   
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage[export]{adjustbox}
+\usepackage{hyperref}
+%\usepackage{preamble}
+\usepackage{float}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{siunitx}
+\usepackage{subcaption}
+\usepackage{hyperref}
+\usepackage{titlesec}
+\usepackage{setspace}
+\usepackage{verbatim}
+\usepackage{mathabx}
+\usepackage{pdfpages}
+\usepackage{geometry}
+\usepackage{booktabs}
+\usepackage{multicol}
+\usepackage{multirow}
+\usepackage{colortbl}
+\usepackage{tabulary}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{etoolbox}
+\usepackage{ragged2e}
+\usepackage{wrapfig}
+\usepackage{pythonhighlight}
+\usepackage[sorting=none]{biblatex}
+\addbibresource{references.bib}
+\usepackage{hyperref}
+
+\title{}
+%\linespread{1}
+
+\parindent = 0pt % No paragraph indent.
+
+% Renames the title of the table of contents from "Contents" to "Table of Contents"
+\renewcommand*\contentsname{Table of Contents} 
+
+% URL link colours should be blue.
+\hypersetup{
+  colorlinks = true,
+  linkcolor = black,
+  urlcolor = blue,
+  citecolor = black
+}
+
+
+% ----------------------------------------------------------------------------
+%                                 Document
+% ----------------------------------------------------------------------------
+\begin{document}
+
+% ----------------------------------------------------------------------------
+%                                 Title Page
+% ----------------------------------------------------------------------------
+\begin{titlepage}
+% Title, Table of Content, Acronyms, Nomenclature, Executive Summary. The title should be informative and concisely explain the presented work. Often the title carries the keywords of the presented work. The table of content should list all sections and subsections. The acronyms section should list in alphabetical order all the acronyms used in the report. All symbols, their meaning and units (if applicable) should be listed in the nomenclature section. The executive summary (no more than 1 page) should summarise the motivation/problem statement, its importance, and how the presented work (successfully) addressed the problem.
+
+% USYD logo
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}} 
+\begin{flushright}
+\includegraphics[width=0.3\textwidth]{Images/usydNew.png}\\[2cm]
+\end{flushright}
+
+\center 
+
+% Titles 
+\textsc{\LARGE The University of Sydney}\\[0.75cm]
+\textsc{\Large School of Aerospace, Mechanical, Mechatronic, and Electrical Engineering}\\[1cm]
+
+\textsc{\Large}\\[0.25cm] 
+
+\HRule \\[0.4cm]
+{ \huge \bfseries Aeroelastic Flutter Suppression}\\[0.4cm] 
+{\Large Honours Thesis Progress Report}\\[0.4cm]
+\HRule \\[1.25cm]
+
+% AUTHORS
+\begin{minipage}{0.4\textwidth}
+\begin{flushleft}
+\emph{Author:}\\
+\textsc{Thomas Lando}\\{SID: 490388538}\\[0.2cm]
+
+\end{flushleft}
+\end{minipage}
+~
+\begin{minipage}{0.4\textwidth}
+\begin{flushright}\large\emph{}\\
+\end{flushright}
+\end{minipage}\\[0.8cm]
+\vfill
+{\large \today}\\[0.8cm]
+
+
+\vfill
+\end{titlepage}
+% ----------------------------------------------------------------------------
+\section{Introduction}
+\input{Introduction}
+% ------------------------------------------------------------------
+\section{Literature Review}
+\input{Literature Review}
+% ------------------------------------------------------------------
+\section{Summary of Completed Work}
+\input{Current Work}
+% ------------------------------------------------------------------
+\newpage
+\section{References}
+\input{References}
+\newpage
+\appendix
+\input{Appendix}
+
+
+
+\end{document}
