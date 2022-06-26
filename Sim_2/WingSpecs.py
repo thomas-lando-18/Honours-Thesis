@@ -1,4 +1,4 @@
-# contains class used to design the trapezoidal wing used in all simulations.
+# contains functions used to design the trapezoidal wing used in simulation 2
 
 # Import packages
 import numpy as np
@@ -44,4 +44,15 @@ def add_points_midspan(top, max_thickness, mid_divisions):
     return midspan_divisions
 
 
-# def add_points_trailing_edge():
+def add_points_trailing_edge(te_divisions, top, te, bottom):
+    trailing_edge_divisions = np.zeros([4, te_divisions])
+    trailing_edge_divisions[0][:] = np.linspace(top[1][0], te[0], num=te_divisions)
+    trailing_edge_divisions[1][:] = np.interp(xp=[top[1][0], te[0]], fp=[0, te[1]], x=trailing_edge_divisions[0][:])
+    trailing_edge_divisions[2][:] = np.interp(xp=[top[1][0], te[0]], fp=[top[1][1], te[1]],
+                                              x=trailing_edge_divisions[0][:])
+    trailing_edge_divisions[3][:] = np.interp(xp=[top[1][0], te[0]], fp=[bottom[1][1], te[1]],
+                                              x=trailing_edge_divisions[0][:])
+
+
+# def combine_points():
+
