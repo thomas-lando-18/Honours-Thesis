@@ -43,7 +43,7 @@ le_points = add_points_leading_edge(le, top, bottom, le_divisions)
 mid_points = add_points_midspan(top, max_thickness, mid_divisions)
 te_points = add_points_trailing_edge(te_divisions, top, te, bottom)
 
-#
+
 # # Combine Grid Points
 # sum_of_divisions = le_divisions + te_divisions + mid_divisions - 2
 # total_grids = (le_divisions + te_divisions + mid_divisions - 2) * 3
