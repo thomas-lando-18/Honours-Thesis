@@ -28,4 +28,4 @@ def extract_uiuc_data(filename):
         middle_surface[n][:] = [float(file_lines[n + 3].split()[0]), np.mean([top_surface[n][1], bottom_surface[n][1]])]
 
     file.close()
-    return top_surface, bottom_surface, middle_surface
+    return top_surface[1:no_x_points-1], bottom_surface[1:no_x_points-1], middle_surface
