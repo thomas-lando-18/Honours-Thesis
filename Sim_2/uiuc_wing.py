@@ -1,24 +1,27 @@
 # Script for building a wing mesh
 
-# Import Packages
-from read_data import extract_uiuc_data
 import matplotlib.pyplot as plt
 import numpy as np
+
+# Import Packages
+from read_data import extract_uiuc_data
 from write_data_to_file import write_2d_grid, write_cquad4
+
 
 # # Test files
 # filename = "UIUC Data/n0011sc.dat.txt"
 # # filename = "UIUC Data/whitcomb.dat"
 
 
-def uiuc_wing_build(filename: str, chord: float, flap_angle: float, hinge_point: float):
+def uiuc_wing_build(filename: str, chord: float, flap_angle: float, hinge_point: float, plot: bool):
     """
     Function that creates a 2D foil and outputs a nastran geometry card
     :param filename: filename of wing data file
     :param chord: chord length of desired wing (m)
     :param flap_angle: trailing edge flap angle (deg)
     :param hinge_point: point where flap is rotating from (%chord)
-
+    :param plot: plots a scatter of the wing points and saves a figure to directory
+    :return returns the name of the mesh file
     """
 
     top_surface, bottom_surface, middle_surface = extract_uiuc_data(filename)
@@ -51,7 +54,8 @@ def uiuc_wing_build(filename: str, chord: float, flap_angle: float, hinge_point:
             bottom_surface[n][:] = [rot_x * x + rot_y * y + 0.05 * chord, -rot_y * x + rot_x * y + flap_point * rot_y]
 
     # Write Geometry Card
-    fid = open('nastran_geometry_input.dat', 'w')
+    output_filename = 'nastran_geometry_input.dat'
+    fid = open(output_filename, 'w')
 
     # Write Nastran Grid Card
     for n in range(len(top_surface)):
@@ -81,20 +85,22 @@ def uiuc_wing_build(filename: str, chord: float, flap_angle: float, hinge_point:
     # Close Geometry Card
     fid.close()
 
+    if plot:
+        # Plot the points
+        plt.figure(1)
+        # Plot leading and trailing edge points
+        plt.scatter(middle_surface[0][0], middle_surface[0][1], color='red')
+        plt.scatter(middle_surface[len(middle_surface) - 1][0], middle_surface[len(middle_surface) - 1][1], color='red')
 
-# # Plot the points
-# plt.figure(1)
-# # Plot leading and trailing edge points
-# plt.scatter(middle_surface[0][0], middle_surface[0][1], color='red')
-# plt.scatter(middle_surface[len(middle_surface) - 1][0], middle_surface[len(middle_surface) - 1][1], color='red')
-#
-# # Plot middle values
-# for n in range(len(top_surface)):
-#     plt.scatter(top_surface[n][0], top_surface[n][1], color='blue')
-#     plt.scatter(bottom_surface[n][0], bottom_surface[n][1], color='blue')
-#     plt.scatter(middle_surface[n][0], middle_surface[n][1], color='red')
-# plt.grid()
-# plt.xlabel('x (m)')
-# plt.ylabel('y (m)')
-# plt.axis('equal')
-# plt.show()
+        # Plot middle values
+        for n in range(len(top_surface)):
+            plt.scatter(top_surface[n][0], top_surface[n][1], color='blue')
+            plt.scatter(bottom_surface[n][0], bottom_surface[n][1], color='blue')
+            plt.scatter(middle_surface[n][0], middle_surface[n][1], color='red')
+        plt.grid()
+        plt.xlabel('x (m)')
+        plt.ylabel('y (m)')
+        plt.axis('equal')
+        plt.show()
+
+    return output_filename
