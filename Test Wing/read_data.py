@@ -3,7 +3,12 @@ import numpy as np
 
 
 # Open UIUC File
-def extract_uiuc_data(filename):
+def extract_uiuc_data(filename: str):
+    """
+    Function that extracts the foil data
+    :param filename: name of uiuc file
+    :return: points for top, bottom and middle surface
+    """
     file = open(filename, 'r')
     file_lines = file.readlines()
     no_x_points = int(float(file_lines[1].split()[0]))
