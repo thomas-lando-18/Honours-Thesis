@@ -15,8 +15,8 @@
 # ------------------------------------------------------------------------------------------------------------------
 
 # Import Packages
-import pyNastran
-
+from pyNastran.bdf.bdf import BDF, CaseControlDeck
+from pyNastran.f06.parse_flutter import make_flutter_plots
 # Functions
 from uiuc_wing import uiuc_wing_build
 
@@ -31,4 +31,8 @@ hinge = 0.6  # location of hinge point in %chord
 mesh_file = uiuc_wing_build(filename, chord, beta, hinge, plot=False)
 
 # Create BDF card (NASTRAN input file)
+model = BDF()
+
+
+model.write_bdf("2d_3dof_sim.bdf")
 
