@@ -23,5 +23,4 @@ c = 0.5
 T = t_constants(a, c)
 c = c_function(0)  # Initial
 
-
 # Make aerodynamic forces matrix

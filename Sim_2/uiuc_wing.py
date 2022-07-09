@@ -53,18 +53,18 @@ def uiuc_wing_build(filename: str, chord: float, flap_angle: float, hinge_point:
         if x > flap_point:
             bottom_surface[n][:] = [rot_x * x + rot_y * y + 0.05 * chord, -rot_y * x + rot_x * y + flap_point * rot_y]
 
-    # Write Geometry Card
-    output_filename = 'nastran_geometry_input.dat'
-    fid = open(output_filename, 'w')
+    # # Write Geometry Card
+    # output_filename = 'nastran_geometry_input.dat'
+    # fid = open(output_filename, 'w')
 
-    # Write Nastran Grid Card
-    for n in range(len(top_surface)):
-        write_2d_grid(fid, point_id=n + 1, x=top_surface[n][0], y=top_surface[n][1], z=0)
-    for n in range(len(middle_surface)):
-        write_2d_grid(fid, point_id=n + 1 + len(top_surface), x=middle_surface[n][0], y=middle_surface[n][1], z=0)
-    for n in range(len(bottom_surface)):
-        write_2d_grid(fid, point_id=n + 1 + len(top_surface) + len(middle_surface), x=bottom_surface[n][0],
-                      y=bottom_surface[n][1], z=0)
+    # # Write Nastran Grid Card
+    # for n in range(len(top_surface)):
+    #     write_2d_grid(fid, point_id=n + 1, x=top_surface[n][0], y=top_surface[n][1], z=0)
+    # for n in range(len(middle_surface)):
+    #     write_2d_grid(fid, point_id=n + 1 + len(top_surface), x=middle_surface[n][0], y=middle_surface[n][1], z=0)
+    # for n in range(len(bottom_surface)):
+    #     write_2d_grid(fid, point_id=n + 1 + len(top_surface) + len(middle_surface), x=bottom_surface[n][0],
+    #                   y=bottom_surface[n][1], z=0)
 
     # Write Nastran Mesh Card
     top_panels = np.zeros([len(middle_surface), 4])
@@ -78,12 +78,12 @@ def uiuc_wing_build(filename: str, chord: float, flap_angle: float, hinge_point:
         bottom_panels[n][:] = [mid_count + n + 1, bottom_count + n + 1, bottom_count + n + 2, mid_count + n + 2]
 
     thicknesses = 1.1 * np.ones([1, 4])
-    for n in range(len(middle_surface)):
-        write_cquad4(fid, n + 1, top_panels[n][:], thicknesses[0][:])
-        write_cquad4(fid, len(middle_surface) + n + 1, bottom_panels[n][:], thicknesses[:][0])
+    # for n in range(len(middle_surface)):
+    #     write_cquad4(fid, n + 1, top_panels[n][:], thicknesses[0][:])
+    #     write_cquad4(fid, len(middle_surface) + n + 1, bottom_panels[n][:], thicknesses[:][0])
 
     # Close Geometry Card
-    fid.close()
+    # fid.close()
 
     if plot:
         # Plot the points
@@ -103,4 +103,4 @@ def uiuc_wing_build(filename: str, chord: float, flap_angle: float, hinge_point:
         plt.axis('equal')
         plt.show()
 
-    return output_filename
+    return top_surface, middle_surface, bottom_surface, top_panels, bottom_panels

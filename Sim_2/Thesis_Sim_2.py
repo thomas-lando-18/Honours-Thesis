@@ -20,7 +20,6 @@ from pyNastran.f06.parse_flutter import make_flutter_plots
 # Functions
 from uiuc_wing import uiuc_wing_build
 
-
 # Set Wing Specs
 filename = "UIUC Data/n0011sc.dat.txt"
 chord = 1  # chord length in metres
@@ -28,11 +27,31 @@ beta = 10  # flap angle in degrees
 hinge = 0.6  # location of hinge point in %chord
 
 # Build wing mesh file
-mesh_file = uiuc_wing_build(filename, chord, beta, hinge, plot=False)
-
+top_points, middle_points, bottom_points, top_panels, bottom_panels = uiuc_wing_build(filename, chord, beta, hinge,
+                                                                                      plot=False)
 # Create BDF card (NASTRAN input file)
 model = BDF()
+CaseControlDeck(model.case_control_lines)
+# Case Control
+model.sol = 145
+case_ctrl = CaseControlDeck([
+    'ECHO=NONE',
+    'FMETHOD=1',
+    'METHOD=1',
+    'SPC=1',
+    'RESVEC=NO',
+    'DISP=ALL'
+])
+model.case_control_deck = case_ctrl
+# Geometry
+# for n in range(len(top_points)):
+#     model.add_grid(n, [top_points[n][:]])
+# Mesh
 
+# CAERO5 Card (Piston Theory)
+
+# PAERO5 Card (Piston Theory)
+
+# 
 
 model.write_bdf("2d_3dof_sim.bdf")
-
