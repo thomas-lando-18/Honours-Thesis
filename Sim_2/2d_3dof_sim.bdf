@@ -1,0 +1,16 @@
+$pyNastran: version=msc
+$pyNastran: punch=False
+$pyNastran: encoding=utf-8
+$pyNastran: nnodes=0
+$pyNastran: nelements=0
+$EXECUTIVE CONTROL DECK
+SOL 145
+CEND
+$CASE CONTROL DECK
+DISPLACEMENT = ALL
+ECHO = NONE
+FMETHOD = 1
+METHOD = 1
+RESVEC = NO
+SPC = 1
+BEGIN BULK

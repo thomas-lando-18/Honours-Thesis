@@ -17,10 +17,12 @@ import numpy as np
 from Theodoreson_Constants import t_constants
 from C_k_function import c_function
 
+
 a = -0.5
 c = 0.5
 
 T = t_constants(a, c)
 c = c_function(0)  # Initial
 
-# Make aerodynamic forces matrix
+# Make matrices from EOM
+

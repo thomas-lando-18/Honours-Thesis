@@ -20,6 +20,7 @@ from pyNastran.f06.parse_flutter import make_flutter_plots
 # Functions
 from uiuc_wing import uiuc_wing_build
 
+
 # Set Wing Specs
 filename = "UIUC Data/n0011sc.dat.txt"
 chord = 1  # chord length in metres
@@ -43,15 +44,30 @@ case_ctrl = CaseControlDeck([
     'DISP=ALL'
 ])
 model.case_control_deck = case_ctrl
-# Geometry
-# for n in range(len(top_points)):
-#     model.add_grid(n, [top_points[n][:]])
-# Mesh
 
-# CAERO5 Card (Piston Theory)
+# Required Cards
+# model.add_eigrl()
+#
+# model.add_aero()
+#
+# model.add_flfact()
+#
+# model.add_flutter()
+#
+# model.add_mkaero2()
+#
+# # Additional Cards
+# # To cover both subsonic and supersonic regions and give accuracy in the transonic regions, use piston theory
+# model.add_paero5()
+#
+# model.add_caero5()
+#
+# model.add_aefact()
+#
+# model.add_set1()
+#
+# model.add_spline1()
 
-# PAERO5 Card (Piston Theory)
 
-# 
 
 model.write_bdf("2d_3dof_sim.bdf")
