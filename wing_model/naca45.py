@@ -18,7 +18,7 @@ def naca_4_digit(m=2, p=4, xx=12, num=10, chord=1):
     p = p / 10
     xx = xx / 100
 
-    x = np.linspace(0, chord, num=num)
+    x = np.linspace(0, 1, num=num)
 
     # Create Camber line values
     yc = []
@@ -65,9 +65,13 @@ def naca_4_digit(m=2, p=4, xx=12, num=10, chord=1):
             xl.append(x[n] + yt[n] * np.sin(theta))
             yl.append(yc[n] - yt[n] * np.cos(theta))
 
-    foil_points = yu, yl
+    # Adjust for chord value
+    xu = np.multiply(xu, chord)
+    xl = np.multiply(xl, chord)
+    yu = np.multiply(yu, chord)
+    yl = np.multiply(yl, chord)
 
-    return foil_points
+    return yu, yl
 
 
 def naca_5_digit(cl_int=2, p=4, q=0, xx=12, num=10, chord=1):
@@ -80,7 +84,7 @@ def naca_5_digit(cl_int=2, p=4, q=0, xx=12, num=10, chord=1):
     :param num: number of points
     :return: matrix of x y values for the upper and lower surface
     """
-    x = np.linspace(0, chord, num=num)
+    x = np.linspace(0, 1, num=num)
     if q == 0:
         m = [0.05, 0.1, 0.15, 0.2, 0.25]
         m = float(m[p - 1])
@@ -133,7 +137,10 @@ def naca_5_digit(cl_int=2, p=4, q=0, xx=12, num=10, chord=1):
                 xl.append(x[n] + yt[n] * np.sin(theta))
                 yl.append(yc[n] - yt[n] * np.cos(theta))
 
-        foil_points = [[xu, xl], [yu, yl]]
+        # Adjust for chord value
+        xu = np.multiply(xu, chord)
+        xl = np.multiply(xl, chord)
+        yu = np.multiply(yu, chord)
+        yl = np.multiply(yl, chord)
 
-    return foil_points
-
+    return yu, yl
