@@ -1,7 +1,6 @@
 # Imports
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib import m
 from naca45 import*
 
 
@@ -22,7 +21,7 @@ def main(semi_span=0.15, root_chord=0.30, taper=1.0, sweep=0, num=10, chord_num=
     spanwise_x = np.linspace(0, semi_span, num=num)
     chordwise_x = np.linspace(0, root_chord, num=chord_num)
     taper_vector = np.linspace(1, taper, num=num)
-
+    print(taper_vector)
     x_mesh, y_mesh = np.meshgrid(chordwise_x, spanwise_x)
 
 # Bring values back to midchord
@@ -43,23 +42,20 @@ def main(semi_span=0.15, root_chord=0.30, taper=1.0, sweep=0, num=10, chord_num=
         x_mesh[n][:] += sweep_shift
 
     x_mesh += root_chord/4
-
+    z_mesh = np.zeros([chord_num, num])
     upper_mesh = x_mesh
     lower_mesh = x_mesh
 
-    for n in range(num):
-        chord = root_chord * taper_vector[n]
-        foil_points = naca_4_digit(num=chord_num, chord=chord)
-        upper_mesh[n][:] = foil_points[2][:]
-        lower_mesh[n][:] = foil_points[3][:]
+    # Add Foil
 
 
-
-    plt.figure(2)
-    plt.scatter(x_mesh, y_mesh)
+    fig = plt.figure(2)
+    ax = fig.add_subplot(projection='3d')
+    ax.scatter(x_mesh, y_mesh, z_mesh)
     plt.grid()
-    plt.axis('equal')
+
     plt.show()
+
 
 if __name__ == '__main__':
     main(taper=0.5, sweep=np.deg2rad(20))
