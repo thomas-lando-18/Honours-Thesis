@@ -65,7 +65,7 @@ def naca_4_digit(m=2, p=4, xx=12, num=10, chord=1):
             xl.append(x[n] + yt[n] * np.sin(theta))
             yl.append(yc[n] - yt[n] * np.cos(theta))
 
-    foil_points = [[xu], [xl], [yu], [yl]]
+    foil_points = yu, yl
 
     return foil_points
 
