@@ -48,8 +48,10 @@ def main(semi_span=0.15, root_chord=0.30, taper=1.0, sweep=0, num=5, chord_num=1
     x_mesh += root_chord / 4
 
     # add foil
+    area_vector = []
     for n in range(num):
         upper[n][:], lower[n][:] = naca_4_digit(num=chord_num, chord=root_chord*taper_vector[n])
+        # area_vector.append(area)
 
     if plot:
         fig = plt.figure(2)
@@ -71,15 +73,18 @@ def main(semi_span=0.15, root_chord=0.30, taper=1.0, sweep=0, num=5, chord_num=1
               "Upper Surface": upper,
               "Lower Surface": lower}
 
+
     return output
 
 
 if __name__ == '__main__':
-    r_c = 1
-    sweep = np.deg2rad(10)
+    r_c = 5
+    sweep = np.deg2rad(5)
     taper = 0.01
     chord_number = 10
-    span_number = 5
+    span_number = 10
     span = 5
     output = main(root_chord=r_c, sweep=sweep, taper=taper, chord_num=chord_number, num=span_number, plot=True,
                   semi_span=span)
+
+    pprint.pprint(output)
