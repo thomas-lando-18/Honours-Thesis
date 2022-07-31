@@ -50,7 +50,7 @@ def main(semi_span=0.15, root_chord=0.30, taper=1.0, sweep=0, num=5, chord_num=1
     # add foil
     area_vector = []
     for n in range(num):
-        upper[n][:], lower[n][:] = naca_4_digit(num=chord_num, chord=root_chord*taper_vector[n])
+        upper[n][:], lower[n][:], temp, temp1 = naca_4_digit(num=chord_num, chord=root_chord*taper_vector[n])
         # area_vector.append(area)
 
     if plot:
@@ -58,12 +58,7 @@ def main(semi_span=0.15, root_chord=0.30, taper=1.0, sweep=0, num=5, chord_num=1
         ax = fig.add_subplot(projection='3d')
         ax.scatter(x_mesh, y_mesh, upper)
         ax.scatter(x_mesh, y_mesh, lower)
-        # ax.axes.set_xlim3d(left=0, right=1)
-        # ax.axes.set_ylim3d(bottom=0, top=5)
         ax.axes.set_zlim3d(bottom=-0.5, top=0.5)
-        # ax.axes.xlabel('x')
-        # ax.axes.ylabel('y')
-        # ax.axes.zlabel('z')
         plt.grid()
         plt.show()
 
@@ -78,9 +73,9 @@ def main(semi_span=0.15, root_chord=0.30, taper=1.0, sweep=0, num=5, chord_num=1
 
 
 if __name__ == '__main__':
-    r_c = 5
-    sweep = np.deg2rad(5)
-    taper = 0.01
+    r_c = 1
+    sweep = np.deg2rad(0)
+    taper = 1
     chord_number = 10
     span_number = 10
     span = 5

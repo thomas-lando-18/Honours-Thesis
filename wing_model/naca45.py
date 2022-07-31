@@ -1,7 +1,6 @@
 # Imports
 import numpy as np
 import matplotlib.pyplot as plt
-from inertial_properties import*
 
 
 def naca_4_digit(m=2, p=4, xx=12, num=10, chord=1):
@@ -72,10 +71,7 @@ def naca_4_digit(m=2, p=4, xx=12, num=10, chord=1):
     yu = np.multiply(yu, chord)
     yl = np.multiply(yl, chord)
 
-    foil_points = [[xu], [yu], [xl], [yl]]
-    # area = area_of_foil(foil_points)
-
-    return yu, yl
+    return yu, yl, xu, xl
 
 
 def naca_5_digit(cl_int=2, p=4, q=0, xx=12, num=10, chord=1):
