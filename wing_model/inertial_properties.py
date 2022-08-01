@@ -71,6 +71,16 @@ def inertial_moment_beta(yu, yl, xu, xl, hinge_point, m):
     return I
 
 
+def static_moment_alpha():
+    pass
+
+
+def static_moment_beta():
+    pass
+
+
+
+
 # Testing
 # yu, yl, xu, xl = naca_4_digit(num=100, chord=0.1)
 # area = foil_area_2d(yu, yl, xu, xl)
