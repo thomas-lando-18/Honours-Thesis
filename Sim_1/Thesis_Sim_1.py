@@ -30,7 +30,7 @@ a = -0.5
 c = 0.5
 
 T = t_constants(a, c)
-c = c_function(0)  # Initial
+c = c_function(0)
 
 # Make matrices from EOM
 
