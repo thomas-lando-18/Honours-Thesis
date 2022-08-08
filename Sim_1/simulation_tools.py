@@ -62,9 +62,9 @@ def aero_forces(a, c, h, k, b, v):
     rho = density(h)
     c = c_function(k)
 
-    D = np.zeros([3, 3])
-    E = np.zeros([3, 3])
-    F = np.zeros([3, 3])
+    D = np.zeros([3, 3], dtype='complex_')
+    E = np.zeros([3, 3], dtype='complex_')
+    F = np.zeros([3, 3], dtype='complex_')
 
     # This is going to hurt
     D[0, 0] = -rho * b ** 4 * np.pi * (1 / 8 + a ** 2)
@@ -102,5 +102,17 @@ def aero_forces(a, c, h, k, b, v):
     F[2, 1] = -2*rho*v**2*b*c*T[9]
 
     return D, E, F
+
+
+def iterate_frequency(v, w0, h, a, c, b):
+    w = w0
+    k = w*b/v
+    A, B, C = aero_equations_of_motion(a=a, b=b, c=c)
+    D, E, F = aero_forces(a=a, c=c, h=h, k=k, b=b, v=v)
+
+    return A, B, C, D, E, F
+
+
+
 
 

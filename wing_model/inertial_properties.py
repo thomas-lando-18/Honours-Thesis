@@ -3,7 +3,7 @@
 # Imports
 import numpy as np
 import scipy as sc
-from naca45 import*
+from wing_model.naca45 import*
 
 
 # Functions
