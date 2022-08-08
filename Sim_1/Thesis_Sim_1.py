@@ -16,25 +16,16 @@
 import numpy as np
 from Theodoreson_Constants import t_constants
 from C_k_function import c_function
-
-
-# Functions
-def density(h: float):
-    rho0 = 1.225
-    hs = 8500
-    rho = rho0*np.exp(-h/hs)
-    return rho
-
+from simulation_tools import*
 
 a = -0.5
 c = 0.5
+b = 1
 
-T = t_constants(a, c)
-c = c_function(0)
+h = np.linspace(10, 100e3, num=1000)
+v = np.linspace(200, 5000, num=200)
 
-# Make matrices from EOM
 
-# Constants
 
 
 

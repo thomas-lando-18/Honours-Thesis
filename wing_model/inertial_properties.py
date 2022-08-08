@@ -130,3 +130,8 @@ def torsional_stiffness_alpha(I_a, w_a):
 def torsional_stiffness_beta(I_b, w_b):
     C_b = w_b**2 * I_b
     return C_b
+
+
+def torsional_stiffness_span(m, w_h):
+    C_h = w_h**2 * m
+    return C_h
