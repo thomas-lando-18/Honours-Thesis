@@ -12,7 +12,7 @@
 # Nomenclature:
 #
 # Code
-
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from Theodoreson_Constants import t_constants
@@ -23,8 +23,8 @@ a = -0.5
 c = 0.5
 b = 1
 
-h = np.linspace(10, 100e3, num=100)
-v = np.linspace(200, 5000, num=20)
+h = np.linspace(10, 100e3, num=10)
+v = np.linspace(200, 50000, num=10)
 
 # "Wow this is going to suck" - my computer
 fid = open('Results.dat', 'w')
@@ -32,11 +32,14 @@ fid = open('Results.dat', 'w')
 fid.write('2D 3DOF Simulation\n')
 fid.write('\n\n')
 
-
-for n1 in range(100):
+plt.figure(1)
+plt.grid()
+plt.xlabel('Velocity (m/s)')
+plt.ylabel('Real Eigenvalue')
+for n1 in range(10):
     height = h[n1]
     fid.write('Altitude (m): %s\n' % str(height))
-    for n2 in range(20):
+    for n2 in range(10):
         velocity = v[n2]
         fid.write('Velocity (m/s): %s\n' % str(velocity))
         A, B, C, D, E, F = iterate_frequency(v=velocity, w0=0, h=height, a=a, c=c, b=b)
@@ -46,8 +49,18 @@ for n1 in range(100):
         bot_left = np.identity(3)
         bot_right = np.zeros([3, 3])
         System = [[top_left, top_right], [bot_left, bot_right]]
+        eigenvalues, eigenvectors = np.linalg.eig(System)
 
-        eigenvalues = np.linalg.eig(System)
-        fid.write('Eigenvalues : %s \n\n' % str(eigenvalues))
+        fid.write('Eigenvalues : %s %s\n              %s %s\n\n' % (str(eigenvalues[0][0]), str(eigenvalues[0][0]),
+                                                      str(eigenvalues[1][0]), str(eigenvalues[1][1])))
+
+        plt.scatter(velocity, np.real(eigenvalues[0][0][0]), color='red')
+        plt.scatter(velocity, np.real(eigenvalues[0][0][1]), color='blue')
+        plt.scatter(velocity, np.real(eigenvalues[0][0][2]), color='black')
+
+        plt.scatter(velocity, np.real(eigenvalues[0][1][0]), color='grey')
+        plt.scatter(velocity, np.real(eigenvalues[0][1][1]), color='pink')
+        plt.scatter(velocity, np.real(eigenvalues[0][1][2]), color='purple')
 
 
+plt.show()
