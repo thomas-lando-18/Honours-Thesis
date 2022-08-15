@@ -22,9 +22,9 @@ def aero_equations_of_motion(a, c, b):
     i_b = inertial_moment_beta(yu, yl, xu, xl, [0.6, 0], m)
     s_a = static_moment_alpha(yu, yl, xu, xl, m)
     s_b = static_moment_beta(yu, yl, xu, xl, [0.6, 0], m)
-    c_a = torsional_stiffness_alpha(i_a, 8 * 2 * np.pi)
-    c_b = torsional_stiffness_beta(i_b, 10 * 2 * np.pi)
-    c_h = torsional_stiffness_span(m, 8 * 2 * np.pi)
+    c_a = torsional_stiffness_alpha(i_a, 8)
+    c_b = torsional_stiffness_beta(i_b, 10)
+    c_h = torsional_stiffness_span(m, -8)
 
     A = np.zeros([3, 3])
     B = A

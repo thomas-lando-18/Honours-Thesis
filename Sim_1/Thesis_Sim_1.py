@@ -23,8 +23,10 @@ a = -0.5
 c = 0.5
 b = 1
 
-h = np.linspace(10, 100e3, num=10)
-v = np.linspace(200, 50000, num=10)
+h_num = 2
+v_num = 10
+h = np.linspace(10, 100e3, num=h_num)
+v = np.linspace(200, 5000, num=v_num)
 
 # "Wow this is going to suck" - my computer
 fid = open('Results.dat', 'w')
@@ -36,10 +38,10 @@ plt.figure(1)
 plt.grid()
 plt.xlabel('Velocity (m/s)')
 plt.ylabel('Real Eigenvalue')
-for n1 in range(10):
+for n1 in range(h_num):
     height = h[n1]
     fid.write('Altitude (m): %s\n' % str(height))
-    for n2 in range(10):
+    for n2 in range(v_num):
         velocity = v[n2]
         fid.write('Velocity (m/s): %s\n' % str(velocity))
         A, B, C, D, E, F = iterate_frequency(v=velocity, w0=0, h=height, a=a, c=c, b=b)
@@ -51,7 +53,7 @@ for n1 in range(10):
         System = [[top_left, top_right], [bot_left, bot_right]]
         eigenvalues, eigenvectors = np.linalg.eig(System)
 
-        fid.write('Eigenvalues : %s %s\n              %s %s\n\n' % (str(eigenvalues[0][0]), str(eigenvalues[0][0]),
+        fid.write('Eigenvalues : %s %s\n              %s %s\n\n' % (str(eigenvalues[0][0]), str(eigenvalues[0][1]),
                                                       str(eigenvalues[1][0]), str(eigenvalues[1][1])))
 
         plt.scatter(velocity, np.real(eigenvalues[0][0][0]), color='red')
@@ -61,6 +63,9 @@ for n1 in range(10):
         plt.scatter(velocity, np.real(eigenvalues[0][1][0]), color='grey')
         plt.scatter(velocity, np.real(eigenvalues[0][1][1]), color='pink')
         plt.scatter(velocity, np.real(eigenvalues[0][1][2]), color='purple')
-
+        if np.real(eigenvalues[0][0][2]) > 0:
+            print(height)
+            print(velocity)
+            break
 
 plt.show()
