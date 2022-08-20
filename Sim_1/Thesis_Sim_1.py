@@ -24,9 +24,9 @@ c = 0.5
 b = 1
 
 h_num = 2
-v_num = 10
+v_num = 2
 h = np.linspace(10, 100e3, num=h_num)
-v = np.linspace(200, 5000, num=v_num)
+v = np.linspace(2, 200, num=v_num)
 
 # "Wow this is going to suck" - my computer
 fid = open('Results.dat', 'w')
@@ -44,7 +44,7 @@ for n1 in range(h_num):
     for n2 in range(v_num):
         velocity = v[n2]
         fid.write('Velocity (m/s): %s\n' % str(velocity))
-        A, B, C, D, E, F = iterate_frequency(v=velocity, w0=0, h=height, a=a, c=c, b=b)
+        A, B, C, D, E, F = iterate_frequency(v=velocity, w0=100, h=height, a=a, c=c, b=b)
         # Create System Matrix
         top_left = np.linalg.inv(A-D)*(E-B)
         top_right = np.linalg.inv(A-D)*(F-C)

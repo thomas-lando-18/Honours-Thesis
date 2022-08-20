@@ -109,6 +109,17 @@ def iterate_frequency(v, w0, h, a, c, b):
     k = w*b/v
     A, B, C = aero_equations_of_motion(a=a, b=b, c=c)
     D, E, F = aero_forces(a=a, c=c, h=h, k=k, b=b, v=v)
+    tol = complex(1e-3, 1e-3)
+
+    system = A + B + C - (D + E + F)
+    while system.any() > tol:
+        w += 0.00001
+        k = w * b / v
+        A, B, C = aero_equations_of_motion(a=a, b=b, c=c)
+        D, E, F = aero_forces(a=a, c=c, h=h, k=k, b=b, v=v)
+        system = A + B + C - (D + E + F)
+        print(system)
+
 
     return A, B, C, D, E, F
 
