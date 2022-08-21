@@ -9,22 +9,28 @@ from Theodoreson_Constants import *
 
 
 # Functions
-def aero_equations_of_motion(a, c, b):
+def aero_equations_of_motion(a, c, b, w):
     matrix_a = np.zeros([3, 3])
     matrix_b = np.zeros([3, 3])
     matrix_c = np.zeros([3, 3])
     #  Need to ad flap angle to wing model, perhaps make a wing model build/ calculate functions for sim 1,
     #  sims 2 and 3 can use the main 3d one.
-    yu, yl, xu, xl = naca_4_digit(m=0, p=1, xx=10, num=10, chord=0.1)
+    w_a = 80
+    w_b = 100
+    w_h = 80
+    yu, yl, xu, xl = naca_4_digit(m=2, p=4, xx=12, num=10, chord=0.5)
     area = foil_area_2d(yu, yl, xu, xl)
-    m = mass_of_foil(area=area, density=1150, span=b)
+    m = mass_of_foil(area=area, density=1150/9, span=b)
     i_a = inertial_moment_alpha(m=m, xl=xl, xu=xu, yl=yl, yu=yu)
     i_b = inertial_moment_beta(yu, yl, xu, xl, [0.6, 0], m)
+    d_a = i_a*w_a**2 * 9.81/w
+    d_b = i_b*w_b**2*9.81/w
+    d_h = m*w_h**2*9.81/w
     s_a = static_moment_alpha(yu, yl, xu, xl, m)
     s_b = static_moment_beta(yu, yl, xu, xl, [0.6, 0], m)
-    c_a = torsional_stiffness_alpha(i_a, 8)
-    c_b = torsional_stiffness_beta(i_b, 10)
-    c_h = torsional_stiffness_span(m, -8)
+    c_a = torsional_stiffness_alpha(i_a, w_a)
+    c_b = torsional_stiffness_beta(i_b, w_b)
+    c_h = torsional_stiffness_span(m, w_h)
 
     A = np.zeros([3, 3])
     B = A
@@ -41,6 +47,10 @@ def aero_equations_of_motion(a, c, b):
     A[2, 0] = s_a
     A[2, 1] = s_b
     A[2, 2] = m
+
+    B[0, 0] = d_a
+    B[1, 1] = d_b
+    B[2, 2] = d_h
 
     C[0, 0] = c_a
     C[1, 1] = c_b
@@ -104,26 +114,12 @@ def aero_forces(a, c, h, k, b, v):
     return D, E, F
 
 
-def iterate_frequency(v, w0, h, a, c, b):
-    w = w0
+def iterate_frequency(v, w, h, a, c, b):
     k = w*b/v
-    A, B, C = aero_equations_of_motion(a=a, b=b, c=c)
+    A, B, C = aero_equations_of_motion(a=a, b=b, c=c, w=w)
     D, E, F = aero_forces(a=a, c=c, h=h, k=k, b=b, v=v)
-    tol = complex(1e-3, 1e-3)
-
-    system = A + B + C - (D + E + F)
-    while system.any() > tol:
-        w += 0.00001
-        k = w * b / v
-        A, B, C = aero_equations_of_motion(a=a, b=b, c=c)
-        D, E, F = aero_forces(a=a, c=c, h=h, k=k, b=b, v=v)
-        system = A + B + C - (D + E + F)
-        print(system)
-
 
     return A, B, C, D, E, F
-
-
 
 
 
