@@ -24,11 +24,11 @@ c = 0.5
 b = 1
 
 h_num = 5
-v_num = 10000
+v_num = 100
 w_num = 2
 h = np.linspace(10, 100e3, num=h_num)
-v = np.linspace(0.001, 10e3, num=v_num)
-w = np.linspace(1.0001, 2, num=w_num)
+v = np.linspace(0.000001, 10e3, num=v_num)
+w = np.linspace(1, 2, num=w_num)
 
 # "Wow this is going to suck" - my computer
 fid = open('Results.dat', 'w')

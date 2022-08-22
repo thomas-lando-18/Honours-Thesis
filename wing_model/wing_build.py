@@ -72,14 +72,14 @@ def main(semi_span=0.15, root_chord=0.30, taper=1.0, sweep=0, num=5, chord_num=1
     return output
 
 
-if __name__ == '__main__':
-    r_c = 1
-    sweep = np.deg2rad(0)
-    taper = 1
-    chord_number = 10
-    span_number = 10
-    span = 5
-    output = main(root_chord=r_c, sweep=sweep, taper=taper, chord_num=chord_number, num=span_number, plot=True,
-                  semi_span=span)
-
-    pprint.pprint(output)
+# if __name__ == '__main__':
+#     r_c = 1
+#     sweep = np.deg2rad(0)
+#     taper = 1
+#     chord_number = 10
+#     span_number = 10
+#     span = 5
+#     output = main(root_chord=r_c, sweep=sweep, taper=taper, chord_num=chord_number, num=span_number, plot=True,
+#                   semi_span=span)
+#
+#     pprint.pprint(output)

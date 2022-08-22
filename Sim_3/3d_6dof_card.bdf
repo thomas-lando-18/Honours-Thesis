@@ -1,0 +1,23 @@
+$pyNastran: version=msc
+$pyNastran: punch=False
+$pyNastran: encoding=utf-8
+$pyNastran: nnodes=0
+$pyNastran: nelements=0
+$EXECUTIVE CONTROL DECK
+SOL 145
+CEND
+$CASE CONTROL DECK
+DISPLACEMENT = ALL
+ECHO = NONE
+FMETHOD = 1
+METHOD = 1
+RESVEC = NO
+SPC = 1
+BEGIN BULK
+$DYNAMIC
+EIGRL          1  -5.+10   5.+10
+$FLUTTER
+AERO           3  14000.     100   .0001       1      -1
+FLUTTER        3      PK       1       1     100       L
+FLFACT         2      10      50      75     100     150     200
+MKAERO2       .8      80       1     100     1.2     110     1.4     120

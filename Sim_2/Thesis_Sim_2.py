@@ -15,7 +15,6 @@
 # ------------------------------------------------------------------------------------------------------------------
 
 # Import Packages
-import pyNastran.gui.gui
 from pyNastran.bdf.bdf import BDF, CaseControlDeck
 from pyNastran.f06.parse_flutter import make_flutter_plots
 # Functions

@@ -15,9 +15,9 @@ def aero_equations_of_motion(a, c, b, w):
     matrix_c = np.zeros([3, 3])
     #  Need to ad flap angle to wing model, perhaps make a wing model build/ calculate functions for sim 1,
     #  sims 2 and 3 can use the main 3d one.
-    w_a = 80
-    w_b = 100
-    w_h = 80
+    w_a = 8
+    w_b = 8
+    w_h = 8
     yu, yl, xu, xl = naca_4_digit(m=2, p=4, xx=12, num=10, chord=0.5)
     area = foil_area_2d(yu, yl, xu, xl)
     m = mass_of_foil(area=area, density=1150/9, span=b)
