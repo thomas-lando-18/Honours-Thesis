@@ -1,12 +1,12 @@
 # Imports
 import numpy as np
 import matplotlib.pyplot as plt
-from naca45 import *
+from wing_model.naca45 import *
 import pprint
 
 
 # Functions
-def main(semi_span=0.15, root_chord=0.30, taper=1.0, sweep=0, num=5, chord_num=10, plot=True):
+def main(foil='2412', semi_span=0.15, root_chord=0.30, taper=1.0, sweep=0, num=5, chord_num=10, plot=True):
     """
     Completes the 3D model of the wing and calculates the mass properties.
     :param semi_span: semi span of wing (m)
@@ -47,10 +47,19 @@ def main(semi_span=0.15, root_chord=0.30, taper=1.0, sweep=0, num=5, chord_num=1
 
     x_mesh += root_chord / 4
 
+    # Unpack Foil Shape
+    m = int(foil[0])
+    # print(m)
+    p = int(foil[1])
+    # print(p)
+    t = int(foil[2])*10 + int(foil[3])
+    # print(t)
+
     # add foil
     area_vector = []
     for n in range(num):
-        upper[n][:], lower[n][:], temp, temp1 = naca_4_digit(num=chord_num, chord=root_chord*taper_vector[n])
+        upper[n][:], lower[n][:], temp, temp1 = naca_4_digit(m=m, p=p, xx=t, num=chord_num,
+                                                             chord=root_chord*taper_vector[n])
         # area_vector.append(area)
 
     if plot:
