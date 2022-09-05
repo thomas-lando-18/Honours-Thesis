@@ -45,9 +45,10 @@ def main():
     height = np.linspace(0.0, 100, number_of_tests)
     mach = [round(np.sqrt(height[n] / 10000), 2) for n in range(len(height))]
     rho = [density(height[n]) for n in range(len(height))]
-    geometry = bdf_build(foil=foils1[0], chord_num=15, span_num=10, root_chord=root[0], span=span[0], taper=taper[0],
-                         rho_input=rho[0], mach_input=mach[0], sweep=0.0)
-    run_nastran(plot=False)
+    for n in range(number_of_tests):
+        geometry = bdf_build(foil=foils1[0], chord_num=15, span_num=10, root_chord=root[0], span=span[0],
+                             taper=taper[0], rho_input=rho[n], mach_input=mach[n], sweep=0.0)
+        run_nastran(plot=False)
 
 
 if __name__ == '__main__':
