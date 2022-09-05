@@ -50,7 +50,5 @@ def main():
     run_nastran(plot=False)
 
 
-
-
 if __name__ == '__main__':
     main()

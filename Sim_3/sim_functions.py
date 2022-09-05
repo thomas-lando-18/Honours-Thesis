@@ -182,12 +182,17 @@ def bdf_build(foil, span_num, chord_num, root_chord, taper, span, sweep, rho_inp
 
 
 def run_nastran(plot=False):
-    executable_path = str("C:\\Program Files\\MSC.Software\\NaPa_SE\\20211\\Nastran\\bin\\nastran.exe")
-    bdf_path = "C:\\Users\\thoma\\OneDrive\\Documents\\University Work\\Fourth Year\\Honours-Thesis\\Sim_3" + \
-               "\\nastran_files\\3d_6dof_card.bdf"
+    # Surface Pro
+    # executable_path = str("C:\\Program Files\\MSC.Software\\NaPa_SE\\20211\\Nastran\\bin\\nastran.exe")
+    # bdf_path = "C:\\Users\\thoma\\OneDrive\\Documents\\University Work\\Fourth Year\\Honours-Thesis\\Sim_3" + \
+    #            "\\nastran_files\\3d_6dof_card.bdf"
+    # os.chdir("C:\\Users\\thoma\\OneDrive\\Documents\\University Work\\Fourth Year\\Honours-Thesis\\Sim_3\\nastran_files")
 
-    os.chdir(
-        "C:\\Users\\thoma\\OneDrive\\Documents\\University Work\\Fourth Year\\Honours-Thesis\\Sim_3\\nastran_files")
+    # HP
+    executable_path = "C:\\Program Files\\MSC.Software\\NaPa_SE\\20221\\Nastran\\bin\\nastran.exe"
+    bdf_path = "C:\\Users\\thoma\\Documents\\Honours-Thesis\\Sim_3\\nastran_files\\3d_6dof_card.bdf"
+    os.chdir("C:\\Users\\thoma\\Documents\\Honours-Thesis\\Sim_3\\nastran_files")
+
     os.remove('3d_6dof_card.f04')
     os.remove('3d_6dof_card.f06')
     os.remove('3d_6dof_card.log')
