@@ -5,7 +5,7 @@ from pyNastran.bdf.bdf import BDF, CaseControlDeck
 from pyNastran.f06.parse_flutter import make_flutter_plots, plot_flutter_f06
 from wing_model.wing_build import main as wing
 import numpy as np
-from bdf_functions import*
+from sim_functions import*
 import pprint
 import sys
 
