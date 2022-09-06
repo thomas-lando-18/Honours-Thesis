@@ -42,24 +42,26 @@ def main():
     span = np.linspace(1.0, 4.0, num=10)
     taper = np.linspace(0.0, 1.0, num=10)
     root = np.linspace(0.15, 1, num=10)
-    number_of_tests = 20
-    height = np.linspace(0.0, 10000, number_of_tests)
-    mach = [round(np.sqrt(height[n] / 10000), 2) for n in range(len(height))]
-    rho = [density(height[n]) for n in range(len(height))]
-    temperature = [288 - 2.5 * height[n] / 10 for n in range(number_of_tests)]
-
+    number_of_tests = 50
+    height = np.linspace(0.0, 50000, number_of_tests)
+    mach = [round(np.sqrt(height[n] / 3000), 2) for n in range(number_of_tests)]
+    rho = [density(height[n]) for n in range(number_of_tests)]
+    # temperature = [288 - 2.5 * height[n] / 10 for n in range(number_of_tests)]
+    v = [mach[n]*np.sqrt(1.4*287*273) for n in range(number_of_tests)]
     vf = []
-
+    m = random.randint(0, 9)
     for n in range(number_of_tests):
-        m = random.randint(0, 9)
-        geometry = bdf_build(foil=foils3[11], chord_num=15, span_num=10, root_chord=root[m], span=span[m],
+
+        geometry = bdf_build(foil=foils3[m], chord_num=15, span_num=10, root_chord=root[m], span=span[m],
                              taper=taper[m], rho_input=rho[n], mach_input=mach[n], sweep=0.0)
         run_nastran(plot=False)
         flutter_results = read_f06_file('nastran_files/3d_6dof_card.f06')
         vf.append(find_flutter(flutter_results))
 
     plt.figure(1)
-    plt.plot(mach, vf)
+    plt.plot(height, vf)
+    plt.plot(height, v)
+    plt.grid()
     plt.show()
 
 
