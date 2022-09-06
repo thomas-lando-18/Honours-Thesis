@@ -7,7 +7,7 @@ MEM=527MB      $
 MACH='Intel'
 OPER='Windows 10 Home'
 OSV='6.2 9200'
-MODEL='Xeon/3776 (DESKTOP-AN84T2O)'
+MODEL='Xeon/5416 (DESKTOP-AN84T2O)'
 NPROC='8'
 CONFIG=6
 NPROC=8
@@ -15,8 +15,8 @@ symbol=DELDIR='c:/program files/msc.software/napa_se/20211/nastran/msc20211/nast
 symbol=DEMODIR='c:/program files/msc.software/napa_se/20211/nastran/msc20211/nast/demo' $(program default)
 symbol=SSSALTERDIR='c:/program files/msc.software/napa_se/20211/nastran/msc20211/nast/sssalter' $(program default)
 symbol=TPLDIR='c:/program files/msc.software/napa_se/20211/nastran/msc20211/nast/tpl' $(program default)
-SDIR='c:/scratch/3d_6dof_card.T2940_41'
-DBS='c:/scratch/3d_6dof_card.T2940_41'
+SDIR='c:/scratch/3d_6dof_card.T16764_1'
+DBS='c:/scratch/3d_6dof_card.T16764_1'
 SCR='yes'
 SMEM=100
 BPOOL=150
@@ -46,9 +46,9 @@ FPE:         yes
 ----------------------------------------------------------------- 
 Current resource limits:
  Physical memory:                     7778 MB
- Physical memory available:           2044 MB
- Paging file size:                   13410 MB
- Paging file size available:          6033 MB
+ Physical memory available:           1300 MB
+ Paging file size:                   13616 MB
+ Paging file size available:          2821 MB
  Virtual memory:                 134217727 MB
  Virtual memory available:       134213509 MB
 ----------------------------------------------------------------- 
@@ -56,22 +56,22 @@ System configuration:
  Hostname:         DESKTOP-AN84T2O
  Architecture:     win64i8
  Platform:         Intel Windows 10 Home 6.2 9200 (Windows Compute Cluster)
- Model:            Xeon/2457
- Clock freq.:      2467 MHz
+ Model:            Xeon/4588
+ Clock freq.:      4591 MHz
  Number of CPUs:   8
  Executable:       standard
  Raw model ID:     6
  Config number:    6
  Physical memory:  7778 MB
- Virtual memory:   13410 MB
+ Virtual memory:   13616 MB
  Numeric format:   64-bit little-endian IEEE.
  Bytes per word:   8
  Disk block size:  512 bytes (64 words)
  Remote shell cmd: "c:/program files/msc.software/napa_se/20211/nastran/msc20211/win64i8/mscrmtcmd.exe" (Windows non-CCS nodes, UNIX)
                    <ccs_cmd> (Windows CCS nodes)
 ----------------------------------------------------------------- 
-MSC Nastran started  Mon Sep  5 18:06:41 AEST 2022 
- 18:06:43  Beginning Analysis
+MSC Nastran started  Tue Sep  6 15:20:02 AEST 2022 
+ 15:20:03  Beginning Analysis
 SCA Kernel 25.0.764713 successfully initialized
 BLAS/LAPACK .dll "c:\program files\msc.software\napa_se\20211\nastran\msc20211\win64i8\libimalloc.dll" has been loaded.
 BLAS/LAPACK .dll "c:\program files\msc.software\napa_se\20211\nastran\msc20211\win64i8\mkl_core.dll" has been loaded.
@@ -79,14 +79,14 @@ BLAS/LAPACK .dll "c:\program files\msc.software\napa_se\20211\nastran\msc20211\w
 BLAS/LAPACK .dll "c:\program files\msc.software\napa_se\20211\nastran\msc20211\win64i8\mkl_rt.dll" has been loaded.
 BLAS/LAPACK .dll "c:\program files\msc.software\napa_se\20211\nastran\msc20211\win64i8\MSCblas.dll" has been loaded.
 
- 18:06:43  MSC Authorization Information - Checkout Successful (1016, 0)
- 18:06:43  -------------------------------------------------------------
- 18:06:43  Acquired 1 license for Student Edition Nastran
+ 15:20:03  MSC Authorization Information - Checkout Successful (1016, 0)
+ 15:20:03  -------------------------------------------------------------
+ 15:20:03  Acquired 1 license for Student Edition Nastran
 
 
- 18:06:43  MSC Authorization Information - System Attributes (1004, 0)
- 18:06:43  -----------------------------------------------------------
-  Date:          Mon Sep  5 18:06:43 2022
+ 15:20:03  MSC Authorization Information - System Attributes (1004, 0)
+ 15:20:03  -----------------------------------------------------------
+  Date:          Tue Sep  6 15:20:03 2022
   LAPI Version:  LAPI 10.6.8 (CL 749681) (FLEXlm 11.16.3.0)
   License Mode:  Student Edition
 
@@ -94,34 +94,363 @@ BLAS/LAPACK .dll "c:\program files\msc.software\napa_se\20211\nastran\msc20211\w
   * * * * * * * * * * * * * * * * * * * *
   * *                                 * *
   * *   MSC Customer Entitlement ID   * *
-  * *        9a1342b5-G70CE694        * *
+  * *        9a1342b5-G45A98FE        * *
   * *                                 * *
   * * * * * * * * * * * * * * * * * * * *
   * * * * * * * * * * * * * * * * * * * *
 
- 18:06:43  MSC Authorization Information - Checkout Successful (1016, 0)
- 18:06:43  -------------------------------------------------------------
- 18:06:43  Acquired 1 license for Student Edition Nastran Aero - Basic
+ 15:20:03  MSC Authorization Information - Checkout Successful (1016, 0)
+ 15:20:03  -------------------------------------------------------------
+ 15:20:03  Acquired 1 license for Student Edition Nastran Aero - Basic
 
 
 Beginning bulk data processing using the IFPStar component.
 For more information on IFPStar, please see KB article KB8019200
 on our support pages, at http://simcompanion.mscsoftware.com.
 
- 18:06:43  495 records read from JID file "c:/users/thoma/onedrive/documents/university work/fourth year/honours-thesis/sim_3/nastran_files/3d_6dof_card.bdf"
- 18:06:43  Analysis started.
- 18:06:43  Geometry access/verification to CAD part initiated (if needed).
- 18:06:43  Geometry access/verification to CAD part successfully completed (if needed).
- ================================================== 
- Warning/Fatal Message Summary           Occurrence
-         USER FATAL MESSAGE     9002.2          1 
- ================================================== 
- 18:06:43  16 records read from JID file "c:/users/thoma/onedrive/documents/university work/fourth year/honours-thesis/sim_3/nastran_files/3d_6dof_card.bdf"
- 18:06:43  NSEXIT: EXIT(0)
- 18:06:43  Analysis complete  0
-Real:        0.852 seconds ( 0:00:00.852)
-User:        0.546 seconds ( 0:00:00.546)
-Sys:         0.218 seconds ( 0:00:00.218)
+ 15:20:03  495 records read from JID file "c:/users/thoma/onedrive/documents/university work/fourth year/honours-thesis/sim_3/nastran_files/3d_6dof_card.bdf"
+
+Processing of bulk data entries is complete.
+
+ 15:20:03  Analysis started.
+ 15:20:03  Geometry access/verification to CAD part initiated (if needed).
+ 15:20:03  Geometry access/verification to CAD part successfully completed (if needed).
+
+ 15:20:03  MSC Authorization Information - Checkout Successful (1016, 0)
+ 15:20:03  -------------------------------------------------------------
+ 15:20:03  Acquired 1 license for Student Edition Nastran Aero - Basic
+
+ 15:20:03  Finite element model generation started.
+ 15:20:03  Finite element model generated 900 degrees of freedom.
+ 15:20:03  Finite element model generation successfully completed.
+ 15:20:03  Solution of the system equations for normal modes started.
+ 15:20:03  Solution of the system equations for normal modes successfully completed.
+
+ 15:20:03  MSC Authorization Information - Checkout Successful (1016, 0)
+ 15:20:03  -------------------------------------------------------------
+ 15:20:03  Acquired 1 license for Student Edition Nastran Aero - Basic
+
+
+ 15:20:03  MSC Authorization Information - Checkout Successful (1016, 0)
+ 15:20:03  -------------------------------------------------------------
+ 15:20:03  Acquired 1 license for Student Edition Nastran Aero - Basic
+
+
+ 15:20:03  MSC Authorization Information - Checkout Successful (1016, 0)
+ 15:20:03  -------------------------------------------------------------
+ 15:20:03  Acquired 1 license for Student Edition Nastran Aero - Basic
+
+
+ 15:20:03  MSC Authorization Information - Checkout Successful (1016, 0)
+ 15:20:03  -------------------------------------------------------------
+ 15:20:03  Acquired 1 license for Student Edition Nastran Aero - Basic
+
+
+ 15:20:03  MSC Authorization Information - Checkout Successful (1016, 0)
+ 15:20:03  -------------------------------------------------------------
+ 15:20:03  Acquired 1 license for Student Edition Nastran Aero - Basic
+
+
+ 15:20:03  MSC Authorization Information - Checkout Successful (1016, 0)
+ 15:20:03  -------------------------------------------------------------
+ 15:20:03  Acquired 1 license for Student Edition Nastran Aero - Basic
+
+
+ 15:20:03  MSC Authorization Information - Checkout Successful (1016, 0)
+ 15:20:03  -------------------------------------------------------------
+ 15:20:03  Acquired 1 license for Student Edition Nastran Aero - Basic
+
+
+ 15:20:03  MSC Authorization Information - Checkout Successful (1016, 0)
+ 15:20:03  -------------------------------------------------------------
+ 15:20:03  Acquired 1 license for Student Edition Nastran Aero - Basic
+
+
+ 15:20:03  MSC Authorization Information - Checkout Successful (1016, 0)
+ 15:20:03  -------------------------------------------------------------
+ 15:20:03  Acquired 1 license for Student Edition Nastran Aero - Basic
+
+
+ 15:20:03  MSC Authorization Information - Checkout Successful (1016, 0)
+ 15:20:03  -------------------------------------------------------------
+ 15:20:03  Acquired 1 license for Student Edition Nastran Aero - Basic
+
+
+ 15:20:03  MSC Authorization Information - Checkout Successful (1016, 0)
+ 15:20:03  -------------------------------------------------------------
+ 15:20:03  Acquired 1 license for Student Edition Nastran Aero - Basic
+
+
+ 15:20:03  MSC Authorization Information - Checkout Successful (1016, 0)
+ 15:20:03  -------------------------------------------------------------
+ 15:20:03  Acquired 1 license for Student Edition Nastran Aero - Basic
+
+
+ 15:20:03  MSC Authorization Information - Checkout Successful (1016, 0)
+ 15:20:03  -------------------------------------------------------------
+ 15:20:03  Acquired 1 license for Student Edition Nastran Aero - Basic
+
+
+ 15:20:03  MSC Authorization Information - Checkout Successful (1016, 0)
+ 15:20:03  -------------------------------------------------------------
+ 15:20:03  Acquired 1 license for Student Edition Nastran Aero - Basic
+
+
+ 15:20:03  MSC Authorization Information - Checkout Successful (1016, 0)
+ 15:20:03  -------------------------------------------------------------
+ 15:20:03  Acquired 1 license for Student Edition Nastran Aero - Basic
+
+
+ 15:20:03  MSC Authorization Information - Checkout Successful (1016, 0)
+ 15:20:03  -------------------------------------------------------------
+ 15:20:03  Acquired 1 license for Student Edition Nastran Aero - Basic
+
+
+ 15:20:03  MSC Authorization Information - Checkout Successful (1016, 0)
+ 15:20:03  -------------------------------------------------------------
+ 15:20:03  Acquired 1 license for Student Edition Nastran Aero - Basic
+
+
+ 15:20:03  MSC Authorization Information - Checkout Successful (1016, 0)
+ 15:20:03  -------------------------------------------------------------
+ 15:20:03  Acquired 1 license for Student Edition Nastran Aero - Basic
+
+
+ 15:20:03  MSC Authorization Information - Checkout Successful (1016, 0)
+ 15:20:03  -------------------------------------------------------------
+ 15:20:03  Acquired 1 license for Student Edition Nastran Aero - Basic
+
+
+ 15:20:03  MSC Authorization Information - Checkout Successful (1016, 0)
+ 15:20:03  -------------------------------------------------------------
+ 15:20:03  Acquired 1 license for Student Edition Nastran Aero - Basic
+
+
+ 15:20:03  MSC Authorization Information - Checkout Successful (1016, 0)
+ 15:20:03  -------------------------------------------------------------
+ 15:20:03  Acquired 1 license for Student Edition Nastran Aero - Basic
+
+
+ 15:20:03  MSC Authorization Information - Checkout Successful (1016, 0)
+ 15:20:03  -------------------------------------------------------------
+ 15:20:03  Acquired 1 license for Student Edition Nastran Aero - Basic
+
+
+ 15:20:03  MSC Authorization Information - Checkout Successful (1016, 0)
+ 15:20:03  -------------------------------------------------------------
+ 15:20:03  Acquired 1 license for Student Edition Nastran Aero - Basic
+
+
+ 15:20:03  MSC Authorization Information - Checkout Successful (1016, 0)
+ 15:20:03  -------------------------------------------------------------
+ 15:20:03  Acquired 1 license for Student Edition Nastran Aero - Basic
+
+
+ 15:20:03  MSC Authorization Information - Checkout Successful (1016, 0)
+ 15:20:03  -------------------------------------------------------------
+ 15:20:03  Acquired 1 license for Student Edition Nastran Aero - Basic
+
+
+ 15:20:03  MSC Authorization Information - Checkout Successful (1016, 0)
+ 15:20:03  -------------------------------------------------------------
+ 15:20:03  Acquired 1 license for Student Edition Nastran Aero - Basic
+
+
+ 15:20:03  MSC Authorization Information - Checkout Successful (1016, 0)
+ 15:20:03  -------------------------------------------------------------
+ 15:20:03  Acquired 1 license for Student Edition Nastran Aero - Basic
+
+
+ 15:20:03  MSC Authorization Information - Checkout Successful (1016, 0)
+ 15:20:03  -------------------------------------------------------------
+ 15:20:03  Acquired 1 license for Student Edition Nastran Aero - Basic
+
+
+ 15:20:03  MSC Authorization Information - Checkout Successful (1016, 0)
+ 15:20:03  -------------------------------------------------------------
+ 15:20:03  Acquired 1 license for Student Edition Nastran Aero - Basic
+
+
+ 15:20:03  MSC Authorization Information - Checkout Successful (1016, 0)
+ 15:20:03  -------------------------------------------------------------
+ 15:20:03  Acquired 1 license for Student Edition Nastran Aero - Basic
+
+
+ 15:20:03  MSC Authorization Information - Checkout Successful (1016, 0)
+ 15:20:03  -------------------------------------------------------------
+ 15:20:03  Acquired 1 license for Student Edition Nastran Aero - Basic
+
+
+ 15:20:03  MSC Authorization Information - Checkout Successful (1016, 0)
+ 15:20:03  -------------------------------------------------------------
+ 15:20:03  Acquired 1 license for Student Edition Nastran Aero - Basic
+
+
+ 15:20:03  MSC Authorization Information - Checkout Successful (1016, 0)
+ 15:20:03  -------------------------------------------------------------
+ 15:20:03  Acquired 1 license for Student Edition Nastran Aero - Basic
+
+
+ 15:20:03  MSC Authorization Information - Checkout Successful (1016, 0)
+ 15:20:03  -------------------------------------------------------------
+ 15:20:03  Acquired 1 license for Student Edition Nastran Aero - Basic
+
+
+ 15:20:03  MSC Authorization Information - Checkout Successful (1016, 0)
+ 15:20:03  -------------------------------------------------------------
+ 15:20:03  Acquired 1 license for Student Edition Nastran Aero - Basic
+
+
+ 15:20:03  MSC Authorization Information - Checkout Successful (1016, 0)
+ 15:20:03  -------------------------------------------------------------
+ 15:20:03  Acquired 1 license for Student Edition Nastran Aero - Basic
+
+
+ 15:20:03  MSC Authorization Information - Checkout Successful (1016, 0)
+ 15:20:03  -------------------------------------------------------------
+ 15:20:03  Acquired 1 license for Student Edition Nastran Aero - Basic
+
+
+ 15:20:03  MSC Authorization Information - Checkout Successful (1016, 0)
+ 15:20:03  -------------------------------------------------------------
+ 15:20:03  Acquired 1 license for Student Edition Nastran Aero - Basic
+
+
+ 15:20:03  MSC Authorization Information - Checkout Successful (1016, 0)
+ 15:20:03  -------------------------------------------------------------
+ 15:20:03  Acquired 1 license for Student Edition Nastran Aero - Basic
+
+
+ 15:20:03  MSC Authorization Information - Checkout Successful (1016, 0)
+ 15:20:03  -------------------------------------------------------------
+ 15:20:03  Acquired 1 license for Student Edition Nastran Aero - Basic
+
+
+ 15:20:03  MSC Authorization Information - Checkout Successful (1016, 0)
+ 15:20:03  -------------------------------------------------------------
+ 15:20:03  Acquired 1 license for Student Edition Nastran Aero - Basic
+
+
+ 15:20:03  MSC Authorization Information - Checkout Successful (1016, 0)
+ 15:20:03  -------------------------------------------------------------
+ 15:20:03  Acquired 1 license for Student Edition Nastran Aero - Basic
+
+
+ 15:20:03  MSC Authorization Information - Checkout Successful (1016, 0)
+ 15:20:03  -------------------------------------------------------------
+ 15:20:03  Acquired 1 license for Student Edition Nastran Aero - Basic
+
+
+ 15:20:03  MSC Authorization Information - Checkout Successful (1016, 0)
+ 15:20:03  -------------------------------------------------------------
+ 15:20:03  Acquired 1 license for Student Edition Nastran Aero - Basic
+
+
+ 15:20:03  MSC Authorization Information - Checkout Successful (1016, 0)
+ 15:20:03  -------------------------------------------------------------
+ 15:20:03  Acquired 1 license for Student Edition Nastran Aero - Basic
+
+
+ 15:20:03  MSC Authorization Information - Checkout Successful (1016, 0)
+ 15:20:03  -------------------------------------------------------------
+ 15:20:03  Acquired 1 license for Student Edition Nastran Aero - Basic
+
+
+ 15:20:03  MSC Authorization Information - Checkout Successful (1016, 0)
+ 15:20:03  -------------------------------------------------------------
+ 15:20:03  Acquired 1 license for Student Edition Nastran Aero - Basic
+
+
+ 15:20:03  MSC Authorization Information - Checkout Successful (1016, 0)
+ 15:20:03  -------------------------------------------------------------
+ 15:20:03  Acquired 1 license for Student Edition Nastran Aero - Basic
+
+
+ 15:20:03  MSC Authorization Information - Checkout Successful (1016, 0)
+ 15:20:03  -------------------------------------------------------------
+ 15:20:03  Acquired 1 license for Student Edition Nastran Aero - Basic
+
+
+ 15:20:03  MSC Authorization Information - Checkout Successful (1016, 0)
+ 15:20:03  -------------------------------------------------------------
+ 15:20:03  Acquired 1 license for Student Edition Nastran Aero - Basic
+
+
+ 15:20:03  MSC Authorization Information - Checkout Successful (1016, 0)
+ 15:20:03  -------------------------------------------------------------
+ 15:20:03  Acquired 1 license for Student Edition Nastran Aero - Basic
+
+
+ 15:20:03  MSC Authorization Information - Checkout Successful (1016, 0)
+ 15:20:03  -------------------------------------------------------------
+ 15:20:03  Acquired 1 license for Student Edition Nastran Aero - Basic
+
+
+ 15:20:03  MSC Authorization Information - Checkout Successful (1016, 0)
+ 15:20:03  -------------------------------------------------------------
+ 15:20:03  Acquired 1 license for Student Edition Nastran Aero - Basic
+
+
+ 15:20:03  MSC Authorization Information - Checkout Successful (1016, 0)
+ 15:20:03  -------------------------------------------------------------
+ 15:20:03  Acquired 1 license for Student Edition Nastran Aero - Basic
+
+
+ 15:20:03  MSC Authorization Information - Checkout Successful (1016, 0)
+ 15:20:03  -------------------------------------------------------------
+ 15:20:03  Acquired 1 license for Student Edition Nastran Aero - Basic
+
+
+ 15:20:03  MSC Authorization Information - Checkout Successful (1016, 0)
+ 15:20:03  -------------------------------------------------------------
+ 15:20:03  Acquired 1 license for Student Edition Nastran Aero - Basic
+
+
+ 15:20:03  MSC Authorization Information - Checkout Successful (1016, 0)
+ 15:20:03  -------------------------------------------------------------
+ 15:20:03  Acquired 1 license for Student Edition Nastran Aero - Basic
+
+
+ 15:20:03  MSC Authorization Information - Checkout Successful (1016, 0)
+ 15:20:03  -------------------------------------------------------------
+ 15:20:03  Acquired 1 license for Student Edition Nastran Aero - Basic
+
+
+ 15:20:03  MSC Authorization Information - Checkout Successful (1016, 0)
+ 15:20:03  -------------------------------------------------------------
+ 15:20:03  Acquired 1 license for Student Edition Nastran Aero - Basic
+
+
+ 15:20:03  MSC Authorization Information - Checkout Successful (1016, 0)
+ 15:20:03  -------------------------------------------------------------
+ 15:20:03  Acquired 1 license for Student Edition Nastran Aero - Basic
+
+
+ 15:20:03  MSC Authorization Information - Checkout Successful (1016, 0)
+ 15:20:03  -------------------------------------------------------------
+ 15:20:03  Acquired 1 license for Student Edition Nastran Aero - Basic
+
+
+ 15:20:03  MSC Authorization Information - Checkout Successful (1016, 0)
+ 15:20:03  -------------------------------------------------------------
+ 15:20:03  Acquired 1 license for Student Edition Nastran Aero - Basic
+
+
+ 15:20:03  MSC Authorization Information - Checkout Successful (1016, 0)
+ 15:20:03  -------------------------------------------------------------
+ 15:20:03  Acquired 1 license for Student Edition Nastran Aero - Basic
+
+
+ 15:20:03  MSC Authorization Information - Checkout Successful (1016, 0)
+ 15:20:03  -------------------------------------------------------------
+ 15:20:03  Acquired 1 license for Student Edition Nastran Aero - Basic
+
+ 15:20:03  16 records read from JID file "c:/users/thoma/onedrive/documents/university work/fourth year/honours-thesis/sim_3/nastran_files/3d_6dof_card.bdf"
+ 15:20:03  NSEXIT: EXIT(0)
+ 15:20:03  Analysis complete  0
+Real:        0.661 seconds ( 0:00:00.661)
+User:        0.453 seconds ( 0:00:00.453)
+Sys:         0.250 seconds ( 0:00:00.250)
  ==================================================
  OS:                           6.2
  OEM ID:                       9
@@ -143,4 +472,4 @@ Sys:         0.218 seconds ( 0:00:00.218)
  Detailed performance information can be found in the 
  "MSC Nastran High Performance Computing User's Guide"
  =====================================================
-MSC Nastran finished Mon Sep  5 18:06:44 AEST 2022 
+MSC Nastran finished Tue Sep  6 15:20:04 AEST 2022 

@@ -100,7 +100,7 @@ def bdf_build(foil, span_num, chord_num, root_chord, taper, span, sweep, rho_inp
             model.add_cquad4(eid=eid, pid=pshell_pid, nids=[p1, p2, p3, p4], T1=t1, T2=t2, T3=t3, T4=t4)
 
     # Material
-    model.add_mat1(mid=mat1_mid, E=youngs_modulus, G=shear_modulus, rho=material_density, nu=0.3, ge=damping_coef)
+    model.add_mat1(mid=mat1_mid, E=youngs_modulus, rho=material_density, nu=0.3, G=None)
 
     # Material Property
     model.add_pshell(pid=pshell_pid, mid1=mat1_mid, t=0.015, mid2=mat1_mid)
@@ -168,7 +168,7 @@ def bdf_build(foil, span_num, chord_num, root_chord, taper, span, sweep, rho_inp
     density_factor = [rho_input]
     model.add_flfact(sid=flfact_density_sid, factors=density_factor)
 
-    velocity_factor = [10.0, 'THRU', 5000.0, 200]
+    velocity_factor = [10.0, 'THRU', 10000.0, 200]
     model.add_flfact(sid=flfact_velocity, factors=velocity_factor)
 
     mach_factor = [mach_input]
@@ -186,7 +186,8 @@ def run_nastran(plot=False):
     executable_path = str("C:\\Program Files\\MSC.Software\\NaPa_SE\\20211\\Nastran\\bin\\nastran.exe")
     bdf_path = "C:\\Users\\thoma\\OneDrive\\Documents\\University Work\\Fourth Year\\Honours-Thesis\\Sim_3" + \
                "\\nastran_files\\3d_6dof_card.bdf"
-    os.chdir("C:\\Users\\thoma\\OneDrive\\Documents\\University Work\\Fourth Year\\Honours-Thesis\\Sim_3\\nastran_files")
+    os.chdir(
+        "C:\\Users\\thoma\\OneDrive\\Documents\\University Work\\Fourth Year\\Honours-Thesis\\Sim_3\\nastran_files")
 
     # HP
     # executable_path = "C:\\Program Files\\MSC.Software\\NaPa_SE\\20221\\Nastran\\bin\\nastran.exe"
@@ -199,3 +200,75 @@ def run_nastran(plot=False):
     subprocess.run([executable_path, bdf_path])
     # os.chdir("C:\\Users\\thoma\\Documents\\Honours-Thesis\\Sim_3\\nastran_files")
     os.chdir("C:\\Users\\thoma\\OneDrive\\Documents\\University Work\\Fourth Year\\Honours-Thesis\\Sim_3")
+
+
+def read_f06_file(filename):
+    fid = open(filename, 'r')
+    file_lines = fid.readlines()
+    flutter_results = []
+    for n in range(len(file_lines)):
+        line = file_lines[n]
+
+        if 'FLUTTER  SUMMARY' in line:
+            results = extract_flutter_results(filename, n + 7)
+            flutter_results.append(results)
+    return flutter_results
+
+
+def extract_flutter_results(filename, start_line):
+    fid = open(filename, 'r')
+    file_lines = fid.readlines()
+    reduced_freq = []
+    inverse_rfreq = []
+    velocity = []
+    damping = []
+    frequency = []
+    real_eig = []
+    imag_eig = []
+    for n in range(start_line - 1, start_line + 36):
+        line = file_lines[n]
+        if '**STUDENT' in line:
+            break
+        line_vector = line.split()
+        reduced_freq.append(float(line_vector[0]))
+        inverse_rfreq.append(float(line_vector[1]))
+        velocity.append(float(line_vector[2]))
+        damping.append(float(line_vector[3]))
+        frequency.append(float(line_vector[4]))
+        real_eig.append(float(line_vector[5]))
+        imag_eig.append(float(line_vector[6]))
+
+    output_json = {
+        "Reduced Frequency": reduced_freq,
+        "Inverse Rfreq": inverse_rfreq,
+        "Velocity": velocity,
+        "Damping": damping,
+        "Frequency": frequency,
+        "Real Eigenvalue": real_eig,
+        "Imag Eigenvalue": imag_eig
+    }
+
+    return output_json
+
+
+def find_flutter(flutter_res):
+    for m in range(len(flutter_res)):
+        velocity = list(flutter_res[m]['Velocity'])
+        eig = flutter_res[m]['Real Eigenvalue']
+        check = 0
+        for n in range(len(velocity)):
+            if eig[n] == 0:
+                vf = velocity[n]
+                check = 1
+                break
+            elif eig[n] > 0 and n > 0:
+                vf = velocity[n - 1] + (velocity[n] - velocity[n - 1]) / (eig[n] - eig[n - 1]) * (-eig[n])
+                check = 1
+                break
+        if check:
+            break
+
+    if 'vf' not in locals():
+        vf = None
+
+    return vf
