@@ -272,3 +272,6 @@ def find_flutter(flutter_res):
         vf = None
 
     return vf
+
+
+# def temperature_calculation(height, density):
