@@ -11,7 +11,7 @@ from wing_model.wing_build import main as wing
 
 
 # Constants
-def bdf_build(foil, span_num, chord_num, root_chord, taper, span, sweep, rho_input, mach_input):
+def bdf_build(foil, span_num, chord_num, root_chord, taper, span, sweep, rho_input, mach_input, flap_point, beta):
     bdf_card_name = 'nastran_files/3d_6dof_card.bdf'
 
     flutter_sid = 100
@@ -66,7 +66,7 @@ def bdf_build(foil, span_num, chord_num, root_chord, taper, span, sweep, rho_inp
     # taper = float(0.5)
     # span = 1.0
     geometry = wing(foil=foil, semi_span=span, root_chord=root_chord, taper=taper, sweep=sweep, num=span_num,
-                    chord_num=chord_num, plot=False)
+                    chord_num=chord_num, beta=beta, flap_point=flap_point, plot=False)
 
     pid = 0
     for n in range(span_num):
@@ -74,9 +74,9 @@ def bdf_build(foil, span_num, chord_num, root_chord, taper, span, sweep, rho_inp
             pid += 1
 
             y = geometry['Y-Mesh'][n][m]
-            # z = geometry['Upper Surface'][n][m]
+            z = geometry['Upper Surface'][n][m] - geometry['Lower Surface'][n][m]
             x = geometry['X-Mesh'][n][m]
-            z = 0.0
+            # z = 0.0
             model.add_grid(pid, [x, y, z])
 
     eid = 0
@@ -86,16 +86,16 @@ def bdf_build(foil, span_num, chord_num, root_chord, taper, span, sweep, rho_inp
         for m in range(chord_num - 1):
             eid += 1
             p1 = m + 1 + n * chord_num
-            t1 = 0.015  # geometry['Upper Surface'][n][m] - geometry['Lower Surface'][n][m]
+            t1 = 0.015  # (geometry['Upper Surface'][n][m] + geometry['Lower Surface'][n][m])/2
 
             p2 = m + 2 + n * chord_num
-            t2 = 0.015  # geometry['Upper Surface'][n][m+1] - geometry['Lower Surface'][n][m+1]
+            t2 = 0.015  # (geometry['Upper Surface'][n][m+1] + geometry['Lower Surface'][n][m+1])/2
 
             p3 = m + 2 + (n + 1) * chord_num
-            t3 = .015  # geometry['Upper Surface'][n+1][m+1] - geometry['Lower Surface'][n+1][m+1]
+            t3 = 0.015  # (geometry['Upper Surface'][n+1][m+1] + geometry['Lower Surface'][n+1][m+1])/2
 
             p4 = m + 1 + (n + 1) * chord_num
-            t4 = 0.015  # geometry['Upper Surface'][n+1][m] - geometry['Lower Surface'][n+1][m]
+            t4 = 0.015  # (geometry['Upper Surface'][n+1][m] + geometry['Lower Surface'][n+1][m])/2
 
             model.add_cquad4(eid=eid, pid=pshell_pid, nids=[p1, p2, p3, p4], T1=t1, T2=t2, T3=t3, T4=t4)
 
@@ -141,7 +141,7 @@ def bdf_build(foil, span_num, chord_num, root_chord, taper, span, sweep, rho_inp
 
     # MKAERO1
     mkaero_machs = [0.5 * (n + 1) for n in range(8)]
-    mkaero_freq = [0.005, 0.01, .05, .2, .3, 1.5, 1., 2.]
+    mkaero_freq = [0.001, 0.002, 0.01, 0.02, 0.6, 0.9, .1, 1.2]
     model.add_mkaero1(machs=mkaero_machs, reduced_freqs=mkaero_freq)
 
     # AEFACT
@@ -176,30 +176,30 @@ def bdf_build(foil, span_num, chord_num, root_chord, taper, span, sweep, rho_inp
 
     # SPC1
     model.add_spc1(conid=spc_sid, components='123456', nodes=[n + 1 for n in range(chord_num)])
-
     model.write_bdf(bdf_card_name)
+
     return geometry
 
 
 def run_nastran(plot=False):
     # Surface Pro
-    # executable_path = str("C:\\Program Files\\MSC.Software\\NaPa_SE\\20211\\Nastran\\bin\\nastran.exe")
-    # bdf_path = "C:\\Users\\thoma\\OneDrive\\Documents\\University Work\\Fourth Year\\Honours-Thesis\\Sim_3" + \
-    #            "\\nastran_files\\3d_6dof_card.bdf"
-    # os.chdir(
-    #     "C:\\Users\\thoma\\OneDrive\\Documents\\University Work\\Fourth Year\\Honours-Thesis\\Sim_3\\nastran_files")
+    executable_path = str("C:\\Program Files\\MSC.Software\\NaPa_SE\\20211\\Nastran\\bin\\nastran.exe")
+    bdf_path = "C:\\Users\\thoma\\OneDrive\\Documents\\University Work\\Fourth Year\\Honours-Thesis\\Sim_3" + \
+               "\\nastran_files\\3d_6dof_card.bdf"
+    os.chdir(
+        "C:\\Users\\thoma\\OneDrive\\Documents\\University Work\\Fourth Year\\Honours-Thesis\\Sim_3\\nastran_files")
 
     # HP
-    executable_path = "C:\\Program Files\\MSC.Software\\NaPa_SE\\20221\\Nastran\\bin\\nastran.exe"
-    bdf_path = "C:\\Users\\thoma\\Documents\\Honours-Thesis\\Sim_3\\nastran_files\\3d_6dof_card.bdf"
-    os.chdir("C:\\Users\\thoma\\Documents\\Honours-Thesis\\Sim_3\\nastran_files")
+    # executable_path = "C:\\Program Files\\MSC.Software\\NaPa_SE\\20221\\Nastran\\bin\\nastran.exe"
+    # bdf_path = "C:\\Users\\thoma\\Documents\\Honours-Thesis\\Sim_3\\nastran_files\\3d_6dof_card.bdf"
+    # os.chdir("C:\\Users\\thoma\\Documents\\Honours-Thesis\\Sim_3\\nastran_files")
 
     os.remove('3d_6dof_card.f04')
     os.remove('3d_6dof_card.f06')
     os.remove('3d_6dof_card.log')
     subprocess.run([executable_path, bdf_path])
-    os.chdir("C:\\Users\\thoma\\Documents\\Honours-Thesis\\Sim_3")
-    # os.chdir("C:\\Users\\thoma\\OneDrive\\Documents\\University Work\\Fourth Year\\Honours-Thesis\\Sim_3")
+    # os.chdir("C:\\Users\\thoma\\Documents\\Honours-Thesis\\Sim_3")
+    os.chdir("C:\\Users\\thoma\\OneDrive\\Documents\\University Work\\Fourth Year\\Honours-Thesis\\Sim_3")
 
 
 def read_f06_file(filename):
@@ -273,5 +273,25 @@ def find_flutter(flutter_res):
 
     return vf
 
+
+def barometric_formula(height):
+    p0 = 101325.0
+    # rho0 = 1.125
+    temp0 = 273+15.0
+    g0 = 9.81
+    h0 = 8500.0
+    R = 287
+
+    p = p0*np.exp((-g0*(height-h0))/(R * temp0))
+    rho = density(height)
+    temp = p/(rho*R)
+    return temp, rho, p
+
+
+def density(h: float):
+    rho0 = 1.225
+    hs = 8500
+    rho = rho0 * np.exp(-h / hs)
+    return rho
 
 # def temperature_calculation(height, density):

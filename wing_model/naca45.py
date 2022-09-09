@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-def naca_4_digit(m=2, p=4, xx=12, num=10, chord=1):
+def naca_4_digit(m=2, p=4, xx=12, num=10, chord=1, beta=0.0, flap_length=0.2):
     """
     Creates a NACA 4 digit foil in the designated number of points
     :param m: First Digit
@@ -64,6 +64,19 @@ def naca_4_digit(m=2, p=4, xx=12, num=10, chord=1):
             yu.append(yc[n] + yt[n] * np.cos(theta))
             xl.append(x[n] + yt[n] * np.sin(theta))
             yl.append(yc[n] - yt[n] * np.cos(theta))
+
+    for n in range(len(x)):
+        if x[n] >= 1-flap_length:
+            xu[n] -= 1-flap_length
+            xl[n] -= 1-flap_length
+            xu[n] = xu[n]*np.cos(beta) - yu[n]*np.sin(beta)
+            yu[n] = xu[n]*np.sin(beta) + yu[n]*np.cos(beta)
+
+            xl[n] = xl[n] * np.cos(beta) - yl[n] * np.sin(beta)
+            yl[n] = xl[n] * np.sin(beta) + yl[n] * np.cos(beta)
+
+            xu[n] += 1 - flap_length
+            xl[n] += 1 - flap_length
 
     # Adjust for chord value
     xu = np.multiply(xu, chord)
@@ -145,3 +158,13 @@ def naca_5_digit(cl_int=2, p=4, q=0, xx=12, num=10, chord=1):
         yl = np.multiply(yl, chord)
 
     return yu, yl
+
+
+# if __name__ == '__main__':
+#     yu, yl, xu, xl = naca_4_digit(beta=np.deg2rad(-20))
+#     plt.figure(1)
+#     plt.scatter(xu, yu)
+#     plt.scatter(xl, yl)
+#     plt.grid()
+#     plt.axis('equal')
+#     plt.show()

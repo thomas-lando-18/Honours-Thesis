@@ -65,7 +65,7 @@ plt.plot([n * m2ft for n in h], vf_mach)
 plt.grid()
 plt.xlabel('Altitude (ft)')
 plt.ylabel('Flutter Mach')
-# plt.show()
+plt.show()
 
 
 # Rocket simulation
