@@ -52,14 +52,14 @@ def main():
         pressure.append(p)
         mach.append(round(velocity[n]/np.sqrt(1.4*287*t), 3))
 
-    for m in range(8):
-        beta = -20 + 5*m
+    for m in range(9):
+        beta = -45 + 10*m
         vf = []
         check = 0
         for n in range(number_of_tests):
 
             geometry = bdf_build(foil=foils1[0], chord_num=15, span_num=10, root_chord=root[5], span=span[6],
-                                 taper=0.8, rho_input=rho[n], mach_input=mach[n], sweep=10, flap_point=0.3,
+                                 taper=0.8, rho_input=rho[n], mach_input=mach[n], sweep=10, flap_point=0.4,
                                  beta=np.deg2rad(beta))
             run_nastran(plot=False)
             flutter_results = read_f06_file('nastran_files/3d_6dof_card.f06')
@@ -73,9 +73,9 @@ def main():
 
         plt.figure(1)
         # plt.clf()
-        plt.plot(height, vf, label='Flutter Speed (B = '+str(beta)+')')
         if m == 0:
             plt.plot(height, velocity, label='Flight Velocity')
+        plt.plot(height, vf, label='Flutter Speed (B = '+str(beta)+')')
         plt.xlabel('Height (m)')
         plt.ylabel('Velocity (m/s)')
         title = 'Span: ' + str(round(span[6], 2)) + ' Taper :' + str(round(taper[9], 2)) + ' Root Chord: ' \
