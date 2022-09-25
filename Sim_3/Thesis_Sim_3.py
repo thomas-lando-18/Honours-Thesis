@@ -36,7 +36,7 @@ def main():
     span = np.linspace(1.0, 4.0, num=10)
     taper = np.linspace(0.01, 1.0, num=10)
     root = np.linspace(0.15, 1, num=10)
-    number_of_tests = 30
+    number_of_tests = 10
     height = np.linspace(0.0, 50000, number_of_tests)
     velocity = [round(np.sqrt(0.1**2 + 2*(3*9.8)*(height[n] - height[0])), 3) for n in range(number_of_tests-1)]
     velocity.insert(0, 0.1)
@@ -52,8 +52,8 @@ def main():
         pressure.append(p)
         mach.append(round(velocity[n]/np.sqrt(1.4*287*t), 3))
 
-    for m in range(9):
-        beta = -45 + 10*m
+    for m in range(2):
+        beta = -45 + 45*m
         vf = []
         check = 0
         for n in range(number_of_tests):

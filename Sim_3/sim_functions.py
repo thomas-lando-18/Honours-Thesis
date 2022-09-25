@@ -69,35 +69,57 @@ def bdf_build(foil, span_num, chord_num, root_chord, taper, span, sweep, rho_inp
                     chord_num=chord_num, beta=beta, flap_point=flap_point, plot=False)
 
     pid = 0
-    for n in range(span_num):
-        for m in range(chord_num):
-            pid += 1
+    for n1 in range(2):
+        for n in range(span_num):
+            for m in range(chord_num):
+                pid += 1
+                if n1 == 0:
+                    y1 = geometry['Y-Mesh'][n][m]
+                    z1 = geometry['Upper Surface'][n][m]
+                    x1 = geometry['X-Mesh'][n][m]
+                    model.add_grid(pid, [x1, y1, z1])
 
-            y = geometry['Y-Mesh'][n][m]
-            z = geometry['Upper Surface'][n][m] - geometry['Lower Surface'][n][m]
-            x = geometry['X-Mesh'][n][m]
-            # z = 0.0
-            model.add_grid(pid, [x, y, z])
+                if n1 == 1:
+                    y2 = geometry['Y-Mesh'][n][m] + 0.001
+                    z2 = geometry['Lower Surface'][n][m]
+                    x2 = geometry['X-Mesh'][n][m] + 0.001
+                    model.add_grid(pid, [x2, y2, z2])
 
     eid = 0
-    eid_top = 0
+    for n1 in range(2):
+        for n in range(span_num - 1):
+            for m in range(chord_num - 1):
+                eid += 1
+                if n1 == 0:
+                    p1 = m + 1 + n * chord_num
+                    t1 = 0.015
 
-    for n in range(span_num - 1):
-        for m in range(chord_num - 1):
-            eid += 1
-            p1 = m + 1 + n * chord_num
-            t1 = 0.015  # (geometry['Upper Surface'][n][m] + geometry['Lower Surface'][n][m])/2
+                    p2 = m + 2 + n * chord_num
+                    t2 = 0.015
 
-            p2 = m + 2 + n * chord_num
-            t2 = 0.015  # (geometry['Upper Surface'][n][m+1] + geometry['Lower Surface'][n][m+1])/2
+                    p3 = m + 2 + (n + 1) * chord_num
+                    t3 = 0.015
 
-            p3 = m + 2 + (n + 1) * chord_num
-            t3 = 0.015  # (geometry['Upper Surface'][n+1][m+1] + geometry['Lower Surface'][n+1][m+1])/2
+                    p4 = m + 1 + (n + 1) * chord_num
+                    t4 = 0.015
 
-            p4 = m + 1 + (n + 1) * chord_num
-            t4 = 0.015  # (geometry['Upper Surface'][n+1][m] + geometry['Lower Surface'][n+1][m])/2
+                    model.add_cquad4(eid=eid, pid=pshell_pid, nids=[p1, p2, p3, p4], T1=t1, T2=t2, T3=t3, T4=t4)
+                else:
+                    p1 = (span_num)*(chord_num) + m + 1 + n * chord_num
+                    t1 = 0.015
 
-            model.add_cquad4(eid=eid, pid=pshell_pid, nids=[p1, p2, p3, p4], T1=t1, T2=t2, T3=t3, T4=t4)
+                    p2 = (span_num)*(chord_num) + m + 2 + n * chord_num
+                    t2 = 0.015
+
+                    p3 = (span_num)*(chord_num) + m + 2 + (n + 1) * chord_num
+                    t3 = 0.015
+
+                    p4 = (span_num)*(chord_num) + m + 1 + (n + 1) * chord_num
+                    t4 = 0.015
+                    model.add_cquad4(eid=eid, pid=pshell_pid, nids=[p1, p2, p3, p4], T1=t1, T2=t2, T3=t3, T4=t4)
+
+
+
 
     # Material
     model.add_mat1(mid=mat1_mid, E=youngs_modulus, rho=material_density, nu=0.3, G=None)
@@ -114,11 +136,11 @@ def bdf_build(foil, span_num, chord_num, root_chord, taper, span, sweep, rho_inp
 
     x1 = geometry['X-Mesh'][0][0]
     y1 = geometry['Y-Mesh'][0][0]
-    z1 = 0.0
+    z1 = geometry['Upper Surface'][0][0]
 
     x4 = geometry['X-Mesh'][span_num - 1][0]
     y4 = geometry['Y-Mesh'][span_num - 1][0]
-    z4 = 0.0
+    z4 = geometry['Upper Surface'][span_num - 1][0]
 
     model.add_caero5(eid=caero5_eid, pid=paero5_pid, nspan=nspan, ntheory=nthry, nthick=nthick, p1=[x1, y1, z1],
                      p4=[x4, y4, z4], x12=x12, x43=x43, lspan=None)
