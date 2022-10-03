@@ -77,7 +77,13 @@ def main(foil='2412', semi_span=0.15, root_chord=0.30, taper=1.0, sweep=0, num=5
     output = {"X-Mesh": x_mesh,
               "Y-Mesh": y_mesh,
               "Upper Surface": upper,
-              "Lower Surface": lower}
+              "Lower Surface": lower,
+              "Wing Properties": {"Root Chord": root_chord,
+                                  "Taper": taper,
+                                  "Span Num": num,
+                                  "Chord Num": chord_num,
+                                  "Span": semi_span,
+                                  "Flap Point": flap_point}}
 
     return output
 

@@ -105,21 +105,18 @@ def bdf_build(foil, span_num, chord_num, root_chord, taper, span, sweep, rho_inp
 
                     model.add_cquad4(eid=eid, pid=pshell_pid, nids=[p1, p2, p3, p4], T1=t1, T2=t2, T3=t3, T4=t4)
                 else:
-                    p1 = (span_num)*(chord_num) + m + 1 + n * chord_num
+                    p1 = span_num * (chord_num) + m + 1 + n * chord_num
                     t1 = 0.015
 
-                    p2 = (span_num)*(chord_num) + m + 2 + n * chord_num
+                    p2 = (span_num) * (chord_num) + m + 2 + n * chord_num
                     t2 = 0.015
 
-                    p3 = (span_num)*(chord_num) + m + 2 + (n + 1) * chord_num
+                    p3 = (span_num) * (chord_num) + m + 2 + (n + 1) * chord_num
                     t3 = 0.015
 
-                    p4 = (span_num)*(chord_num) + m + 1 + (n + 1) * chord_num
+                    p4 = (span_num) * (chord_num) + m + 1 + (n + 1) * chord_num
                     t4 = 0.015
                     model.add_cquad4(eid=eid, pid=pshell_pid, nids=[p1, p2, p3, p4], T1=t1, T2=t2, T3=t3, T4=t4)
-
-
-
 
     # Material
     model.add_mat1(mid=mat1_mid, E=youngs_modulus, rho=material_density, nu=0.3, G=None)
@@ -163,7 +160,7 @@ def bdf_build(foil, span_num, chord_num, root_chord, taper, span, sweep, rho_inp
 
     # MKAERO1
     mkaero_machs = [0.5 * (n + 1) for n in range(8)]
-    mkaero_freq = [0.001, 0.002, 0.01, 0.02, 0.6, 0.9, .1, 1.2]
+    mkaero_freq = [0.01, 0.02, 0.1, 0.2, 0.4, 0.8, 1.2, 1.5]
     model.add_mkaero1(machs=mkaero_machs, reduced_freqs=mkaero_freq)
 
     # AEFACT
@@ -197,7 +194,11 @@ def bdf_build(foil, span_num, chord_num, root_chord, taper, span, sweep, rho_inp
     model.add_flfact(sid=flfact_mach_sid, factors=mach_factor)
 
     # SPC1
-    model.add_spc1(conid=spc_sid, components='123456', nodes=[n + 1 for n in range(chord_num)])
+    node = []
+    for n in range(chord_num):
+        node.append(n + 1)
+        node.append(n + 1 + span_num * chord_num)
+    model.add_spc1(conid=spc_sid, components='123456', nodes=node)
     model.write_bdf(bdf_card_name)
 
     return geometry
@@ -279,14 +280,16 @@ def find_flutter(flutter_res):
         eig = flutter_res[m]['Real Eigenvalue']
         check = 0
         for n in range(len(velocity)):
-            if eig[n] == 0:
+
+            if eig[n] >= 0:
                 vf = velocity[n]
+                print(eig[n])
+                print(vf)
                 check = 1
+                if vf < 0:
+                    vf = None
                 break
-            elif eig[n] > 0 and n > 0:
-                vf = velocity[n - 1] + (velocity[n] - velocity[n - 1]) / (eig[n] - eig[n - 1]) * (-eig[n])
-                check = 1
-                break
+
         if check:
             break
 
@@ -299,14 +302,14 @@ def find_flutter(flutter_res):
 def barometric_formula(height):
     p0 = 101325.0
     # rho0 = 1.125
-    temp0 = 273+15.0
+    temp0 = 273 + 15.0
     g0 = 9.81
     h0 = 8500.0
     R = 287
 
-    p = p0*np.exp((-g0*(height-h0))/(R * temp0))
+    p = p0 * np.exp((-g0 * (height - h0)) / (R * temp0))
     rho = density(height)
-    temp = p/(rho*R)
+    temp = p / (rho * R)
     return temp, rho, p
 
 
@@ -316,4 +319,23 @@ def density(h: float):
     rho = rho0 * np.exp(-h / hs)
     return rho
 
-# def temperature_calculation(height, density):
+
+def result_file_write(flutter_velcity, height, mach, wing_property_name, wing_property_value, new_file):
+    filename = 'nastran_results/Flutter_Velocity_' + wing_property_name + '.dat'
+    if new_file:
+        fid = open(filename, 'w')
+    else:
+        fid = open(filename, 'a')
+        fid.write('\n')
+
+    # Wing Property value
+    string2write = wing_property_name + ': ' + str(wing_property_value) + '\n'
+    fid.write(string2write)
+    # Headers
+    string2write = 'VELOCITY' + 8*' ' + 'HEIGHT  ' + 8*' ' + 'MACH    ' + '\n'
+    fid.write(string2write)
+    for n in range(len(flutter_velcity)):
+        string2write = str(round(flutter_velcity[n], 6)) + 8*' ' + str(round(height[n], 6)) + 8*' ' + \
+                       str(round(mach[n], 6)) + '\n'
+        fid.write(string2write)
+    fid.close()
