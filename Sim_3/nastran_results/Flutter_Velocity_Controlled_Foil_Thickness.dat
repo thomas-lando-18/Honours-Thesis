@@ -1,29 +1,29 @@
-Foil_Thickness: 0.2
+Foil_Thickness: 02
 VELOCITY        HEIGHT          MACH    
 3423.668        0.0        0.0
-10.0        63568.8        1.295
+4226.884        63568.8        1.295
 10.0        254275.2        2.86
 
-Foil_Thickness: 0.4
+Foil_Thickness: 04
 VELOCITY        HEIGHT          MACH    
 3825.276        0.0        0.0
-10.0        63568.8        1.295
-60.20101        254275.2        2.86
+9397.588        63568.8        1.295
+7841.357        254275.2        2.86
 
-Foil_Thickness: 0.6
+Foil_Thickness: 06
 VELOCITY        HEIGHT          MACH    
 4829.296        0.0        0.0
 10.0        63568.8        1.295
-210.804        254275.2        2.86
-
-Foil_Thickness: 0.8
-VELOCITY        HEIGHT          MACH    
-160.603        0.0        0.0
-10.0        63568.8        1.295
 10.0        254275.2        2.86
 
-Foil_Thickness: 1.0
+Foil_Thickness: 08
+VELOCITY        HEIGHT          MACH    
+160.603        0.0        0.0
+4578.291        63568.8        1.295
+60.20101        254275.2        2.86
+
+Foil_Thickness: 10
 VELOCITY        HEIGHT          MACH    
 10.0        0.0        0.0
-3373.467        63568.8        1.295
-60.20101        254275.2        2.86
+2620.452        63568.8        1.295
+4026.08        254275.2        2.86

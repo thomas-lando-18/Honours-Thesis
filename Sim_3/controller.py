@@ -11,7 +11,7 @@ import scipy as sc
 from scipy import signal
 
 
-def controller_gains(geometry, inertial_properties, rho_air, rfreq, a, c, velocity, p):
+def controller_system(geometry, inertial_properties, rho_air, rfreq, a, c, velocity, p):
     c_k = c_function(rfreq)
     T = t_constants(a, c)
 
@@ -57,32 +57,40 @@ def controller_gains(geometry, inertial_properties, rho_air, rfreq, a, c, veloci
     C33 = inertial_properties["C_h"]/inertial_properties["mass"]*1/geometry["Wing Properties"]["Span"]
 
     C = numpy.matrix([[C11, C12, C13], [C21, C22, C23], [C31, C32, C33]])
-
+    # print(C.shape)
+    # print([C11, C12, C13])
+    # print([C21, C22, C23])
+    # print([C31, C32, C33])
     identity = np.matrix([[1, 0, 0], [0, 1, 0], [0, 0, 1]])
     zero = np.matrix([[0, 0, 0], [0, 0, 0], [0, 0, 0]])
 
     # Create System Matrix
     system_top_left = np.matmul(np.linalg.inv(A), B)
+    # print(system_top_left)
     system_top_right = np.matmul(np.linalg.inv(A), C)
+    # print(system_top_right)
     system_bottom_left = identity
     system_bottom_right = zero
 
     system_top = np.hstack((system_top_left, system_top_right))
     system_bottom = np.hstack((system_bottom_left, system_bottom_right))
     system = np.matrix(np.vstack((system_top, system_bottom)))
-
+    # print(system.shape)
+    # print(system)
     eigenvalues = np.linalg.eigvals(system)
     return system, eigenvalues
 
 
-if __name__ == '__main__':
-    geometry0 = wing(beta=np.deg2rad(0), plot=False)
-    geometry45 = wing(beta=np.deg2rad(45), plot=False)
+def controller_gains(beta_control, foil, span, sweep, root_chord, taper, rho_air, velocity, rfreq, flutter_v):
+    geometry0 = wing(foil=foil, semi_span=span, sweep=sweep, root_chord=root_chord, taper=taper, chord_num=15, num=15,
+                     beta=np.deg2rad(0), plot=False, flap_point=0.4)
+    geometry45 = wing(foil=foil, semi_span=span, sweep=sweep, root_chord=root_chord, taper=taper, chord_num=15, num=15,
+                     beta=np.deg2rad(beta_control), plot=False, flap_point=0.4)
 
-    rho_air = 0.067
-    velocity = 1030.0
-    rfreq = 0.02
-    flutter_v = 1234.4
+    # rho_air = 0.067
+    # velocity = 1030.0
+    # rfreq = 0.02
+    # flutter_v = 1234.4
 
     inertial_properties = panel_inertial_calculations(geometry0, rho_air)
     inertial_properties45 = panel_inertial_calculations(geometry45, rho_air)
@@ -93,20 +101,21 @@ if __name__ == '__main__':
     c0 = geometry0["Wing Properties"]["Flap Point"] - 0.5*geometry0["Wing Properties"]["Span"]
     c45 = geometry45["Wing Properties"]["Flap Point"] - 0.5 * geometry45["Wing Properties"]["Span"]
 
-    system0, eigenvalue0 = controller_gains(a=a0, c=c0, geometry=geometry0, rfreq=rfreq, rho_air=rho_air, velocity=velocity, inertial_properties=inertial_properties, p=0.0)
-    system45, eigenvalue45 = controller_gains(a=a45, c=c45, geometry=geometry45, rfreq=rfreq, rho_air=rho_air, velocity=velocity, inertial_properties=inertial_properties45, p=0.0)
+    system0, eigenvalue0 = controller_system(a=a0, c=c0, geometry=geometry0, rfreq=rfreq, rho_air=rho_air, velocity=velocity, inertial_properties=inertial_properties, p=0.0)
+    system45, eigenvalue45 = controller_system(a=a45, c=c45, geometry=geometry45, rfreq=rfreq, rho_air=rho_air, velocity=velocity, inertial_properties=inertial_properties45, p=0.0)
 
     K = eigenvalue45 - eigenvalue0
     b_k = np.matrix([[0, 0, 0, 0, 0, 0], K, [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]])
-    C = np.matrix([[0, 1, 0, 0, 1, 0]])
-    kr1 = system0 - b_k
-    kr2 = np.linalg.inv(kr1)
-    kr3 = np.matmul(C, kr2)
-    kr4 = kr3[:, 1]
-    kr = -1/kr4
-    reference = (flutter_v - velocity) / flutter_v
-    theta = np.arctan(np.imag(kr)/ np.real(kr))
-    # reference = 1
-    print(reference * np.rad2deg(theta))
+    # C = np.matrix([[0, 1, 0, 0, 1, 0]])
+    # kr1 = system0 - b_k
+    # kr2 = np.linalg.inv(kr1)
+    # kr3 = np.matmul(C, kr2)
+    # kr4 = kr3[:, 1]
+    # kr = -1/kr4
+    # if flutter_v is not None:
+    #     reference = (flutter_v - velocity) / flutter_v
+    # theta = np.arctan(np.imag(kr) / np.real(kr))
+    # # reference = 1
+    return b_k, system0
 
 

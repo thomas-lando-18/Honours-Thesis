@@ -11,7 +11,8 @@ from wing_model.wing_build import main as wing
 
 
 # Constants
-def bdf_build(foil, span_num, chord_num, root_chord, taper, span, sweep, rho_input, mach_input, flap_point, beta):
+def bdf_build(foil, span_num, chord_num, root_chord, taper, span, sweep, rho_input, mach_input, flap_point, beta,
+              mkaero_freq=None):
     bdf_card_name = 'nastran_files/3d_6dof_card.bdf'
 
     flutter_sid = 100
@@ -160,7 +161,8 @@ def bdf_build(foil, span_num, chord_num, root_chord, taper, span, sweep, rho_inp
 
     # MKAERO1
     mkaero_machs = [0.5 * (n + 1) for n in range(8)]
-    mkaero_freq = [0.01, 0.02, 0.1, 0.2, 0.4, 0.8, 1.2, 1.5]
+    if mkaero_freq is None:
+        mkaero_freq = [0.01, 0.02, 0.1, 0.2, 0.4, 0.8, 1.2, 1.5]
     model.add_mkaero1(machs=mkaero_machs, reduced_freqs=mkaero_freq)
 
     # AEFACT
@@ -277,16 +279,17 @@ def extract_flutter_results(filename, start_line):
 def find_flutter(flutter_res):
     for m in range(len(flutter_res)):
         velocity = list(flutter_res[m]['Velocity'])
+        rfreq = list(flutter_res[m]['Reduced Frequency'])
         eig = flutter_res[m]['Real Eigenvalue']
         check = 0
         for n in range(len(velocity)):
 
             if eig[n] >= 0:
                 vf = velocity[n]
-                print(eig[n])
-                print(vf)
+                k = rfreq[n]
                 check = 1
                 if vf < 0:
+                    k = None
                     vf = None
                 break
 
@@ -295,8 +298,9 @@ def find_flutter(flutter_res):
 
     if 'vf' not in locals():
         vf = None
+        k = None
 
-    return vf
+    return vf, k
 
 
 def barometric_formula(height):
@@ -322,6 +326,48 @@ def density(h: float):
 
 def result_file_write(flutter_velcity, height, mach, wing_property_name, wing_property_value, new_file):
     filename = 'nastran_results/Flutter_Velocity_' + wing_property_name + '.dat'
+    if new_file:
+        fid = open(filename, 'w')
+    else:
+        fid = open(filename, 'a')
+        fid.write('\n')
+
+    # Wing Property value
+    string2write = wing_property_name + ': ' + str(wing_property_value) + '\n'
+    fid.write(string2write)
+    # Headers
+    string2write = 'VELOCITY' + 8*' ' + 'HEIGHT  ' + 8*' ' + 'MACH    ' + '\n'
+    fid.write(string2write)
+    for n in range(len(flutter_velcity)):
+        string2write = str(round(flutter_velcity[n], 6)) + 8*' ' + str(round(height[n], 6)) + 8*' ' + \
+                       str(round(mach[n], 6)) + '\n'
+        fid.write(string2write)
+    fid.close()
+
+
+def gain_result_file_write(gain_vector, wing_property_name, wing_property_value, new_file):
+    filename = 'nastran_results/Flutter_Gains_' + wing_property_name + '.dat'
+    if new_file:
+        fid = open(filename, 'w')
+    else:
+        fid = open(filename, 'a')
+        fid.write('\n')
+
+    # Wing Property value
+    string2write = wing_property_name + ': ' + str(wing_property_value) + '\n'
+    fid.write(string2write)
+    # Headers
+    string2write = 'Controller Gains \n'
+    fid.write(string2write)
+    for n in range(len(gain_vector)):
+        string2write = str(gain_vector[n]) + '\n'
+        fid.write(string2write)
+
+    fid.close()
+
+
+def controlled_result_file_write(flutter_velcity, height, mach, wing_property_name, wing_property_value, new_file):
+    filename = 'nastran_results/Flutter_Velocity_Controlled_' + wing_property_name + '.dat'
     if new_file:
         fid = open(filename, 'w')
     else:

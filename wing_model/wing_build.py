@@ -6,7 +6,7 @@ import pprint
 
 
 # Functions
-def main(foil='2412', semi_span=0.15, root_chord=0.30, taper=1.0, sweep=0, num=5, chord_num=10,
+def main(foil='2412', semi_span=0.15, root_chord=0.30, taper=1.0, sweep=0.0, num=5, chord_num=10,
          beta=0.0, flap_point=0.2, plot=True):
     """
     Completes the 3D model of the wing and calculates the mass properties.
@@ -67,9 +67,14 @@ def main(foil='2412', semi_span=0.15, root_chord=0.30, taper=1.0, sweep=0, num=5
     if plot:
         fig = plt.figure(2)
         ax = fig.add_subplot(projection='3d')
-        ax.scatter(x_mesh, y_mesh, upper)
-        ax.scatter(x_mesh, y_mesh, lower)
+        ax.scatter(x_mesh, y_mesh, upper, label='Upper Surface')
+        ax.scatter(x_mesh, y_mesh, lower, label='Lower Surface')
         ax.axes.set_zlim3d(bottom=-0.5, top=0.5)
+        plt.xlabel('x (m)', fontsize=14)
+        plt.ylabel('y (m)', fontsize=14)
+        ax.set_zlabel('z(m)', fontsize=14)
+
+        plt.legend()
         plt.grid()
         plt.show()
 
@@ -89,13 +94,12 @@ def main(foil='2412', semi_span=0.15, root_chord=0.30, taper=1.0, sweep=0, num=5
 
 
 # if __name__ == '__main__':
-#     r_c = 1
-#     sweep = np.deg2rad(0)
-#     taper = 1
-#     chord_number = 10
-#     span_number = 10
-#     span = 5
-#     output = main(root_chord=r_c, sweep=sweep, taper=taper, chord_num=chord_number, num=span_number, plot=True,
-#                   semi_span=span, beta=np.deg2rad(-30), flap_point=0.2)
-#
-#     pprint.pprint(output)
+#     base_foil = '0110'
+#     base_taper = 0.4
+#     base_span = 0.6
+#     base_sweep = 0.0
+#     base_root = 0.3
+#     output = main(foil=base_foil, root_chord=base_root, sweep=base_sweep, taper=base_taper, chord_num=15, num=15,
+#                   plot=True, semi_span=base_span, beta=np.deg2rad(0.0), flap_point=0.4)
+
+
