@@ -1,9 +1,13 @@
 # Imports
 from graphing_tools import*
 import matplotlib.pyplot as plt
+import pprint
 
+number_of_tests = 25
 
-number_of_tests = 75
+# Trajectory
+trajectory_values = read_rocket_velocity('nastran_results/Rocket_Trajectory.dat')
+pprint.pprint(trajectory_values)
 # Foil Thickness Parameter
 
 # Extract Results
@@ -12,18 +16,22 @@ uncontrolled_labels, uncontrolled_results = extract_flutter_profile(
 controlled_labels, controlled_results = extract_flutter_profile(
     'nastran_results/Flutter_Velocity_Controlled_Foil_Thickness.dat', number_of_tests)
 
+Presentation_labels = ['Uncontrolled 4% Thickness', 'Uncontrolled 6% Thickness']
+Presentation_labels1 = ['Controlled 4% Thickness', 'Controlled 6% Thickness']
 
 plt.figure(1)
 plt.clf()
 plt.grid()
+plt.plot(trajectory_values['Height'], trajectory_values['Velocity'], label='Rocket Trajectory')
+
 
 plt.figure(2)
 plt.clf()
 plt.grid()
 
-for n in range(1):
-    uncontrolled_header = uncontrolled_labels[n]
-    controlled_header = controlled_labels[n]
+for n in range(2):
+    uncontrolled_header = uncontrolled_labels[n+1]
+    controlled_header = controlled_labels[n+1]
 
     uncontrolled_velocity = uncontrolled_results[uncontrolled_header]['Velocity']
     uncontrolled_height = uncontrolled_results[uncontrolled_header]['Height']
@@ -34,15 +42,18 @@ for n in range(1):
     controlled_mach = controlled_results[controlled_header]['Mach']
 
     plt.figure(1)
-    plt.plot(uncontrolled_height, uncontrolled_velocity, label=uncontrolled_header)
-    plt.plot(controlled_height, controlled_velocity, label=controlled_header)
+    plt.plot(uncontrolled_height, uncontrolled_velocity, label=Presentation_labels[n])
+    plt.plot(controlled_height, controlled_velocity, label=Presentation_labels1[n])
 
     plt.figure(2)
     plt.plot(uncontrolled_mach, uncontrolled_velocity, label=uncontrolled_header)
     plt.plot(controlled_mach, controlled_velocity, label=controlled_header)
 
 plt.figure(1)
-plt.legend()
+plt.xlabel('Height (m)', fontsize=14)
+plt.ylabel('Velocity (m/s)', fontsize=14)
+
+plt.legend(fontsize=14)
 
 plt.figure(2)
 plt.legend()

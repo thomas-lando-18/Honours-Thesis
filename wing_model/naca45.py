@@ -160,11 +160,11 @@ def naca_5_digit(cl_int=2, p=4, q=0, xx=12, num=10, chord=1):
     return yu, yl
 
 
-# if __name__ == '__main__':
-#     yu, yl, xu, xl = naca_4_digit(beta=np.deg2rad(-20))
-#     plt.figure(1)
-#     plt.scatter(xu, yu)
-#     plt.scatter(xl, yl)
-#     plt.grid()
-#     plt.axis('equal')
-#     plt.show()
+if __name__ == '__main__':
+    yu, yl, xu, xl = naca_4_digit(beta=np.deg2rad(-10), num=100, m=1, p=1, xx=8)
+    plt.figure(1)
+    plt.plot(xu, yu)
+    plt.plot(xl, yl)
+    plt.grid()
+    plt.axis('equal')
+    plt.show()

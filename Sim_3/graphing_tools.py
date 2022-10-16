@@ -28,6 +28,32 @@ def extract_flutter_profile(filename, number_of_tests):
     return label, results_output
 
 
+def read_rocket_velocity(filename):
+    fid = open(filename, 'r')
+
+    file_lines = fid.readlines()
+    velocity = []
+    height = []
+    mach = []
+    temperature = []
+    density = []
+    for n in range(len(file_lines)):
+        if n > 0:
+            result_line = file_lines[n]
+            velocity.append(float(result_line.split(' '*8)[0]))
+            height.append(float(result_line.split(' ' * 8)[1]))
+            mach.append(float(result_line.split(' ' * 8)[2]))
+            temperature.append(float(result_line.split(' ' * 8)[3]))
+            density.append(float(result_line.split(' ' * 8)[4]))
+
+    output = {
+        "Velocity": velocity,
+        "Height": height,
+        "Mach": mach,
+        "Temperature": temperature,
+        "Density": density
+    }
+    return output
 # Testing
 # if __name__ == '__main__':
 #     output_json = extract_flutter_profile('nastran_results/Flutter_Velocity_Foil_Camber.dat', 50)

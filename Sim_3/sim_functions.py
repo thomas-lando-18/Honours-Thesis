@@ -336,10 +336,10 @@ def result_file_write(flutter_velcity, height, mach, wing_property_name, wing_pr
     string2write = wing_property_name + ': ' + str(wing_property_value) + '\n'
     fid.write(string2write)
     # Headers
-    string2write = 'VELOCITY' + 8*' ' + 'HEIGHT  ' + 8*' ' + 'MACH    ' + '\n'
+    string2write = 'VELOCITY' + 8 * ' ' + 'HEIGHT  ' + 8 * ' ' + 'MACH    ' + '\n'
     fid.write(string2write)
     for n in range(len(flutter_velcity)):
-        string2write = str(round(flutter_velcity[n], 6)) + 8*' ' + str(round(height[n], 6)) + 8*' ' + \
+        string2write = str(round(flutter_velcity[n], 6)) + 8 * ' ' + str(round(height[n], 6)) + 8 * ' ' + \
                        str(round(mach[n], 6)) + '\n'
         fid.write(string2write)
     fid.close()
@@ -378,10 +378,25 @@ def controlled_result_file_write(flutter_velcity, height, mach, wing_property_na
     string2write = wing_property_name + ': ' + str(wing_property_value) + '\n'
     fid.write(string2write)
     # Headers
-    string2write = 'VELOCITY' + 8*' ' + 'HEIGHT  ' + 8*' ' + 'MACH    ' + '\n'
+    string2write = 'VELOCITY' + 8 * ' ' + 'HEIGHT  ' + 8 * ' ' + 'MACH    ' + '\n'
     fid.write(string2write)
     for n in range(len(flutter_velcity)):
-        string2write = str(round(flutter_velcity[n], 6)) + 8*' ' + str(round(height[n], 6)) + 8*' ' + \
+        string2write = str(round(flutter_velcity[n], 6)) + 8 * ' ' + str(round(height[n], 6)) + 8 * ' ' + \
                        str(round(mach[n], 6)) + '\n'
         fid.write(string2write)
+    fid.close()
+
+
+def trajectory_file_write(velocity, height, mach, density, temperature):
+    filename = 'nastran_results/Rocket_Trajectory.dat'
+    fid = open(filename, 'w')
+
+    string2write = 'VELOCITY' + ' ' * 8 + 'HEIGHT  ' + ' ' * 8 + 'MACH    ' + ' ' * 8 + 'TEMP    ' + ' ' * 8 + \
+                   'DENSITY ' + '\n'
+    fid.write(string2write)
+    for n in range(len(velocity)):
+        string2write = str(round(velocity[n], 8)) + 8 * ' ' + str(round(height[n], 8)) + 8 * ' ' + str(
+            round(mach[n], 8)) + 8 * ' ' + str(round(temperature[n], 8)) + 8 *' ' + str(round(density[n], 8)) + '\n'
+        fid.write(string2write)
+
     fid.close()
