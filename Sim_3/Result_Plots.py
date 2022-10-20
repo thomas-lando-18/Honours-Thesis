@@ -3,11 +3,11 @@ from graphing_tools import*
 import matplotlib.pyplot as plt
 import pprint
 
-number_of_tests = 25
+number_of_tests = 50
 
 # Trajectory
 trajectory_values = read_rocket_velocity('nastran_results/Rocket_Trajectory.dat')
-pprint.pprint(trajectory_values)
+# pprint.pprint(trajectory_values)
 # Foil Thickness Parameter
 
 # Extract Results
@@ -22,7 +22,7 @@ Presentation_labels1 = ['Controlled 4% Thickness', 'Controlled 6% Thickness']
 plt.figure(1)
 plt.clf()
 plt.grid()
-plt.plot(trajectory_values['Height'], trajectory_values['Velocity'], label='Rocket Trajectory')
+plt.plot(trajectory_values['Height'][0:number_of_tests], trajectory_values['Velocity'][0:number_of_tests], label='Rocket Trajectory')
 
 
 plt.figure(2)
