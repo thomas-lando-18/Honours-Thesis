@@ -1,6 +1,7 @@
 
 # Plotting Functions
 import pprint
+import matplotlib.pyplot as plt
 
 
 def extract_flutter_profile(filename, number_of_tests):
@@ -17,9 +18,9 @@ def extract_flutter_profile(filename, number_of_tests):
                 mach = []
                 for m in range(number_of_tests):
                     result_line = file_lines[n + m + 1]
-                    velocity.append(float(result_line.split('  ' *8)[0]))
-                    height.append(float(result_line.split('  ' *8)[1]))
-                    mach.append(float(result_line.split('  ' *8)[2]))
+                    velocity.append(float(result_line.split(' ' *8)[0]))
+                    height.append(float(result_line.split(' ' *8)[1]))
+                    mach.append(float(result_line.split(' ' *8)[2]))
 
                 new_set = {file_lines[ n -1]: {'Velocity': velocity,
                                              'Height': height,
@@ -42,7 +43,7 @@ def read_rocket_velocity(filename):
     for n in range(len(file_lines)):
         if n > 0:
             result_line = file_lines[n]
-            velocity.append(float(result_line.split('  ' *8)[0]))
+            velocity.append(float(result_line.split(' ' *8)[0]))
             height.append(float(result_line.split(' ' * 8)[1]))
             mach.append(float(result_line.split(' ' * 8)[2]))
             temperature.append(float(result_line.split(' ' * 8)[3]))
@@ -88,7 +89,7 @@ def extract_gains_from_file(filename):
 
                 new_set = {file_lines[n-1]: gains}
                 output.update(new_set)
-    return output
+    return output, labels
 
 
 
