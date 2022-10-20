@@ -2,6 +2,7 @@
 # Plotting Functions
 import pprint
 import matplotlib.pyplot as plt
+import numpy as np
 
 
 def extract_flutter_profile(filename, number_of_tests):
@@ -81,9 +82,9 @@ def extract_gains_from_file(filename):
                 gain2 = gain2.split()
                 gain3 = gain3.split()
 
-                gain1_vector = [complex(gain1[n]) for n in range(2)]
-                gain2_vector = [complex(gain2[n]) for n in range(2)]
-                gain3_vector = [complex(gain3[n]) for n in range(2)]
+                gain1_vector = [abs(complex(gain1[n])) for n in range(2)]
+                gain2_vector = [abs(complex(gain2[n])) for n in range(2)]
+                gain3_vector = [abs(complex(gain3[n])) for n in range(2)]
 
                 gains = [*gain1_vector, *gain2_vector, *gain3_vector]
 
