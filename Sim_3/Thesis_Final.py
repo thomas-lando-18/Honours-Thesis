@@ -11,9 +11,6 @@ t0 = 0
 t = np.linspace(t0, t_max, num=number_of_tests)
 dt = t[1] - t[0]
 
-# Minimum Chord Numbers
-
-
 # Rocket Trajectory
 acceleration = 1.2 * 9.81
 velocity = [t[n] * acceleration for n in range(number_of_tests)]
