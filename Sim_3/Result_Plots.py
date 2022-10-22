@@ -23,6 +23,31 @@ def plotting_function(x_vector, y_vector, fig_num, x_label, y_label, data_label,
         plt.show()
 
 
+def correlation_gain(parameter_vector, gain_vector):
+    r = 1e10
+    p_best = [1]
+    for n in range(len(gain_vector)-1):
+        p_current, residual, a, b, c = np.polyfit(parameter_vector, gain_vector, deg=n+1, full=True)
+        print(residual)
+        if residual < r:
+            p_best = p_current
+            r = residual
+
+    return p_best, r
+
+
+def write_polyfit2file(filename, p, r, wing_property, new=False):
+    if new:
+        fid = open(filename, 'w')
+    else:
+        fid = open(filename, 'a')
+        fid.write('\n\n')
+    fid.write(wing_property + '\n')
+    fid.write('Correlation Formula\n')
+    fid.write('Coefficients: ' + str(p) + '\n')
+    fid.write('Residual: ' + str(r))
+    fid.close()
+
 number_of_tests = 50
 
 # Extract Results
@@ -389,6 +414,30 @@ thickness_gains_plot4 = [thickness_gains[thickness_gain_labels[n]][3] for n in r
 thickness_gains_plot5 = [thickness_gains[thickness_gain_labels[n]][4] for n in range(len(thickness_gain_labels))]
 thickness_gains_plot6 = [thickness_gains[thickness_gain_labels[n]][5] for n in range(len(thickness_gain_labels))]
 
+p, r = correlation_gain(foil_thickness_plot, thickness_gains_plot1)
+thickness_predicted_plot1 = np.polyval(p, foil_thickness_plot)
+write_polyfit2file('nastran_results/Correlation_Polynomials_k1.dat', p, r, 'Foil Thickness', True)
+
+p, r = correlation_gain(foil_thickness_plot, thickness_gains_plot2)
+thickness_predicted_plot2 = np.polyval(p, foil_thickness_plot)
+write_polyfit2file('nastran_results/Correlation_Polynomials_k2.dat', p, r, 'Foil Thickness', True)
+
+p, r = correlation_gain(foil_thickness_plot, thickness_gains_plot3)
+thickness_predicted_plot3 = np.polyval(p, foil_thickness_plot)
+write_polyfit2file('nastran_results/Correlation_Polynomials_k3.dat', p, r, 'Foil Thickness', True)
+
+p, r = correlation_gain(foil_thickness_plot, thickness_gains_plot4)
+thickness_predicted_plot4 = np.polyval(p, foil_thickness_plot)
+write_polyfit2file('nastran_results/Correlation_Polynomials_k4.dat', p, r, 'Foil Thickness', True)
+
+p, r = correlation_gain(foil_thickness_plot, thickness_gains_plot5)
+thickness_predicted_plot5 = np.polyval(p, foil_thickness_plot)
+write_polyfit2file('nastran_results/Correlation_Polynomials_k5.dat', p, r, 'Foil Thickness', True)
+
+p, r = correlation_gain(foil_thickness_plot, thickness_gains_plot6)
+thickness_predicted_plot6 = np.polyval(p, foil_thickness_plot)
+write_polyfit2file('nastran_results/Correlation_Polynomials_k6.dat', p, r, 'Foil Thickness', True)
+
 plt.figure(1)
 plt.clf()
 plt.grid()
@@ -411,6 +460,63 @@ plt.plot(foil_thickness_plot, thickness_gains_plot6, label='k6')
 plt.legend()
 plt.savefig('nastran_results/plots/Foil_Thickness_Gain2')
 
+plt.figure(3, figsize=[18, 10])
+plt.clf()
+
+plt.subplot(2, 3, 1)
+plt.grid()
+plt.title('k1')
+plt.xlabel('Foil Thickness (% chord)')
+plt.ylabel('Gain')
+plt.scatter(foil_thickness_plot, thickness_gains_plot1, label='Actual')
+plt.plot(foil_thickness_plot, thickness_predicted_plot1, label='Predicted')
+
+plt.subplot(2, 3, 2)
+plt.grid()
+plt.title('k2')
+plt.xlabel('Foil Thickness (% chord)')
+plt.ylabel('Gain')
+plt.scatter(foil_thickness_plot, thickness_gains_plot2, label='Actual')
+plt.plot(foil_thickness_plot, thickness_predicted_plot2, label='Predicted')
+
+
+plt.subplot(2, 3, 3)
+plt.grid()
+plt.title('k3')
+plt.xlabel('Foil Thickness (% chord)')
+plt.ylabel('Gain')
+plt.scatter(foil_thickness_plot, thickness_gains_plot3, label='Actual')
+plt.plot(foil_thickness_plot, thickness_predicted_plot3, label='Predicted')
+
+
+plt.subplot(2, 3, 4)
+plt.grid()
+plt.title('k4')
+plt.xlabel('Foil Thickness (% chord)')
+plt.ylabel('Gain')
+plt.scatter(foil_thickness_plot, thickness_gains_plot4, label='Actual')
+plt.plot(foil_thickness_plot, thickness_predicted_plot4, label='Predicted')
+
+
+plt.subplot(2, 3, 5)
+plt.grid()
+plt.title('k5')
+plt.xlabel('Foil Thickness (% chord)')
+plt.ylabel('Gain')
+plt.scatter(foil_thickness_plot, thickness_gains_plot5, label='Actual')
+plt.plot(foil_thickness_plot, thickness_predicted_plot5, label='Predicted')
+
+
+plt.subplot(2, 3, 6)
+plt.grid()
+plt.title('k6')
+plt.xlabel('Foil Thickness (% chord)')
+plt.ylabel('Gain')
+plt.scatter(foil_thickness_plot, thickness_gains_plot6, label='Actual')
+plt.plot(foil_thickness_plot, thickness_predicted_plot6, label='Predicted')
+
+plt.savefig('nastran_results/plots/Thickness_Gain_Correlation')
+
 foil_camber = ['1110', '2110', '3110', '4110', '5110']
 foil_camber_plot = [float(foil_camber[n][0])/10 for n in range(len(camber_gain_labels))]
 camber_gains_plot1 = [camber_gains[camber_gain_labels[n]][0] for n in range(len(camber_gain_labels))]
@@ -419,6 +525,30 @@ camber_gains_plot3 = [camber_gains[camber_gain_labels[n]][2] for n in range(len(
 camber_gains_plot4 = [camber_gains[camber_gain_labels[n]][3] for n in range(len(camber_gain_labels))]
 camber_gains_plot5 = [camber_gains[camber_gain_labels[n]][4] for n in range(len(camber_gain_labels))]
 camber_gains_plot6 = [camber_gains[camber_gain_labels[n]][5] for n in range(len(camber_gain_labels))]
+
+p, r = correlation_gain(foil_camber_plot, camber_gains_plot1)
+camber_predicted_plot1 = np.polyval(p, foil_camber_plot)
+write_polyfit2file('nastran_results/Correlation_Polynomials_k1.dat', p, r, 'Foil Camber', False)
+
+p, r = correlation_gain(foil_camber_plot, camber_gains_plot2)
+camber_predicted_plot2 = np.polyval(p, foil_camber_plot)
+write_polyfit2file('nastran_results/Correlation_Polynomials_k2.dat', p, r, 'Foil Camber', False)
+
+p, r = correlation_gain(foil_camber_plot, camber_gains_plot3)
+camber_predicted_plot3 = np.polyval(p, foil_camber_plot)
+write_polyfit2file('nastran_results/Correlation_Polynomials_k3.dat', p, r, 'Foil Camber', False)
+
+p, r = correlation_gain(foil_camber_plot, camber_gains_plot4)
+camber_predicted_plot4 = np.polyval(p, foil_camber_plot)
+write_polyfit2file('nastran_results/Correlation_Polynomials_k4.dat', p, r, 'Foil Camber', False)
+
+p, r = correlation_gain(foil_camber_plot, camber_gains_plot5)
+camber_predicted_plot5 = np.polyval(p, foil_camber_plot)
+write_polyfit2file('nastran_results/Correlation_Polynomials_k5.dat', p, r, 'Foil Camber', False)
+
+p, r = correlation_gain(foil_camber_plot, camber_gains_plot6)
+camber_predicted_plot6 = np.polyval(p, foil_camber_plot)
+write_polyfit2file('nastran_results/Correlation_Polynomials_k6.dat', p, r, 'Foil Camber', False)
 
 plt.figure(1)
 plt.clf()
@@ -442,6 +572,63 @@ plt.plot(foil_camber_plot, camber_gains_plot6, label='k6')
 plt.legend()
 plt.savefig('nastran_results/plots/Foil_Camber_Gain2')
 
+plt.figure(3, figsize=[18, 10])
+plt.clf()
+
+plt.subplot(2, 3, 1)
+plt.grid()
+plt.title('k1')
+plt.xlabel('Foil Camber (% chord)')
+plt.ylabel('Gain')
+plt.scatter(foil_camber_plot, camber_gains_plot1, label='Actual')
+plt.plot(foil_camber_plot, camber_predicted_plot1, label='Predicted')
+
+plt.subplot(2, 3, 2)
+plt.grid()
+plt.title('k2')
+plt.xlabel('Foil Camber (% chord)')
+plt.ylabel('Gain')
+plt.scatter(foil_camber_plot, camber_gains_plot2, label='Actual')
+plt.plot(foil_camber_plot, camber_predicted_plot2, label='Predicted')
+
+
+plt.subplot(2, 3, 3)
+plt.grid()
+plt.title('k3')
+plt.xlabel('Foil Camber (% chord)')
+plt.ylabel('Gain')
+plt.scatter(foil_camber_plot, camber_gains_plot3, label='Actual')
+plt.plot(foil_camber_plot, camber_predicted_plot3, label='Predicted')
+
+
+plt.subplot(2, 3, 4)
+plt.grid()
+plt.title('k4')
+plt.xlabel('Foil Camber (% chord)')
+plt.ylabel('Gain')
+plt.scatter(foil_camber_plot, camber_gains_plot4, label='Actual')
+plt.plot(foil_camber_plot, camber_predicted_plot4, label='Predicted')
+
+
+plt.subplot(2, 3, 5)
+plt.grid()
+plt.title('k5')
+plt.xlabel('Foil Camber (% chord)')
+plt.ylabel('Gain')
+plt.scatter(foil_camber_plot, camber_gains_plot5, label='Actual')
+plt.plot(foil_camber_plot, camber_predicted_plot5, label='Predicted')
+
+
+plt.subplot(2, 3, 6)
+plt.grid()
+plt.title('k6')
+plt.xlabel('Foil Camber (% chord)')
+plt.ylabel('Gain')
+plt.scatter(foil_camber_plot, camber_gains_plot6, label='Actual')
+plt.plot(foil_camber_plot, camber_predicted_plot6, label='Predicted')
+
+plt.savefig('nastran_results/plots/Camber_Gain_Correlation')
+
 foil_camber_pos = ['1110', '1210', '1310', '1410', '1510']
 foil_camber_pos_plot = [float(foil_camber_pos[n][1])/10 for n in range(len(camberPosition_gain_labels))]
 camberPosition_gains_plot1 = [camberPosition_gains[camberPosition_gain_labels[n]][0] for n in range(len(camberPosition_gain_labels))]
@@ -450,6 +637,30 @@ camberPosition_gains_plot3 = [camberPosition_gains[camberPosition_gain_labels[n]
 camberPosition_gains_plot4 = [camberPosition_gains[camberPosition_gain_labels[n]][3] for n in range(len(camberPosition_gain_labels))]
 camberPosition_gains_plot5 = [camberPosition_gains[camberPosition_gain_labels[n]][4] for n in range(len(camberPosition_gain_labels))]
 camberPosition_gains_plot6 = [camberPosition_gains[camberPosition_gain_labels[n]][5] for n in range(len(camberPosition_gain_labels))]
+
+p, r = correlation_gain(foil_camber_pos_plot, camberPosition_gains_plot1)
+camberPosition_predicted_plot1 = np.polyval(p, foil_camber_pos_plot)
+write_polyfit2file('nastran_results/Correlation_Polynomials_k1.dat', p, r, 'Foil Camber Position', False)
+
+p, r = correlation_gain(foil_camber_pos_plot, camberPosition_gains_plot2)
+camberPosition_predicted_plot2 = np.polyval(p, foil_camber_pos_plot)
+write_polyfit2file('nastran_results/Correlation_Polynomials_k2.dat', p, r, 'Foil Camber Position', False)
+
+p, r = correlation_gain(foil_camber_pos_plot, camberPosition_gains_plot3)
+camberPosition_predicted_plot3 = np.polyval(p, foil_camber_pos_plot)
+write_polyfit2file('nastran_results/Correlation_Polynomials_k3.dat', p, r, 'Foil Camber Position', False)
+
+p, r = correlation_gain(foil_camber_pos_plot, camberPosition_gains_plot4)
+camberPosition_predicted_plot4 = np.polyval(p, foil_camber_pos_plot)
+write_polyfit2file('nastran_results/Correlation_Polynomials_k4.dat', p, r, 'Foil Camber Position', False)
+
+p, r = correlation_gain(foil_camber_pos_plot, camberPosition_gains_plot5)
+camberPosition_predicted_plot5 = np.polyval(p, foil_camber_pos_plot)
+write_polyfit2file('nastran_results/Correlation_Polynomials_k5.dat', p, r, 'Foil Camber Position', False)
+
+p, r = correlation_gain(foil_camber_pos_plot, camberPosition_gains_plot6)
+camberPosition_predicted_plot6 = np.polyval(p, foil_camber_pos_plot)
+write_polyfit2file('nastran_results/Correlation_Polynomials_k6.dat', p, r, 'Foil Camber Position', False)
 
 plt.figure(1)
 plt.clf()
@@ -472,6 +683,63 @@ plt.plot(foil_camber_pos_plot, camberPosition_gains_plot5, label='k5')
 plt.plot(foil_camber_pos_plot, camberPosition_gains_plot6, label='k6')
 plt.legend()
 plt.savefig('nastran_results/plots/Foil_CamberPosition_Gain2')
+
+plt.figure(3, figsize=[18, 10])
+plt.clf()
+
+plt.subplot(2, 3, 1)
+plt.grid()
+plt.title('k1')
+plt.xlabel('Foil Camber Position (% chord)')
+plt.ylabel('Gain')
+plt.scatter(foil_camber_pos_plot, camberPosition_gains_plot1, label='Actual')
+plt.plot(foil_camber_pos_plot, camberPosition_predicted_plot1, label='Predicted')
+
+plt.subplot(2, 3, 2)
+plt.grid()
+plt.title('k2')
+plt.xlabel('Foil Camber Position (% chord)')
+plt.ylabel('Gain')
+plt.scatter(foil_camber_pos_plot, camberPosition_gains_plot2, label='Actual')
+plt.plot(foil_camber_pos_plot, camberPosition_predicted_plot2, label='Predicted')
+
+
+plt.subplot(2, 3, 3)
+plt.grid()
+plt.title('k3')
+plt.xlabel('Foil Camber Position (% chord)')
+plt.ylabel('Gain')
+plt.scatter(foil_camber_pos_plot, camberPosition_gains_plot3, label='Actual')
+plt.plot(foil_camber_pos_plot, camberPosition_predicted_plot3, label='Predicted')
+
+
+plt.subplot(2, 3, 4)
+plt.grid()
+plt.title('k4')
+plt.xlabel('Foil Camber Position (% chord)')
+plt.ylabel('Gain')
+plt.scatter(foil_camber_pos_plot, camberPosition_gains_plot4, label='Actual')
+plt.plot(foil_camber_pos_plot, camberPosition_predicted_plot4, label='Predicted')
+
+
+plt.subplot(2, 3, 5)
+plt.grid()
+plt.title('k5')
+plt.xlabel('Foil Camber Position (% chord)')
+plt.ylabel('Gain')
+plt.scatter(foil_camber_pos_plot, camberPosition_gains_plot5, label='Actual')
+plt.plot(foil_camber_pos_plot, camberPosition_predicted_plot5, label='Predicted')
+
+
+plt.subplot(2, 3, 6)
+plt.grid()
+plt.title('k6')
+plt.xlabel('Foil Camber Position (% chord)')
+plt.ylabel('Gain')
+plt.scatter(foil_camber_pos_plot, camberPosition_gains_plot6, label='Actual')
+plt.plot(foil_camber_pos_plot, camberPosition_predicted_plot6, label='Predicted')
+
+plt.savefig('nastran_results/plots/CamberPosition_Gain_Correlation')
 
 # 3D effects
 # taper_total = np.linspace(0.2, 0.6, num=5)
@@ -514,6 +782,30 @@ span_gains_plot4 = [span_gains[span_gain_labels[n]][3] for n in range(len(span_g
 span_gains_plot5 = [span_gains[span_gain_labels[n]][4] for n in range(len(span_gain_labels))]
 span_gains_plot6 = [span_gains[span_gain_labels[n]][5] for n in range(len(span_gain_labels))]
 
+p, r = correlation_gain(span, span_gains_plot1)
+span_predicted_plot1 = np.polyval(p, span)
+write_polyfit2file('nastran_results/Correlation_Polynomials_k1.dat', p, r, 'Semi Span', False)
+
+p, r = correlation_gain(span, span_gains_plot2)
+span_predicted_plot2 = np.polyval(p, span)
+write_polyfit2file('nastran_results/Correlation_Polynomials_k2.dat', p, r, 'Semi Span', False)
+
+p, r = correlation_gain(span, span_gains_plot3)
+span_predicted_plot3 = np.polyval(p, span)
+write_polyfit2file('nastran_results/Correlation_Polynomials_k3.dat', p, r, 'Semi Span', False)
+
+p, r = correlation_gain(span, span_gains_plot4)
+span_predicted_plot4 = np.polyval(p, span)
+write_polyfit2file('nastran_results/Correlation_Polynomials_k4.dat', p, r, 'Semi Span', False)
+
+p, r = correlation_gain(span, span_gains_plot5)
+span_predicted_plot5 = np.polyval(p, span)
+write_polyfit2file('nastran_results/Correlation_Polynomials_k5.dat', p, r, 'Semi Span', False)
+
+p, r = correlation_gain(span, span_gains_plot6)
+span_predicted_plot6 = np.polyval(p, span)
+write_polyfit2file('nastran_results/Correlation_Polynomials_k6.dat', p, r, 'Semi Span', False)
+
 plt.figure(1)
 plt.clf()
 plt.grid()
@@ -536,6 +828,63 @@ plt.plot(span, span_gains_plot6, label='k6')
 plt.legend()
 plt.savefig('nastran_results/plots/SemiSpan_Gain2')
 
+plt.figure(3, figsize=[18, 10])
+plt.clf()
+
+plt.subplot(2, 3, 1)
+plt.grid()
+plt.title('k1')
+plt.xlabel('Semi Span (m)')
+plt.ylabel('Gain')
+plt.scatter(span, span_gains_plot1, label='Actual')
+plt.plot(span, span_predicted_plot1, label='Predicted')
+
+plt.subplot(2, 3, 2)
+plt.grid()
+plt.title('k2')
+plt.xlabel('Semi Span (m)')
+plt.ylabel('Gain')
+plt.scatter(span, span_gains_plot2, label='Actual')
+plt.plot(span, span_predicted_plot2, label='Predicted')
+
+
+plt.subplot(2, 3, 3)
+plt.grid()
+plt.title('k3')
+plt.xlabel('Semi Span (m)')
+plt.ylabel('Gain')
+plt.scatter(span, span_gains_plot3, label='Actual')
+plt.plot(span, span_predicted_plot3, label='Predicted')
+
+
+plt.subplot(2, 3, 4)
+plt.grid()
+plt.title('k4')
+plt.xlabel('Semi Span (m)')
+plt.ylabel('Gain')
+plt.scatter(span, span_gains_plot4, label='Actual')
+plt.plot(span, span_predicted_plot4, label='Predicted')
+
+
+plt.subplot(2, 3, 5)
+plt.grid()
+plt.title('k5')
+plt.xlabel('Semi Span (m)')
+plt.ylabel('Gain')
+plt.scatter(span, span_gains_plot5, label='Actual')
+plt.plot(span, span_predicted_plot5, label='Predicted')
+
+
+plt.subplot(2, 3, 6)
+plt.grid()
+plt.title('k6')
+plt.xlabel('Semi Span (m)')
+plt.ylabel('Gain')
+plt.scatter(span, span_gains_plot6, label='Actual')
+plt.plot(span, span_predicted_plot6, label='Predicted')
+
+plt.savefig('nastran_results/plots/SemiSpan_Gain_Correlation')
+
 sweep_total = np.linspace(0.0, 30.0, num=5)
 sweep = [sweep_total[n] for n in range(len(sweep_gain_labels))]
 sweep_gains_plot1 = [sweep_gains[sweep_gain_labels[n]][0] for n in range(len(sweep_gain_labels))]
@@ -544,6 +893,24 @@ sweep_gains_plot3 = [sweep_gains[sweep_gain_labels[n]][2] for n in range(len(swe
 sweep_gains_plot4 = [sweep_gains[sweep_gain_labels[n]][3] for n in range(len(sweep_gain_labels))]
 sweep_gains_plot5 = [sweep_gains[sweep_gain_labels[n]][4] for n in range(len(sweep_gain_labels))]
 sweep_gains_plot6 = [sweep_gains[sweep_gain_labels[n]][5] for n in range(len(sweep_gain_labels))]
+
+# p, r = correlation_gain(sweep, sweep_gains_plot1)
+# sweep_predicted_plot1 = np.polyval(p, sweep)
+#
+# p, r = correlation_gain(sweep, sweep_gains_plot2)
+# sweep_predicted_plot2 = np.polyval(p, sweep)
+#
+# p, r = correlation_gain(sweep, sweep_gains_plot3)
+# sweep_predicted_plot3 = np.polyval(p, sweep)
+#
+# p, r = correlation_gain(sweep, sweep_gains_plot4)
+# sweep_predicted_plot4 = np.polyval(p, sweep)
+#
+# p, r = correlation_gain(sweep, sweep_gains_plot5)
+# sweep_predicted_plot5 = np.polyval(p, sweep)
+#
+# p, r = correlation_gain(sweep, sweep_gains_plot6)
+# sweep_predicted_plot6 = np.polyval(p, sweep)
 
 plt.figure(1)
 plt.clf()
@@ -567,6 +934,65 @@ plt.plot(sweep, sweep_gains_plot6, label='k6')
 plt.legend()
 plt.savefig('nastran_results/plots/Sweep_Gain2')
 
+# plt.figure(3)
+# plt.clf()
+#
+# plt.subplot(2, 3, 1)
+# plt.grid()
+# plt.title('k1')
+# plt.xlabel('Sweep Angle (deg)')
+# plt.ylabel('Gain')
+# plt.scatter(sweep, sweep_gains_plot1, label='Actual')
+# plt.plot(sweep, sweep_predicted_plot1, label='Predicted')
+# plt.legend()
+#
+# plt.subplot(2, 3, 2)
+# plt.grid()
+# plt.title('k2')
+# plt.xlabel('Sweep Angle (deg)')
+# plt.ylabel('Gain')
+# plt.scatter(sweep, sweep_gains_plot2, label='Actual')
+# plt.plot(sweep, sweep_predicted_plot2, label='Predicted')
+# plt.legend()
+#
+# plt.subplot(2, 3, 3)
+# plt.grid()
+# plt.title('k3')
+# plt.xlabel('Sweep Angle (deg)')
+# plt.ylabel('Gain')
+# plt.scatter(sweep, sweep_gains_plot3, label='Actual')
+# plt.plot(sweep, sweep_predicted_plot3, label='Predicted')
+# plt.legend()
+#
+# plt.subplot(2, 3, 4)
+# plt.grid()
+# plt.title('k4')
+# plt.xlabel('Sweep Angle (deg)')
+# plt.ylabel('Gain')
+# plt.scatter(sweep, sweep_gains_plot4, label='Actual')
+# plt.plot(sweep, sweep_predicted_plot4, label='Predicted')
+# plt.legend()
+#
+# plt.subplot(2, 3, 5)
+# plt.grid()
+# plt.title('k5')
+# plt.xlabel('Sweep Angle (deg)')
+# plt.ylabel('Gain')
+# plt.scatter(sweep, sweep_gains_plot5, label='Actual')
+# plt.plot(sweep, sweep_predicted_plot5, label='Predicted')
+# plt.legend()
+#
+# plt.subplot(2, 3, 6)
+# plt.grid()
+# plt.title('k6')
+# plt.xlabel('Sweep Angle (deg)')
+# plt.ylabel('Gain')
+# plt.scatter(sweep, sweep_gains_plot6, label='Actual')
+# plt.plot(sweep, sweep_predicted_plot6, label='Predicted')
+# plt.legend()
+#
+# plt.savefig('nastran_results/plots/Sweep_Gain_Correlation')
+
 # root_total = np.linspace(0.15, 0.7, num=5)
 # root = [root_total[n] for n in range(len(root_gain_labels))]
 # root_gains_plot1 = [root_gains[root_gain_labels[n]][0] for n in range(len(root_gain_labels))]
@@ -575,6 +1001,24 @@ plt.savefig('nastran_results/plots/Sweep_Gain2')
 # root_gains_plot4 = [root_gains[root_gain_labels[n]][3] for n in range(len(root_gain_labels))]
 # root_gains_plot5 = [root_gains[root_gain_labels[n]][4] for n in range(len(root_gain_labels))]
 # root_gains_plot6 = [root_gains[root_gain_labels[n]][5] for n in range(len(root_gain_labels))]
+
+# p, r = correlation_gain(root, root_gains_plot1)
+# root_predicted_plot1 = np.polyval(p, root)
+
+# p, r = correlation_gain(root, root_gains_plot2)
+# root_predicted_plot2 = np.polyval(p, root)
+
+# p, r = correlation_gain(root, root_gains_plot3)
+# root_predicted_plot3 = np.polyval(p, root)
+
+# p, r = correlation_gain(root, root_gains_plot4)
+# root_predicted_plot4 = np.polyval(p, root)
+
+# p, r = correlation_gain(root, root_gains_plot5)
+# root_predicted_plot5 = np.polyval(p, root)
+
+# p, r = correlation_gain(root, root_gains_plot6)
+# root_predicted_plot6 = np.polyval(p, root)
 
 # plt.figure(1)
 # plt.clf()
@@ -598,3 +1042,61 @@ plt.savefig('nastran_results/plots/Sweep_Gain2')
 # plt.legend()
 # plt.savefig('nastran_results/plots/RootChord_Gain2')
 
+# plt.figure(3)
+# plt.clf()
+
+# plt.subplot(2, 3, 1)
+# plt.grid()
+# plt.title('k1')
+# plt.xlabel('Root Chord (m)')
+# plt.ylabel('Gain')
+# plt.scatter(root, root_gains_plot1, label='Actual')
+# plt.plot(root, root_predicted_plot1, label='Predicted')
+# plt.legend()
+
+# plt.subplot(2, 3, 2)
+# plt.grid()
+# plt.title('k2')
+# plt.xlabel('Root Chord (m)')
+# plt.ylabel('Gain')
+# plt.scatter(root, root_gains_plot2, label='Actual')
+# plt.plot(root, root_predicted_plot2, label='Predicted')
+# plt.legend()
+
+# plt.subplot(2, 3, 3)
+# plt.grid()
+# plt.title('k3')
+# plt.xlabel('Root Chord (m)')
+# plt.ylabel('Gain')
+# plt.scatter(root, root_gains_plot3, label='Actual')
+# plt.plot(root, root_predicted_plot3, label='Predicted')
+# plt.legend()
+
+# plt.subplot(2, 3, 4)
+# plt.grid()
+# plt.title('k4')
+# plt.xlabel('Root Chord (m)')
+# plt.ylabel('Gain')
+# plt.scatter(root, root_gains_plot4, label='Actual')
+# plt.plot(root, root_predicted_plot4, label='Predicted')
+# plt.legend()
+
+# plt.subplot(2, 3, 5)
+# plt.grid()
+# plt.title('k5')
+# plt.xlabel('Root Chord (m)')
+# plt.ylabel('Gain')
+# plt.scatter(root, root_gains_plot5, label='Actual')
+# plt.plot(root, root_predicted_plot5, label='Predicted')
+# plt.legend()
+
+# plt.subplot(2, 3, 6)
+# plt.grid()
+# plt.title('k6')
+# plt.xlabel('Root Chord (m)')
+# plt.ylabel('Gain')
+# plt.scatter(root, root_gains_plot6, label='Actual')
+# plt.plot(root, root_predicted_plot6, label='Predicted')
+# plt.legend()
+
+# plt.savefig('nastran_results/plots/RootChord_Gain_Correlation')

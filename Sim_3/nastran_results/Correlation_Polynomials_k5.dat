@@ -1,0 +1,19 @@
+Foil Thickness
+Correlation Formula
+Coefficients: [-1.17453297e+02  1.73998729e+01 -7.07390993e-01  1.72130067e-02]
+Residual: [1.51926583e-07]
+
+Foil Camber
+Correlation Formula
+Coefficients: [1]
+Residual: 10000000000.0
+
+Foil Camber Position
+Correlation Formula
+Coefficients: [1]
+Residual: 10000000000.0
+
+Semi Span
+Correlation Formula
+Coefficients: [ 60.74627821 -10.8519024 ]
+Residual: [59.68816051]
