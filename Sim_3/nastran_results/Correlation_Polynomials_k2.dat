@@ -15,5 +15,5 @@ Residual: 10000000000.0
 
 Semi Span
 Correlation Formula
-Coefficients: [-46372.56260765  45440.35299795]
-Residual: [3.71466249e+09]
+Coefficients: [1413.85558911 -108.58422874]
+Residual: [63583.59927305]
