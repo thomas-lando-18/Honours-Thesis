@@ -165,7 +165,7 @@ for n in range(number_of_tests):
 # Set Test Wing (Random Wing)
 
 # Wing Properties
-base_foil = '1110'
+base_foil = '2106'
 base_taper = 0.4
 base_span = 0.6
 base_sweep = 0.0
@@ -294,3 +294,141 @@ save_name = 'nastran_results/plots/Final_Test_Base_Wing_v_vs_m.png'
 
 plotting_function_final(x_vector=controlled_results[controlled_labels[0]]['Mach'], y_vector=controlled_results[controlled_labels[0]]['Velocity'], fig_num=2,
                         data_label='Controlled Wing', fontsize=12, plot_title='Final Test', x_label='Mach', y_label='Velocity (m/s)', save=True, savename=save_name)
+
+# Set Test Wing (Random Wing)
+
+# Wing Properties
+base_foil = '1104'
+base_taper = 0.3
+base_span = 0.6
+base_sweep = 0.0
+base_root = 0.4
+
+k1 = gain_correlation_calculation(k1_correlations, k1_parameters, k1_weights, base_foil, base_root, base_taper,
+                                  base_sweep, base_span)
+k2 = gain_correlation_calculation(k2_correlations, k2_parameters, k2_weights, base_foil, base_root, base_taper,
+                                  base_sweep, base_span)
+k3 = gain_correlation_calculation(k3_correlations, k3_parameters, k3_weights, base_foil, base_root, base_taper,
+                                  base_sweep, base_span)
+k4 = gain_correlation_calculation(k4_correlations, k4_parameters, k4_weights, base_foil, base_root, base_taper,
+                                  base_sweep, base_span)
+k5 = gain_correlation_calculation(k5_correlations, k5_parameters, k5_weights, base_foil, base_root, base_taper,
+                                  base_sweep, base_span)
+k6 = gain_correlation_calculation(k6_correlations, k6_parameters, k6_weights, base_foil, base_root, base_taper,
+                                  base_sweep, base_span)
+
+BK = np.matrix([[0, 0, 0, 0, 0, 0],  [k1, k2, k3, k4, k5, k6], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]])
+
+beta = 0
+vf = []
+h_plot = []
+m_plot = []
+rfreq = []
+rocket_v_plot = []
+for n in range(number_of_tests):
+
+    # Create Flutter Analysis Card
+    bdf_build(foil=base_foil, chord_num=15, span_num=15, span=base_span, sweep=base_sweep, flap_point=0.4,
+              beta=np.deg2rad(beta),
+              root_chord=base_root, taper=base_taper, rho_input=rho[n], mach_input=mach[n],
+              mkaero_freq=None)
+
+    run_nastran(plot=False)
+    flutter_results = read_f06_file('nastran_files/3d_6dof_card.f06')
+    flutter_v, k = find_flutter(flutter_results)
+    if flutter_v is not None:
+        vf.append(flutter_v)
+        h_plot.append(height[n])
+        m_plot.append(mach[n])
+        rfreq.append(k)
+        rocket_v_plot.append(velocity[n])
+
+result_file_write(vf, h_plot, m_plot, 'Correlation_Test_Uncontrolled2', wing_property_value='Base_Wing', new_file=True)
+
+system = controller_gains(beta_control=beta, foil=base_foil, span=base_span, sweep=base_sweep,
+                                      root_chord=base_root,
+                                      taper=base_taper, rho_air=rho[0],
+                                      velocity=velocity[0],
+                                      flutter_v=0.0, rfreq=0.0)[1]
+
+# Control System Stuff
+x_prev = np.zeros([6, 1])
+x_prev[1] += 0.001
+xd_prev = x_prev
+
+vf = []
+h_plot = []
+m_plot = []
+rocket_v_plot = []
+for n in range(number_of_tests):
+    if n == 0:
+        x = x_prev
+    beta = abs(x[4])
+    if beta > np.deg2rad(5):
+        beta = np.deg2rad(5)
+
+    bdf_build(foil=base_foil, chord_num=15, span_num=15, span=base_span, sweep=base_sweep, flap_point=0.4,
+              beta=-beta,
+              root_chord=base_root, taper=base_taper, rho_input=rho[n], mach_input=mach[n])
+
+    run_nastran(plot=False)
+    flutter_results = read_f06_file('nastran_files/3d_6dof_card.f06')
+    flutter_v, k_controlled = find_flutter(flutter_results)
+
+    if flutter_v is not None:
+        vf.append(flutter_v)
+        h_plot.append(height[n])
+        m_plot.append(mach[n])
+        rocket_v_plot.append(velocity[n])
+        reference = (flutter_v - velocity[n]) / flutter_v
+        if flutter_v > velocity[n] and reference > 0.3:
+            system = controller_gains(beta_control=beta, foil=base_foil, span=base_span, sweep=base_sweep,
+                                      root_chord=base_root,
+                                      taper=base_taper, rho_air=rho[n],
+                                      velocity=velocity[n],
+                                      flutter_v=flutter_v, rfreq=k_controlled)[1]
+
+    xd = system*x + BK*x
+    x = dt/2 * (xd - xd_prev)
+    xd_prev = xd
+
+result_file_write(vf, h_plot, m_plot, 'Correlation_Test_Controlled2', wing_property_value='Base_Wing', new_file=True)
+
+# Graph Results
+trajectory_values = read_rocket_velocity('nastran_results/Rocket_Trajectory.dat')
+
+uncontrolled_labels, uncontrolled_results = extract_flutter_profile(
+    'nastran_results/Flutter_Velocity_Correlation_Test_Uncontrolled2.dat', number_of_tests)
+
+controlled_labels, controlled_results = extract_flutter_profile(
+    'nastran_results/Flutter_Velocity_Correlation_Test_Controlled2.dat', number_of_tests)
+
+# Velocity vs Height
+plotting_function_final(x_vector=trajectory_values['Height'], y_vector=trajectory_values['Velocity'], fig_num=1,
+                        data_label='Rocket Trajectory', fontsize=12, plot_title=None, x_label='Height (m)', y_label='Velocity (m/s)', clear=True)
+
+plotting_function_final(x_vector=uncontrolled_results[uncontrolled_labels[0]]['Height'], y_vector=uncontrolled_results[uncontrolled_labels[0]]['Velocity'], fig_num=1,
+                        data_label='Uncontrolled Wing', fontsize=12, plot_title=None, x_label='Height (m)', y_label='Velocity (m/s)')
+
+save_name = 'nastran_results/plots/Final_Test_Base_Wing_v_vs_h2.png'
+
+plotting_function_final(x_vector=controlled_results[controlled_labels[0]]['Height'], y_vector=controlled_results[controlled_labels[0]]['Velocity'], fig_num=1,
+                        data_label='Controlled Wing', fontsize=12, plot_title='Final Test', x_label='Height (m)', y_label='Velocity (m/s)', save=True, savename=save_name)
+
+# Velocity vs Mach
+plotting_function_final(x_vector=trajectory_values['Mach'], y_vector=trajectory_values['Velocity'], fig_num=2,
+                        data_label='Rocket Trajectory', fontsize=12, plot_title=None, x_label='Mach', y_label='Velocity (m/s)', clear=True)
+
+plotting_function_final(x_vector=uncontrolled_results[uncontrolled_labels[0]]['Mach'], y_vector=uncontrolled_results[uncontrolled_labels[0]]['Velocity'], fig_num=2,
+                        data_label='Uncontrolled Wing', fontsize=12, plot_title=None, x_label='Mach', y_label='Velocity (m/s)')
+
+save_name = 'nastran_results/plots/Final_Test_Base_Wing_v_vs_m2.png'
+
+plotting_function_final(x_vector=controlled_results[controlled_labels[0]]['Mach'], y_vector=controlled_results[controlled_labels[0]]['Velocity'], fig_num=2,
+                        data_label='Controlled Wing', fontsize=12, plot_title='Final Test', x_label='Mach', y_label='Velocity (m/s)', save=True, savename=save_name)
+
+# Grid Convergence
+
+# To test the spanwise grid convergence of the wing
+
