@@ -1,5 +1,29 @@
-Root_Chord: 0.15
+Root_Chord: 0.6
 VELOCITY        HEIGHT          MACH    
-110.402        0.0        0.0
+60.20101        0.0        0.0
+2168.643        63568.8        1.295
+8192.764        254275.2        2.86
+
+Root_Chord: 0.7
+VELOCITY        HEIGHT          MACH    
+10.0        0.0        0.0
+60.20101        63568.8        1.295
+10.0        254275.2        2.86
+
+Root_Chord: 0.8
+VELOCITY        HEIGHT          MACH    
+60.20101        0.0        0.0
+110.402        63568.8        1.295
+10.0        254275.2        2.86
+
+Root_Chord: 0.9
+VELOCITY        HEIGHT          MACH    
+461.809        0.0        0.0
+10.0        63568.8        1.295
+10.0        254275.2        2.86
+
+Root_Chord: 1.0
+VELOCITY        HEIGHT          MACH    
+10.0        0.0        0.0
 10.0        63568.8        1.295
 10.0        254275.2        2.86

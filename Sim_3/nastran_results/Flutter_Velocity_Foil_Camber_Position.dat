@@ -1,15 +1,29 @@
 Foil_Camber_Position: 0.1
 VELOCITY        HEIGHT          MACH    
 411.608        0.0        0.0
-1666.633        15892.2        0.632
 10.0        63568.8        1.295
-10.0        143029.8        2.025
 10.0        254275.2        2.86
 
 Foil_Camber_Position: 0.1
 VELOCITY        HEIGHT          MACH    
 10.0        0.0        0.0
-60.20101        15892.2        0.632
 3022.06        63568.8        1.295
-6536.131        143029.8        2.025
 8594.372        254275.2        2.86
+
+Foil_Camber_Position: 0.1
+VELOCITY        HEIGHT          MACH    
+210.804        0.0        0.0
+2469.849        63568.8        1.295
+7389.548        254275.2        2.86
+
+Foil_Camber_Position: 0.1
+VELOCITY        HEIGHT          MACH    
+110.402        0.0        0.0
+2469.849        63568.8        1.295
+7088.342        254275.2        2.86
+
+Foil_Camber_Position: 0.1
+VELOCITY        HEIGHT          MACH    
+10.0        0.0        0.0
+2670.653        63568.8        1.295
+7690.754        254275.2        2.86

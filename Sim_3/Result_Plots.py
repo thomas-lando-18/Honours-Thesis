@@ -28,7 +28,7 @@ def correlation_gain(parameter_vector, gain_vector):
     p_best = [1]
     for n in range(len(gain_vector)-1):
         p_current, residual, a, b, c = np.polyfit(parameter_vector, gain_vector, deg=n+1, full=True)
-        print(residual)
+
         if residual < r:
             p_best = p_current
             r = residual
@@ -48,7 +48,7 @@ def write_polyfit2file(filename, p, r, wing_property, new=False):
     fid.write('Residual: ' + str(r))
     fid.close()
 
-number_of_tests = 5
+number_of_tests = 3
 
 # Extract Results
 
@@ -252,103 +252,103 @@ for n in range(len(span_controlled_labels)):
                       x_label='Mach', y_label='Velocity (m/s)', data_label='Controlled Wing',
                       fontsize=12, clear=False, show=False, save=True, savename=save_name, plot_title=span_uncontrolled_labels[n])
 
-# # Root Chord
-# root_uncontrolled_labels, root_uncontrolled_results = extract_flutter_profile(
-#     'nastran_results/Flutter_Velocity_Root_Chord.dat', number_of_tests)
-# root_controlled_labels, root_controlled_results = extract_flutter_profile(
-#     'nastran_results/Flutter_Velocity_Controlled_Root_Chord.dat', number_of_tests)
-# root_gains, root_gain_labels = extract_gains_from_file('nastran_results/Flutter_Gains_Root_Chord.dat')
+# Root Chord
+root_uncontrolled_labels, root_uncontrolled_results = extract_flutter_profile(
+    'nastran_results/Flutter_Velocity_Root_Chord.dat', number_of_tests)
+root_controlled_labels, root_controlled_results = extract_flutter_profile(
+    'nastran_results/Flutter_Velocity_Controlled_Root_Chord.dat', number_of_tests)
+root_gains, root_gain_labels = extract_gains_from_file('nastran_results/Flutter_Gains_Root_Chord.dat')
 
-# # Generate Velocity vs Height plots
-# for n in range(len(root_controlled_labels)):
-#     # Rocket Trajectory
-#     plotting_function(fig_num=1, x_vector=trajectory_values['Height'][0:number_of_tests],
-#                       y_vector=trajectory_values['Velocity'][0:number_of_tests], x_label='Height (m)',
-#                       y_label='Velocity (m/s)', data_label='Rocket Trajectory', fontsize=12, clear=True, show=False, plot_title=None)
-#
-#     # Uncontrolled
-#     plotting_function(fig_num=1, x_vector=root_uncontrolled_results[root_uncontrolled_labels[n]]['Height'],
-#                       y_vector=root_uncontrolled_results[root_uncontrolled_labels[n]]['Velocity'],
-#                       x_label='Height (m)', y_label='Velocity (m/s)', data_label='Uncontrolled Wing',
-#                       fontsize=12, clear=False, show=False, plot_title=None)
-#
-#     # Plot name string
-#     save_name = 'nastran_results/plots/RootChord_' + str(n) + '_v_vs_h.png'
-#     # Controlled
-#     plotting_function(fig_num=1, x_vector=root_controlled_results[root_controlled_labels[n]]['Height'],
-#                       y_vector=root_controlled_results[root_controlled_labels[n]]['Velocity'],
-#                       x_label='Height (m)', y_label='Velocity (m/s)', data_label='Controlled Wing',
-#                       fontsize=12, clear=False, show=False, save=True, savename=save_name, plot_title=root_uncontrolled_labels[n])
+# Generate Velocity vs Height plots
+for n in range(len(root_controlled_labels)):
+    # Rocket Trajectory
+    plotting_function(fig_num=1, x_vector=trajectory_values['Height'][0:number_of_tests],
+                      y_vector=trajectory_values['Velocity'][0:number_of_tests], x_label='Height (m)',
+                      y_label='Velocity (m/s)', data_label='Rocket Trajectory', fontsize=12, clear=True, show=False, plot_title=None)
 
-# # Generate Velocity vs Mach plots
-# for n in range(len(root_controlled_labels)):
-#     # Rocket Trajectory
-#     plotting_function(fig_num=1, x_vector=trajectory_values['Mach'][0:number_of_tests],
-#                       y_vector=trajectory_values['Velocity'][0:number_of_tests], x_label='Mach',
-#                       y_label='Velocity (m/s)', data_label='Rocket Trajectory', fontsize=12, clear=True, show=False, plot_title=None)
-#
-#     # Uncontrolled
-#     plotting_function(fig_num=1, x_vector=root_uncontrolled_results[root_uncontrolled_labels[n]]['Mach'],
-#                       y_vector=root_uncontrolled_results[root_uncontrolled_labels[n]]['Velocity'],
-#                       x_label='Mach', y_label='Velocity (m/s)', data_label='Uncontrolled Wing',
-#                       fontsize=12, clear=False, show=False, plot_title=None)
-#
-#     # Plot name string
-#     save_name = 'nastran_results/plots/RootChord_' + str(n) + '_v_vs_m.png'
-#     # Controlled
-#     plotting_function(fig_num=1, x_vector=root_controlled_results[root_controlled_labels[n]]['Mach'],
-#                       y_vector=root_controlled_results[root_controlled_labels[n]]['Velocity'],
-#                       x_label='Mach', y_label='Velocity (m/s)', data_label='Controlled Wing',
-#                       fontsize=12, clear=False, show=False, save=True, savename=save_name, plot_title=root_uncontrolled_labels[n])
+    # Uncontrolled
+    plotting_function(fig_num=1, x_vector=root_uncontrolled_results[root_uncontrolled_labels[n]]['Height'],
+                      y_vector=root_uncontrolled_results[root_uncontrolled_labels[n]]['Velocity'],
+                      x_label='Height (m)', y_label='Velocity (m/s)', data_label='Uncontrolled Wing',
+                      fontsize=12, clear=False, show=False, plot_title=None)
+
+    # Plot name string
+    save_name = 'nastran_results/plots/RootChord_' + str(n) + '_v_vs_h.png'
+    # Controlled
+    plotting_function(fig_num=1, x_vector=root_controlled_results[root_controlled_labels[n]]['Height'],
+                      y_vector=root_controlled_results[root_controlled_labels[n]]['Velocity'],
+                      x_label='Height (m)', y_label='Velocity (m/s)', data_label='Controlled Wing',
+                      fontsize=12, clear=False, show=False, save=True, savename=save_name, plot_title=root_uncontrolled_labels[n])
+
+# Generate Velocity vs Mach plots
+for n in range(len(root_controlled_labels)):
+    # Rocket Trajectory
+    plotting_function(fig_num=1, x_vector=trajectory_values['Mach'][0:number_of_tests],
+                      y_vector=trajectory_values['Velocity'][0:number_of_tests], x_label='Mach',
+                      y_label='Velocity (m/s)', data_label='Rocket Trajectory', fontsize=12, clear=True, show=False, plot_title=None)
+
+    # Uncontrolled
+    plotting_function(fig_num=1, x_vector=root_uncontrolled_results[root_uncontrolled_labels[n]]['Mach'],
+                      y_vector=root_uncontrolled_results[root_uncontrolled_labels[n]]['Velocity'],
+                      x_label='Mach', y_label='Velocity (m/s)', data_label='Uncontrolled Wing',
+                      fontsize=12, clear=False, show=False, plot_title=None)
+
+    # Plot name string
+    save_name = 'nastran_results/plots/RootChord_' + str(n) + '_v_vs_m.png'
+    # Controlled
+    plotting_function(fig_num=1, x_vector=root_controlled_results[root_controlled_labels[n]]['Mach'],
+                      y_vector=root_controlled_results[root_controlled_labels[n]]['Velocity'],
+                      x_label='Mach', y_label='Velocity (m/s)', data_label='Controlled Wing',
+                      fontsize=12, clear=False, show=False, save=True, savename=save_name, plot_title=root_uncontrolled_labels[n])
 
 # Taper
-# taper_uncontrolled_labels, taper_uncontrolled_results = extract_flutter_profile(
-#     'nastran_results/Flutter_Velocity_Taper.dat', number_of_tests)
-# taper_controlled_labels, taper_controlled_results = extract_flutter_profile(
-#     'nastran_results/Flutter_Velocity_Controlled_Taper.dat', number_of_tests)
-# taper_gains, taper_gain_labels = extract_gains_from_file('nastran_results/Flutter_Gains_Taper.dat')
+taper_uncontrolled_labels, taper_uncontrolled_results = extract_flutter_profile(
+    'nastran_results/Flutter_Velocity_Taper.dat', number_of_tests)
+taper_controlled_labels, taper_controlled_results = extract_flutter_profile(
+    'nastran_results/Flutter_Velocity_Controlled_Taper.dat', number_of_tests)
+taper_gains, taper_gain_labels = extract_gains_from_file('nastran_results/Flutter_Gains_Taper.dat')
 
-# # Generate Velocity vs Height plots
-# for n in range(len(taper_controlled_labels)):
-#     # Rocket Trajectory
-#     plotting_function(fig_num=1, x_vector=trajectory_values['Height'][0:number_of_tests],
-#                       y_vector=trajectory_values['Velocity'][0:number_of_tests], x_label='Height (m)',
-#                       y_label='Velocity (m/s)', data_label='Rocket Trajectory', fontsize=12, clear=True, show=False, plot_title=None)
-#
-#     # Uncontrolled
-#     plotting_function(fig_num=1, x_vector=taper_uncontrolled_results[taper_uncontrolled_labels[n]]['Height'],
-#                       y_vector=taper_uncontrolled_results[taper_uncontrolled_labels[n]]['Velocity'],
-#                       x_label='Height (m)', y_label='Velocity (m/s)', data_label='Uncontrolled Wing',
-#                       fontsize=12, clear=False, show=False, plot_title=None)
-#
-#     # Plot name string
-#     save_name = 'nastran_results/plots/TaperRatio_' + str(n) + '_v_vs_h.png'
-#     # Controlled
-#     plotting_function(fig_num=1, x_vector=taper_controlled_results[taper_controlled_labels[n]]['Height'],
-#                       y_vector=taper_controlled_results[taper_controlled_labels[n]]['Velocity'],
-#                       x_label='Height (m)', y_label='Velocity (m/s)', data_label='Controlled Wing',
-#                       fontsize=12, clear=False, show=False, save=True, savename=save_name, plot_title=taper_uncontrolled_labels[n])
+# Generate Velocity vs Height plots
+for n in range(len(taper_controlled_labels)):
+    # Rocket Trajectory
+    plotting_function(fig_num=1, x_vector=trajectory_values['Height'][0:number_of_tests],
+                      y_vector=trajectory_values['Velocity'][0:number_of_tests], x_label='Height (m)',
+                      y_label='Velocity (m/s)', data_label='Rocket Trajectory', fontsize=12, clear=True, show=False, plot_title=None)
 
-# # Generate Velocity vs Mach plots
-# for n in range(len(taper_controlled_labels)):
-#     # Rocket Trajectory
-#     plotting_function(fig_num=1, x_vector=trajectory_values['Mach'][0:number_of_tests],
-#                       y_vector=trajectory_values['Velocity'][0:number_of_tests], x_label='Mach',
-#                       y_label='Velocity (m/s)', data_label='Rocket Trajectory', fontsize=12, clear=True, show=False, plot_title=None)
-#
-#     # Uncontrolled
-#     plotting_function(fig_num=1, x_vector=taper_uncontrolled_results[taper_uncontrolled_labels[n]]['Mach'],
-#                       y_vector=taper_uncontrolled_results[taper_uncontrolled_labels[n]]['Velocity'],
-#                       x_label='Mach', y_label='Velocity (m/s)', data_label='Uncontrolled Wing',
-#                       fontsize=12, clear=False, show=False, plot_title=None)
-#
-#     # Plot name string
-#     save_name = 'nastran_results/plots/TaperRatio_' + str(n) + '_v_vs_m.png'
-#     # Controlled
-#     plotting_function(fig_num=1, x_vector=taper_controlled_results[taper_controlled_labels[n]]['Mach'],
-#                       y_vector=taper_controlled_results[taper_controlled_labels[n]]['Velocity'],
-#                       x_label='Mach', y_label='Velocity (m/s)', data_label='Controlled Wing',
-#                       fontsize=12, clear=False, show=False, save=True, savename=save_name, plot_title=taper_uncontrolled_labels[n])
+    # Uncontrolled
+    plotting_function(fig_num=1, x_vector=taper_uncontrolled_results[taper_uncontrolled_labels[n]]['Height'],
+                      y_vector=taper_uncontrolled_results[taper_uncontrolled_labels[n]]['Velocity'],
+                      x_label='Height (m)', y_label='Velocity (m/s)', data_label='Uncontrolled Wing',
+                      fontsize=12, clear=False, show=False, plot_title=None)
+
+    # Plot name string
+    save_name = 'nastran_results/plots/TaperRatio_' + str(n) + '_v_vs_h.png'
+    # Controlled
+    plotting_function(fig_num=1, x_vector=taper_controlled_results[taper_controlled_labels[n]]['Height'],
+                      y_vector=taper_controlled_results[taper_controlled_labels[n]]['Velocity'],
+                      x_label='Height (m)', y_label='Velocity (m/s)', data_label='Controlled Wing',
+                      fontsize=12, clear=False, show=False, save=True, savename=save_name, plot_title=taper_uncontrolled_labels[n])
+
+# Generate Velocity vs Mach plots
+for n in range(len(taper_controlled_labels)):
+    # Rocket Trajectory
+    plotting_function(fig_num=1, x_vector=trajectory_values['Mach'][0:number_of_tests],
+                      y_vector=trajectory_values['Velocity'][0:number_of_tests], x_label='Mach',
+                      y_label='Velocity (m/s)', data_label='Rocket Trajectory', fontsize=12, clear=True, show=False, plot_title=None)
+
+    # Uncontrolled
+    plotting_function(fig_num=1, x_vector=taper_uncontrolled_results[taper_uncontrolled_labels[n]]['Mach'],
+                      y_vector=taper_uncontrolled_results[taper_uncontrolled_labels[n]]['Velocity'],
+                      x_label='Mach', y_label='Velocity (m/s)', data_label='Uncontrolled Wing',
+                      fontsize=12, clear=False, show=False, plot_title=None)
+
+    # Plot name string
+    save_name = 'nastran_results/plots/TaperRatio_' + str(n) + '_v_vs_m.png'
+    # Controlled
+    plotting_function(fig_num=1, x_vector=taper_controlled_results[taper_controlled_labels[n]]['Mach'],
+                      y_vector=taper_controlled_results[taper_controlled_labels[n]]['Velocity'],
+                      x_label='Mach', y_label='Velocity (m/s)', data_label='Controlled Wing',
+                      fontsize=12, clear=False, show=False, save=True, savename=save_name, plot_title=taper_uncontrolled_labels[n])
 
 # Sweep
 sweep_uncontrolled_labels, sweep_uncontrolled_results = extract_flutter_profile(
@@ -517,7 +517,7 @@ plt.plot(foil_thickness_plot, thickness_predicted_plot6, label='Predicted')
 
 plt.savefig('nastran_results/plots/Thickness_Gain_Correlation')
 
-foil_camber = ['1110', '2110', '3110', '4110', '5110']
+foil_camber = ['0110', '1110', '2110', '3110', '4110']
 foil_camber_plot = [float(foil_camber[n][0])/10 for n in range(len(camber_gain_labels))]
 camber_gains_plot1 = [camber_gains[camber_gain_labels[n]][0] for n in range(len(camber_gain_labels))]
 camber_gains_plot2 = [camber_gains[camber_gain_labels[n]][1] for n in range(len(camber_gain_labels))]
@@ -742,36 +742,120 @@ plt.plot(foil_camber_pos_plot, camberPosition_predicted_plot6, label='Predicted'
 plt.savefig('nastran_results/plots/CamberPosition_Gain_Correlation')
 
 # 3D effects
-# taper_total = np.linspace(0.2, 0.6, num=5)
-# taper = [taper_total[n] for n in range(len(taper_gain_labels))]
-# taper_gains_plot1 = [taper_gains[taper_gain_labels[n]][0] for n in range(len(taper_gain_labels))]
-# taper_gains_plot2 = [taper_gains[taper_gain_labels[n]][1] for n in range(len(taper_gain_labels))]
-# taper_gains_plot3 = [taper_gains[taper_gain_labels[n]][2] for n in range(len(taper_gain_labels))]
-# taper_gains_plot4 = [taper_gains[taper_gain_labels[n]][3] for n in range(len(taper_gain_labels))]
-# taper_gains_plot5 = [taper_gains[taper_gain_labels[n]][4] for n in range(len(taper_gain_labels))]
-# taper_gains_plot6 = [taper_gains[taper_gain_labels[n]][5] for n in range(len(taper_gain_labels))]
+taper_total = np.linspace(0.4, 0.8, num=5)
+taper = [taper_total[n] for n in range(len(taper_gain_labels))]
+taper_gains_plot1 = [taper_gains[taper_gain_labels[n]][0] for n in range(len(taper_gain_labels))]
+taper_gains_plot2 = [taper_gains[taper_gain_labels[n]][1] for n in range(len(taper_gain_labels))]
+taper_gains_plot3 = [taper_gains[taper_gain_labels[n]][2] for n in range(len(taper_gain_labels))]
+taper_gains_plot4 = [taper_gains[taper_gain_labels[n]][3] for n in range(len(taper_gain_labels))]
+taper_gains_plot5 = [taper_gains[taper_gain_labels[n]][4] for n in range(len(taper_gain_labels))]
+taper_gains_plot6 = [taper_gains[taper_gain_labels[n]][5] for n in range(len(taper_gain_labels))]
 
-# plt.figure(1)
-# plt.clf()
-# plt.grid()
-# plt.xlabel('Taper Ratio')
-# plt.ylabel('Gain')
-# plt.plot(taper, taper_gains_plot1, label='k1')
-# plt.plot(taper, taper_gains_plot2, label='k2')
-# plt.plot(taper, taper_gains_plot3, label='k3')
-# plt.legend()
-# plt.savefig('nastran_results/plots/TaperRatio_Gain1')
-#
-# plt.figure(2)
-# plt.clf()
-# plt.grid()
-# plt.xlabel('Taper Ratio')
-# plt.ylabel('Gain')
-# plt.plot(taper, taper_gains_plot4, label='k4')
-# plt.plot(taper, taper_gains_plot5, label='k5')
-# plt.plot(taper, taper_gains_plot6, label='k6')
-# plt.legend()
-# plt.savefig('nastran_results/plots/TaperRatio_Gain2')
+p, r = correlation_gain(taper, taper_gains_plot1)
+taper_predicted_plot1 = np.polyval(p, taper)
+write_polyfit2file('nastran_results/Correlation_Polynomials_k1.dat', p, r, 'Taper Ratio', False)
+
+p, r = correlation_gain(taper, taper_gains_plot2)
+taper_predicted_plot2 = np.polyval(p, taper)
+write_polyfit2file('nastran_results/Correlation_Polynomials_k2.dat', p, r, 'Taper Ratio', False)
+
+p, r = correlation_gain(taper, taper_gains_plot3)
+taper_predicted_plot3 = np.polyval(p, taper)
+write_polyfit2file('nastran_results/Correlation_Polynomials_k3.dat', p, r, 'Taper Ratio', False)
+
+p, r = correlation_gain(taper, taper_gains_plot4)
+taper_predicted_plot4 = np.polyval(p, taper)
+write_polyfit2file('nastran_results/Correlation_Polynomials_k4.dat', p, r, 'Taper Ratio', False)
+
+p, r = correlation_gain(taper, taper_gains_plot5)
+taper_predicted_plot5 = np.polyval(p, taper)
+write_polyfit2file('nastran_results/Correlation_Polynomials_k5.dat', p, r, 'Taper Ratio', False)
+
+p, r = correlation_gain(taper, taper_gains_plot6)
+taper_predicted_plot6 = np.polyval(p, taper)
+write_polyfit2file('nastran_results/Correlation_Polynomials_k6.dat', p, r, 'Taper Ratio', False)
+
+plt.figure(1)
+plt.clf()
+plt.grid()
+plt.xlabel('Taper Ratio')
+plt.ylabel('Gain')
+plt.plot(taper, taper_gains_plot1, label='k1')
+plt.plot(taper, taper_gains_plot2, label='k2')
+plt.plot(taper, taper_gains_plot3, label='k3')
+plt.legend()
+plt.savefig('nastran_results/plots/TaperRatio_Gain1')
+
+plt.figure(2)
+plt.clf()
+plt.grid()
+plt.xlabel('Taper Ratio')
+plt.ylabel('Gain')
+plt.plot(taper, taper_gains_plot4, label='k4')
+plt.plot(taper, taper_gains_plot5, label='k5')
+plt.plot(taper, taper_gains_plot6, label='k6')
+plt.legend()
+plt.savefig('nastran_results/plots/TaperRatio_Gain2')
+
+plt.figure(3)
+plt.clf()
+
+plt.subplot(2, 3, 1)
+plt.grid()
+plt.title('k1')
+plt.xlabel('Taper Ratio')
+plt.ylabel('Gain')
+plt.scatter(taper, taper_gains_plot1, label='Actual')
+plt.plot(taper, taper_predicted_plot1, label='Predicted')
+plt.legend()
+
+plt.subplot(2, 3, 2)
+plt.grid()
+plt.title('k2')
+plt.xlabel('Taper Ratio')
+plt.ylabel('Gain')
+plt.scatter(taper, taper_gains_plot2, label='Actual')
+plt.plot(taper, taper_predicted_plot2, label='Predicted')
+
+
+plt.subplot(2, 3, 3)
+plt.grid()
+plt.title('k3')
+plt.xlabel('Taper Ratio')
+plt.ylabel('Gain')
+plt.scatter(taper, taper_gains_plot3, label='Actual')
+plt.plot(taper, taper_predicted_plot3, label='Predicted')
+
+
+plt.subplot(2, 3, 4)
+plt.grid()
+plt.title('k4')
+plt.xlabel('Taper Ratio')
+plt.ylabel('Gain')
+plt.scatter(taper, taper_gains_plot4, label='Actual')
+plt.plot(taper, taper_predicted_plot4, label='Predicted')
+
+
+plt.subplot(2, 3, 5)
+plt.grid()
+plt.title('k5')
+plt.xlabel('Taper Ratio')
+plt.ylabel('Gain')
+plt.scatter(taper, taper_gains_plot5, label='Actual')
+plt.plot(taper, taper_predicted_plot5, label='Predicted')
+
+
+plt.subplot(2, 3, 6)
+plt.grid()
+plt.title('k6')
+plt.xlabel('Taper Ratio')
+plt.ylabel('Gain')
+plt.scatter(taper, taper_gains_plot6, label='Actual')
+plt.plot(taper, taper_predicted_plot6, label='Predicted')
+
+
+plt.savefig('nastran_results/plots/TaperRatio_Gain_Correlation')
+
 
 span_total = np.linspace(0.15, 0.7, num=5)
 span = [span_total[n] for n in range(len(span_gain_labels))]
@@ -894,23 +978,29 @@ sweep_gains_plot4 = [sweep_gains[sweep_gain_labels[n]][3] for n in range(len(swe
 sweep_gains_plot5 = [sweep_gains[sweep_gain_labels[n]][4] for n in range(len(sweep_gain_labels))]
 sweep_gains_plot6 = [sweep_gains[sweep_gain_labels[n]][5] for n in range(len(sweep_gain_labels))]
 
-# p, r = correlation_gain(sweep, sweep_gains_plot1)
-# sweep_predicted_plot1 = np.polyval(p, sweep)
-#
-# p, r = correlation_gain(sweep, sweep_gains_plot2)
-# sweep_predicted_plot2 = np.polyval(p, sweep)
-#
-# p, r = correlation_gain(sweep, sweep_gains_plot3)
-# sweep_predicted_plot3 = np.polyval(p, sweep)
-#
-# p, r = correlation_gain(sweep, sweep_gains_plot4)
-# sweep_predicted_plot4 = np.polyval(p, sweep)
-#
-# p, r = correlation_gain(sweep, sweep_gains_plot5)
-# sweep_predicted_plot5 = np.polyval(p, sweep)
-#
-# p, r = correlation_gain(sweep, sweep_gains_plot6)
-# sweep_predicted_plot6 = np.polyval(p, sweep)
+p, r = correlation_gain(sweep, sweep_gains_plot1)
+sweep_predicted_plot1 = np.polyval(p, sweep)
+write_polyfit2file('nastran_results/Correlation_Polynomials_k1.dat', p, r, 'Sweep Angle', False)
+
+p, r = correlation_gain(sweep, sweep_gains_plot2)
+sweep_predicted_plot2 = np.polyval(p, sweep)
+write_polyfit2file('nastran_results/Correlation_Polynomials_k2.dat', p, r, 'Sweep Angle', False)
+
+p, r = correlation_gain(sweep, sweep_gains_plot3)
+sweep_predicted_plot3 = np.polyval(p, sweep)
+write_polyfit2file('nastran_results/Correlation_Polynomials_k3.dat', p, r, 'Sweep Angle', False)
+
+p, r = correlation_gain(sweep, sweep_gains_plot4)
+sweep_predicted_plot4 = np.polyval(p, sweep)
+write_polyfit2file('nastran_results/Correlation_Polynomials_k4.dat', p, r, 'Sweep Angle', False)
+
+p, r = correlation_gain(sweep, sweep_gains_plot5)
+sweep_predicted_plot5 = np.polyval(p, sweep)
+write_polyfit2file('nastran_results/Correlation_Polynomials_k5.dat', p, r, 'Sweep Angle', False)
+
+p, r = correlation_gain(sweep, sweep_gains_plot6)
+sweep_predicted_plot6 = np.polyval(p, sweep)
+write_polyfit2file('nastran_results/Correlation_Polynomials_k6.dat', p, r, 'Sweep Angle', False)
 
 plt.figure(1)
 plt.clf()
@@ -934,169 +1024,167 @@ plt.plot(sweep, sweep_gains_plot6, label='k6')
 plt.legend()
 plt.savefig('nastran_results/plots/Sweep_Gain2')
 
-# plt.figure(3)
-# plt.clf()
-#
-# plt.subplot(2, 3, 1)
-# plt.grid()
-# plt.title('k1')
-# plt.xlabel('Sweep Angle (deg)')
-# plt.ylabel('Gain')
-# plt.scatter(sweep, sweep_gains_plot1, label='Actual')
-# plt.plot(sweep, sweep_predicted_plot1, label='Predicted')
-# plt.legend()
-#
-# plt.subplot(2, 3, 2)
-# plt.grid()
-# plt.title('k2')
-# plt.xlabel('Sweep Angle (deg)')
-# plt.ylabel('Gain')
-# plt.scatter(sweep, sweep_gains_plot2, label='Actual')
-# plt.plot(sweep, sweep_predicted_plot2, label='Predicted')
-# plt.legend()
-#
-# plt.subplot(2, 3, 3)
-# plt.grid()
-# plt.title('k3')
-# plt.xlabel('Sweep Angle (deg)')
-# plt.ylabel('Gain')
-# plt.scatter(sweep, sweep_gains_plot3, label='Actual')
-# plt.plot(sweep, sweep_predicted_plot3, label='Predicted')
-# plt.legend()
-#
-# plt.subplot(2, 3, 4)
-# plt.grid()
-# plt.title('k4')
-# plt.xlabel('Sweep Angle (deg)')
-# plt.ylabel('Gain')
-# plt.scatter(sweep, sweep_gains_plot4, label='Actual')
-# plt.plot(sweep, sweep_predicted_plot4, label='Predicted')
-# plt.legend()
-#
-# plt.subplot(2, 3, 5)
-# plt.grid()
-# plt.title('k5')
-# plt.xlabel('Sweep Angle (deg)')
-# plt.ylabel('Gain')
-# plt.scatter(sweep, sweep_gains_plot5, label='Actual')
-# plt.plot(sweep, sweep_predicted_plot5, label='Predicted')
-# plt.legend()
-#
-# plt.subplot(2, 3, 6)
-# plt.grid()
-# plt.title('k6')
-# plt.xlabel('Sweep Angle (deg)')
-# plt.ylabel('Gain')
-# plt.scatter(sweep, sweep_gains_plot6, label='Actual')
-# plt.plot(sweep, sweep_predicted_plot6, label='Predicted')
-# plt.legend()
-#
-# plt.savefig('nastran_results/plots/Sweep_Gain_Correlation')
+plt.figure(3)
+plt.clf()
 
-# root_total = np.linspace(0.15, 0.7, num=5)
-# root = [root_total[n] for n in range(len(root_gain_labels))]
-# root_gains_plot1 = [root_gains[root_gain_labels[n]][0] for n in range(len(root_gain_labels))]
-# root_gains_plot2 = [root_gains[root_gain_labels[n]][1] for n in range(len(root_gain_labels))]
-# root_gains_plot3 = [root_gains[root_gain_labels[n]][2] for n in range(len(root_gain_labels))]
-# root_gains_plot4 = [root_gains[root_gain_labels[n]][3] for n in range(len(root_gain_labels))]
-# root_gains_plot5 = [root_gains[root_gain_labels[n]][4] for n in range(len(root_gain_labels))]
-# root_gains_plot6 = [root_gains[root_gain_labels[n]][5] for n in range(len(root_gain_labels))]
+plt.subplot(2, 3, 1)
+plt.grid()
+plt.title('k1')
+plt.xlabel('Sweep Angle (deg)')
+plt.ylabel('Gain')
+plt.scatter(sweep, sweep_gains_plot1, label='Actual')
+plt.plot(sweep, sweep_predicted_plot1, label='Predicted')
 
-# p, r = correlation_gain(root, root_gains_plot1)
-# root_predicted_plot1 = np.polyval(p, root)
+plt.subplot(2, 3, 2)
+plt.grid()
+plt.title('k2')
+plt.xlabel('Sweep Angle (deg)')
+plt.ylabel('Gain')
+plt.scatter(sweep, sweep_gains_plot2, label='Actual')
+plt.plot(sweep, sweep_predicted_plot2, label='Predicted')
 
-# p, r = correlation_gain(root, root_gains_plot2)
-# root_predicted_plot2 = np.polyval(p, root)
+plt.subplot(2, 3, 3)
+plt.grid()
+plt.title('k3')
+plt.xlabel('Sweep Angle (deg)')
+plt.ylabel('Gain')
+plt.scatter(sweep, sweep_gains_plot3, label='Actual')
+plt.plot(sweep, sweep_predicted_plot3, label='Predicted')
 
-# p, r = correlation_gain(root, root_gains_plot3)
-# root_predicted_plot3 = np.polyval(p, root)
 
-# p, r = correlation_gain(root, root_gains_plot4)
-# root_predicted_plot4 = np.polyval(p, root)
+plt.subplot(2, 3, 4)
+plt.grid()
+plt.title('k4')
+plt.xlabel('Sweep Angle (deg)')
+plt.ylabel('Gain')
+plt.scatter(sweep, sweep_gains_plot4, label='Actual')
+plt.plot(sweep, sweep_predicted_plot4, label='Predicted')
 
-# p, r = correlation_gain(root, root_gains_plot5)
-# root_predicted_plot5 = np.polyval(p, root)
 
-# p, r = correlation_gain(root, root_gains_plot6)
-# root_predicted_plot6 = np.polyval(p, root)
+plt.subplot(2, 3, 5)
+plt.grid()
+plt.title('k5')
+plt.xlabel('Sweep Angle (deg)')
+plt.ylabel('Gain')
+plt.scatter(sweep, sweep_gains_plot5, label='Actual')
+plt.plot(sweep, sweep_predicted_plot5, label='Predicted')
 
-# plt.figure(1)
-# plt.clf()
-# plt.grid()
-# plt.xlabel('Root Chord (m)')
-# plt.ylabel('Gain')
-# plt.plot(root, root_gains_plot1, label='k1')
-# plt.plot(root, root_gains_plot2, label='k2')
-# plt.plot(root, root_gains_plot3, label='k3')
-# plt.legend()
-# plt.savefig('nastran_results/plots/RootChord_Gain1')
-#
-# plt.figure(2)
-# plt.clf()
-# plt.grid()
-# plt.xlabel('Root Chord (m)')
-# plt.ylabel('Gain')
-# plt.plot(root, root_gains_plot4, label='k4')
-# plt.plot(root, root_gains_plot5, label='k5')
-# plt.plot(root, root_gains_plot6, label='k6')
-# plt.legend()
-# plt.savefig('nastran_results/plots/RootChord_Gain2')
 
-# plt.figure(3)
-# plt.clf()
+plt.subplot(2, 3, 6)
+plt.grid()
+plt.title('k6')
+plt.xlabel('Sweep Angle (deg)')
+plt.ylabel('Gain')
+plt.scatter(sweep, sweep_gains_plot6, label='Actual')
+plt.plot(sweep, sweep_predicted_plot6, label='Predicted')
 
-# plt.subplot(2, 3, 1)
-# plt.grid()
-# plt.title('k1')
-# plt.xlabel('Root Chord (m)')
-# plt.ylabel('Gain')
-# plt.scatter(root, root_gains_plot1, label='Actual')
-# plt.plot(root, root_predicted_plot1, label='Predicted')
-# plt.legend()
 
-# plt.subplot(2, 3, 2)
-# plt.grid()
-# plt.title('k2')
-# plt.xlabel('Root Chord (m)')
-# plt.ylabel('Gain')
-# plt.scatter(root, root_gains_plot2, label='Actual')
-# plt.plot(root, root_predicted_plot2, label='Predicted')
-# plt.legend()
+plt.savefig('nastran_results/plots/Sweep_Gain_Correlation')
 
-# plt.subplot(2, 3, 3)
-# plt.grid()
-# plt.title('k3')
-# plt.xlabel('Root Chord (m)')
-# plt.ylabel('Gain')
-# plt.scatter(root, root_gains_plot3, label='Actual')
-# plt.plot(root, root_predicted_plot3, label='Predicted')
-# plt.legend()
+root_total = np.linspace(0.6, 1.0, num=5)
+root = [root_total[n] for n in range(len(root_gain_labels))]
+root_gains_plot1 = [root_gains[root_gain_labels[n]][0] for n in range(len(root_gain_labels))]
+root_gains_plot2 = [root_gains[root_gain_labels[n]][1] for n in range(len(root_gain_labels))]
+root_gains_plot3 = [root_gains[root_gain_labels[n]][2] for n in range(len(root_gain_labels))]
+root_gains_plot4 = [root_gains[root_gain_labels[n]][3] for n in range(len(root_gain_labels))]
+root_gains_plot5 = [root_gains[root_gain_labels[n]][4] for n in range(len(root_gain_labels))]
+root_gains_plot6 = [root_gains[root_gain_labels[n]][5] for n in range(len(root_gain_labels))]
 
-# plt.subplot(2, 3, 4)
-# plt.grid()
-# plt.title('k4')
-# plt.xlabel('Root Chord (m)')
-# plt.ylabel('Gain')
-# plt.scatter(root, root_gains_plot4, label='Actual')
-# plt.plot(root, root_predicted_plot4, label='Predicted')
-# plt.legend()
+p, r = correlation_gain(root, root_gains_plot1)
+root_predicted_plot1 = np.polyval(p, root)
 
-# plt.subplot(2, 3, 5)
-# plt.grid()
-# plt.title('k5')
-# plt.xlabel('Root Chord (m)')
-# plt.ylabel('Gain')
-# plt.scatter(root, root_gains_plot5, label='Actual')
-# plt.plot(root, root_predicted_plot5, label='Predicted')
-# plt.legend()
+p, r = correlation_gain(root, root_gains_plot2)
+root_predicted_plot2 = np.polyval(p, root)
 
-# plt.subplot(2, 3, 6)
-# plt.grid()
-# plt.title('k6')
-# plt.xlabel('Root Chord (m)')
-# plt.ylabel('Gain')
-# plt.scatter(root, root_gains_plot6, label='Actual')
-# plt.plot(root, root_predicted_plot6, label='Predicted')
-# plt.legend()
+p, r = correlation_gain(root, root_gains_plot3)
+root_predicted_plot3 = np.polyval(p, root)
 
-# plt.savefig('nastran_results/plots/RootChord_Gain_Correlation')
+p, r = correlation_gain(root, root_gains_plot4)
+root_predicted_plot4 = np.polyval(p, root)
+
+p, r = correlation_gain(root, root_gains_plot5)
+root_predicted_plot5 = np.polyval(p, root)
+
+p, r = correlation_gain(root, root_gains_plot6)
+root_predicted_plot6 = np.polyval(p, root)
+
+plt.figure(1)
+plt.clf()
+plt.grid()
+plt.xlabel('Root Chord (m)')
+plt.ylabel('Gain')
+plt.plot(root, root_gains_plot1, label='k1')
+plt.plot(root, root_gains_plot2, label='k2')
+plt.plot(root, root_gains_plot3, label='k3')
+plt.legend()
+plt.savefig('nastran_results/plots/RootChord_Gain1')
+
+plt.figure(2)
+plt.clf()
+plt.grid()
+plt.xlabel('Root Chord (m)')
+plt.ylabel('Gain')
+plt.plot(root, root_gains_plot4, label='k4')
+plt.plot(root, root_gains_plot5, label='k5')
+plt.plot(root, root_gains_plot6, label='k6')
+plt.legend()
+plt.savefig('nastran_results/plots/RootChord_Gain2')
+
+plt.figure(3)
+plt.clf()
+
+plt.subplot(2, 3, 1)
+plt.grid()
+plt.title('k1')
+plt.xlabel('Root Chord (m)')
+plt.ylabel('Gain')
+plt.scatter(root, root_gains_plot1, label='Actual')
+plt.plot(root, root_predicted_plot1, label='Predicted')
+plt.legend()
+
+plt.subplot(2, 3, 2)
+plt.grid()
+plt.title('k2')
+plt.xlabel('Root Chord (m)')
+plt.ylabel('Gain')
+plt.scatter(root, root_gains_plot2, label='Actual')
+plt.plot(root, root_predicted_plot2, label='Predicted')
+plt.legend()
+
+plt.subplot(2, 3, 3)
+plt.grid()
+plt.title('k3')
+plt.xlabel('Root Chord (m)')
+plt.ylabel('Gain')
+plt.scatter(root, root_gains_plot3, label='Actual')
+plt.plot(root, root_predicted_plot3, label='Predicted')
+plt.legend()
+
+plt.subplot(2, 3, 4)
+plt.grid()
+plt.title('k4')
+plt.xlabel('Root Chord (m)')
+plt.ylabel('Gain')
+plt.scatter(root, root_gains_plot4, label='Actual')
+plt.plot(root, root_predicted_plot4, label='Predicted')
+plt.legend()
+
+plt.subplot(2, 3, 5)
+plt.grid()
+plt.title('k5')
+plt.xlabel('Root Chord (m)')
+plt.ylabel('Gain')
+plt.scatter(root, root_gains_plot5, label='Actual')
+plt.plot(root, root_predicted_plot5, label='Predicted')
+plt.legend()
+
+plt.subplot(2, 3, 6)
+plt.grid()
+plt.title('k6')
+plt.xlabel('Root Chord (m)')
+plt.ylabel('Gain')
+plt.scatter(root, root_gains_plot6, label='Actual')
+plt.plot(root, root_predicted_plot6, label='Predicted')
+plt.legend()
+
+plt.savefig('nastran_results/plots/RootChord_Gain_Correlation')

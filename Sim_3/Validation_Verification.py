@@ -213,7 +213,7 @@ for n in range(number_of_tests):
 
 result_file_write(vf, h_plot, m_plot, 'Correlation_Test_Uncontrolled', wing_property_value='Base_Wing', new_file=True)
 
-system = controller_gains(beta_control=beta, foil=base_foil, span=base_span, sweep=base_sweep,
+system = controller_gains(beta_control=beta, foil=base_foil, span=base_span, sweep=np.deg2rad(base_sweep),
                                       root_chord=base_root,
                                       taper=base_taper, rho_air=rho[0],
                                       velocity=velocity[0],
@@ -250,7 +250,7 @@ for n in range(number_of_tests):
         rocket_v_plot.append(velocity[n])
         reference = (flutter_v - velocity[n]) / flutter_v
         if flutter_v > velocity[n] and reference > 0.3:
-            system = controller_gains(beta_control=beta, foil=base_foil, span=base_span, sweep=base_sweep,
+            system = controller_gains(beta_control=beta, foil=base_foil, span=base_span, sweep=np.deg2rad(base_sweep),
                                       root_chord=base_root,
                                       taper=base_taper, rho_air=rho[n],
                                       velocity=velocity[n],
@@ -273,7 +273,7 @@ controlled_labels, controlled_results = extract_flutter_profile(
 
 # Velocity vs Height
 plotting_function_final(x_vector=trajectory_values['Height'], y_vector=trajectory_values['Velocity'], fig_num=1,
-                        data_label='Rocket Trajectory', fontsize=12, plot_title=None, x_label='Height (m)', y_label='Velocity (m/s)')
+                        data_label='Rocket Trajectory', fontsize=12, plot_title=None, x_label='Height (m)', y_label='Velocity (m/s)', clear=True)
 
 plotting_function_final(x_vector=uncontrolled_results[uncontrolled_labels[0]]['Height'], y_vector=uncontrolled_results[uncontrolled_labels[0]]['Velocity'], fig_num=1,
                         data_label='Uncontrolled Wing', fontsize=12, plot_title=None, x_label='Height (m)', y_label='Velocity (m/s)')
@@ -285,7 +285,7 @@ plotting_function_final(x_vector=controlled_results[controlled_labels[0]]['Heigh
 
 # Velocity vs Mach
 plotting_function_final(x_vector=trajectory_values['Mach'], y_vector=trajectory_values['Velocity'], fig_num=2,
-                        data_label='Rocket Trajectory', fontsize=12, plot_title=None, x_label='Mach', y_label='Velocity (m/s)')
+                        data_label='Rocket Trajectory', fontsize=12, plot_title=None, x_label='Mach', y_label='Velocity (m/s)', clear=True)
 
 plotting_function_final(x_vector=uncontrolled_results[uncontrolled_labels[0]]['Mach'], y_vector=uncontrolled_results[uncontrolled_labels[0]]['Velocity'], fig_num=2,
                         data_label='Uncontrolled Wing', fontsize=12, plot_title=None, x_label='Mach', y_label='Velocity (m/s)')
@@ -346,7 +346,7 @@ for n in range(number_of_tests):
 
 result_file_write(vf, h_plot, m_plot, 'Correlation_Test_Uncontrolled2', wing_property_value='Base_Wing', new_file=True)
 
-system = controller_gains(beta_control=beta, foil=base_foil, span=base_span, sweep=base_sweep,
+system = controller_gains(beta_control=beta, foil=base_foil, span=base_span, sweep=np.deg2rad(base_sweep),
                                       root_chord=base_root,
                                       taper=base_taper, rho_air=rho[0],
                                       velocity=velocity[0],
@@ -383,7 +383,7 @@ for n in range(number_of_tests):
         rocket_v_plot.append(velocity[n])
         reference = (flutter_v - velocity[n]) / flutter_v
         if flutter_v > velocity[n] and reference > 0.3:
-            system = controller_gains(beta_control=beta, foil=base_foil, span=base_span, sweep=base_sweep,
+            system = controller_gains(beta_control=beta, foil=base_foil, span=base_span, sweep=np.deg2rad(base_sweep),
                                       root_chord=base_root,
                                       taper=base_taper, rho_air=rho[n],
                                       velocity=velocity[n],
@@ -435,7 +435,7 @@ plotting_function_final(x_vector=controlled_results[controlled_labels[0]]['Mach'
 base_foil = '2106'
 base_taper = 0.4
 base_span = 0.6
-base_sweep = 0.0
+base_sweep = 10.0
 base_root = 0.3
 
 spanwise_num = [5, 10, 20, 40, 80, 160]

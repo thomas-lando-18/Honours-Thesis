@@ -1,19 +1,29 @@
 Foil Thickness
 Correlation Formula
-Coefficients: [ 6.96818960e+05 -1.00839496e+05  4.33614992e+03 -4.80611220e+01]
-Residual: [73.36724212]
+Coefficients: [-4.26332657e+05  8.39569987e+04 -5.62803261e+03  1.64303317e+02]
+Residual: [25.90097402]
 
 Foil Camber
 Correlation Formula
-Coefficients: [1]
-Residual: 10000000000.0
+Coefficients: [-583.18411659  329.96584973  -80.37246929   23.46641208]
+Residual: [70.58017209]
 
 Foil Camber Position
 Correlation Formula
-Coefficients: [1]
-Residual: 10000000000.0
+Coefficients: [ 1090.24889033 -1168.57194385   394.05352583   -14.49370908]
+Residual: [2.44980876]
+
+Taper Ratio
+Correlation Formula
+Coefficients: [-28.89981086  88.31211647 -99.54865002  41.66561583]
+Residual: [0.00046986]
 
 Semi Span
 Correlation Formula
-Coefficients: [-223.88823636   93.14740439]
-Residual: [787.19586146]
+Coefficients: [-2085.37069199  3126.25344801 -1460.72125337   221.45576677]
+Residual: [101.41413674]
+
+Sweep Angle
+Correlation Formula
+Coefficients: [-2.98213474e-03  9.72537442e-02  7.85751058e-01  1.28356527e+01]
+Residual: [117.1099322]
