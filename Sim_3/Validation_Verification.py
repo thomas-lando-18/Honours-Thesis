@@ -82,6 +82,20 @@ def weighted_average(correlations, parameters):
     return weights_vector
 
 
+def write_weights2file(weight, parameters, savename):
+    fid = open(savename, 'w')
+    fid.write('Parameter')
+    fid.write(' '*8)
+    fid.write('Weight\n')
+    for n in range(len(weight)):
+        fid.write(str(parameters[n]))
+        fid.write(' '*8)
+        fid.write(str(weight[n]))
+        fid.write('\n')
+
+    fid.close()
+
+
 def gain_correlation_calculation(correlations, parameters, weights, foil, root, taper, sweep, span):
     # Break down the foil
     camber = int(foil[0])/10
@@ -117,28 +131,34 @@ def gain_correlation_calculation(correlations, parameters, weights, foil, root, 
 # Build Final Controller
 k1_correlations, k1_parameters = read_polyfit_file('nastran_results/Correlation_Polynomials_k1.dat')
 k1_weights = weighted_average(k1_correlations, k1_parameters)
+write_weights2file(k1_weights, k1_parameters, 'nastran_results/Weighting_values_k1.dat')
 
 k2_correlations, k2_parameters = read_polyfit_file('nastran_results/Correlation_Polynomials_k2.dat')
 k2_weights = weighted_average(k2_correlations, k2_parameters)
+write_weights2file(k2_weights, k2_parameters, 'nastran_results/Weighting_values_k2.dat')
 
 k3_correlations, k3_parameters = read_polyfit_file('nastran_results/Correlation_Polynomials_k3.dat')
 k3_weights = weighted_average(k3_correlations, k3_parameters)
+write_weights2file(k3_weights, k3_parameters, 'nastran_results/Weighting_values_k3.dat')
 
 k4_correlations, k4_parameters = read_polyfit_file('nastran_results/Correlation_Polynomials_k4.dat')
 k4_weights = weighted_average(k4_correlations, k4_parameters)
+write_weights2file(k4_weights, k4_parameters, 'nastran_results/Weighting_values_k4.dat')
 
 k5_correlations, k5_parameters = read_polyfit_file('nastran_results/Correlation_Polynomials_k5.dat')
 k5_weights = weighted_average(k5_correlations, k5_parameters)
+write_weights2file(k5_weights, k5_parameters, 'nastran_results/Weighting_values_k5.dat')
 
 k6_correlations, k6_parameters = read_polyfit_file('nastran_results/Correlation_Polynomials_k6.dat')
 k6_weights = weighted_average(k6_correlations, k6_parameters)
+write_weights2file(k6_weights, k6_parameters, 'nastran_results/Weighting_values_k6.dat')
 
 # Add final formula guess to file function
 
 # Test the final controller
 
 # Build Trajectory
-number_of_tests = 5
+number_of_tests = 100
 t_max = 120
 t0 = 0
 t = np.linspace(t0, t_max, num=number_of_tests)

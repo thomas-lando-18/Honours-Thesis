@@ -5,7 +5,7 @@ from wing_model.wing_build import main as wing
 from matplotlib import pyplot as plt
 
 # Simulation Parameters
-number_of_tests = 3
+number_of_tests = 100
 t_max = 120
 t0 = 0
 t = np.linspace(t0, t_max, num=number_of_tests)
