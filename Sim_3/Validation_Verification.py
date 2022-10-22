@@ -138,7 +138,7 @@ k6_weights = weighted_average(k6_correlations, k6_parameters)
 # Test the final controller
 
 # Build Trajectory
-number_of_tests = 50
+number_of_tests = 5
 t_max = 120
 t0 = 0
 t = np.linspace(t0, t_max, num=number_of_tests)
@@ -431,4 +431,30 @@ plotting_function_final(x_vector=controlled_results[controlled_labels[0]]['Mach'
 # Grid Convergence
 
 # To test the spanwise grid convergence of the wing
+# Wing Properties
+base_foil = '2106'
+base_taper = 0.4
+base_span = 0.6
+base_sweep = 0.0
+base_root = 0.3
 
+spanwise_num = [5, 10, 20, 40, 80, 160]
+grid_convergence_v = []
+for n in range(len(spanwise_num)):
+    bdf_build(foil=base_foil, chord_num=15, span_num=spanwise_num[n], span=base_span, sweep=base_sweep, flap_point=0.4,
+                  beta=0,
+                  root_chord=base_root, taper=base_taper, rho_input=rho[0], mach_input=mach[0])
+
+    run_nastran(plot=False)
+    flutter_results = read_f06_file('nastran_files/3d_6dof_card.f06')
+    flutter_v = find_flutter(flutter_results)[0]
+    if flutter_v is not None:
+        grid_convergence_v.append(flutter_v)
+
+plt.figure(1)
+plt.clf()
+plt.grid()
+plt.xlabel('Spanwise Number')
+plt.ylabel('Flutter Velocity')
+plt.plot(spanwise_num, grid_convergence_v)
+plt.savefig('nastran_results/plots/Grid_Convergence_Study.png')
