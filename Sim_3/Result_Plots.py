@@ -8,7 +8,7 @@ import pprint
 # Internal Function
 def plotting_function(x_vector, y_vector, fig_num, x_label, y_label, data_label, plot_title, fontsize, clear=False, show=False,
                       save=False, savename=None):
-    plt.figure(fig_num)
+    plt.figure(fig_num, figsize=[6, 6])
     if clear:
         plt.clf()
     plt.grid()
@@ -17,7 +17,7 @@ def plotting_function(x_vector, y_vector, fig_num, x_label, y_label, data_label,
     plt.ylabel(y_label, fontsize=fontsize)
     plt.legend(fontsize=fontsize)
     if save and savename:
-        plt.title(plot_title)
+        # plt.title(plot_title)
         plt.savefig(savename)
     if show:
         plt.show()
@@ -48,7 +48,8 @@ def write_polyfit2file(filename, p, r, wing_property, new=False):
     fid.write('Residual: ' + str(r))
     fid.close()
 
-number_of_tests = 50
+
+number_of_tests = 40
 
 # Extract Results
 
