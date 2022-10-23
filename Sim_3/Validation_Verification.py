@@ -158,7 +158,7 @@ write_weights2file(k6_weights, k6_parameters, 'nastran_results/Weighting_values_
 # Test the final controller
 
 # Build Trajectory
-number_of_tests = 100
+number_of_tests = 50
 t_max = 120
 t0 = 0
 t = np.linspace(t0, t_max, num=number_of_tests)

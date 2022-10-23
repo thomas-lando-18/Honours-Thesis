@@ -48,7 +48,7 @@ def write_polyfit2file(filename, p, r, wing_property, new=False):
     fid.write('Residual: ' + str(r))
     fid.close()
 
-number_of_tests = 100
+number_of_tests = 50
 
 # Extract Results
 
