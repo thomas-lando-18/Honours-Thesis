@@ -64,7 +64,7 @@ def weighted_average(correlations, parameters):
 
     for n in range(len(parameters)):
         residual_p = correlations[parameters[n]]['Residual']
-        if residual_p < 1e6:
+        if residual_p < 1e4:
             w_p = 1 - residual_p/sum(residuals)
         else:
             w_p = 0

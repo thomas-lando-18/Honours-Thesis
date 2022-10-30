@@ -1093,21 +1093,27 @@ root_gains_plot6 = [root_gains[root_gain_labels[n]][5] for n in range(len(root_g
 
 p, r = correlation_gain(root, root_gains_plot1)
 root_predicted_plot1 = np.polyval(p, root)
+write_polyfit2file('nastran_results/Correlation_Polynomials_k1.dat', p, r, 'Root Chord', False)
 
 p, r = correlation_gain(root, root_gains_plot2)
 root_predicted_plot2 = np.polyval(p, root)
+write_polyfit2file('nastran_results/Correlation_Polynomials_k2.dat', p, r, 'Root Chord', False)
 
 p, r = correlation_gain(root, root_gains_plot3)
 root_predicted_plot3 = np.polyval(p, root)
+write_polyfit2file('nastran_results/Correlation_Polynomials_k3.dat', p, r, 'Root Chord', False)
 
 p, r = correlation_gain(root, root_gains_plot4)
 root_predicted_plot4 = np.polyval(p, root)
+write_polyfit2file('nastran_results/Correlation_Polynomials_k4.dat', p, r, 'Root Chord', False)
 
 p, r = correlation_gain(root, root_gains_plot5)
 root_predicted_plot5 = np.polyval(p, root)
+write_polyfit2file('nastran_results/Correlation_Polynomials_k5.dat', p, r, 'Root Chord', False)
 
 p, r = correlation_gain(root, root_gains_plot6)
 root_predicted_plot6 = np.polyval(p, root)
+write_polyfit2file('nastran_results/Correlation_Polynomials_k6.dat', p, r, 'Root Chord', False)
 
 plt.figure(1)
 plt.clf()

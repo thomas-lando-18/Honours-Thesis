@@ -27,3 +27,8 @@ Sweep Angle
 Correlation Formula
 Coefficients: [ 2.44071480e-06 -9.36459419e-05  1.33961262e-03  3.50532125e-03]
 Residual: [6.27757378e-05]
+
+Root Chord
+Correlation Formula
+Coefficients: [  833.4664149  -1847.20355233  1350.8109601   -325.61956523]
+Residual: [1.72368218]

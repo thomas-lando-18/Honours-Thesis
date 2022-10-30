@@ -1,7 +1,8 @@
 Parameter        Weight
-Foil Thickness        0.19980837676750304
-Foil Camber        0.18953790394741937
-Foil Camber Position        0.03623906995649591
-Taper Ratio        0.19272077477935448
-Semi Span        0.182031268811866
-Sweep Angle        0.19966260573736125
+Foil Thickness        0.16666485937679823
+Foil Camber        0.16656799366156103
+Foil Camber Position        0.16512215942786154
+Taper Ratio        0.1665980128305948
+Semi Span        0.16649719501439378
+Sweep Angle        0.1666634845408639
+Root Chord        0.0018862951479267087
